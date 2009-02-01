@@ -11,7 +11,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.psi.PsiFile;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
 import com.smartbear.beans.GlobalOptions;
@@ -35,33 +35,33 @@ public class AddControlledFileAction extends AnAction {
 	protected static CollabClientConnection client;
 
 	private static Logger logger = Logger.getInstance(AddControlledFileAction.class.getName());
-	
+
 
 	public void actionPerformed(AnActionEvent event) {
-
-		// Retrieve the current file
-		PsiFile file = PluginUtil.getCurrentFile(event.getDataContext());
-		String path = file.getVirtualFile().getPath();
-		logger.debug("Working with file: " + path);
 
 		try {
 			init();
 
 			// Show a dialog to the user where (s)he can select a review.
 			Integer selectedReviewId = showChooseReviewDialog();
-			
-			// Retrieve the selected review.
-			Review review = client.getEngine(new NullProgressMonitor()).reviewById(selectedReviewId);
 
-			// Add the current file to the selected review.
-			attachControlledFile(review,  path);
+			if (selectedReviewId != null) {
+				// Retrieve the selected review.
+				Review review = client.getEngine(new NullProgressMonitor()).reviewById(selectedReviewId);
+
+				// Retrieve the current file(s)
+				VirtualFile[] files = PluginUtil.getCurrentVirtualFiles(event.getDataContext());
+
+				// Add the current file to the selected review.
+				attachControlledFiles(review, files);
+			}
 		} catch (CollabClientException e1) {
 			logger.debug(e1);
-			Messages.showMessageDialog("A connection error occured when trying to reach Code Collaborator server.", 
+			Messages.showMessageDialog("A connection error occured when trying to reach Code Collaborator server.",
 					"Connection Exception", Messages.getErrorIcon());
 		} catch (IOException e1) {
 			logger.debug(e1);
-			Messages.showMessageDialog("An IO error occured.", 
+			Messages.showMessageDialog("An IO error occured.",
 					"IO Error", Messages.getErrorIcon());
 		} finally {
 			finished();
@@ -79,31 +79,25 @@ public class AddControlledFileAction extends AnAction {
 			reviewNames.add(review.getId() + " " + review.getTitle());
 		}
 
-		int selectedIndex = Messages.showChooseDialog("Please choose the review to add this file to", "Choose review", 
+		int selectedIndex = Messages.showChooseDialog("Please choose the review to add this file to", "Choose review",
 				reviewNames.toArray(new String[reviewNames.size()]), "", Messages.getQuestionIcon());
+
+		if (selectedIndex < 0) {
+			// User pressed the cancel button.
+			return null;
+		}
 		return reviews[selectedIndex].getId();
 	}
 
 	/**
 	 * Attaches local files that are under version control to the given review
 	 */
-	public static void attachControlledFile(Review review, String path) throws CollabClientException, IOException {
+	private void attachControlledFiles(Review review, VirtualFile... virtualFiles) throws CollabClientException, IOException {
 		// Parameter validation
 		if (review == null) {
 			logger.error("error: no such review");
 			return;
 		}
-		File file = new File(path);
-		if (!file.exists() || !file.isFile()) {
-			logger.error("error: path not an existing file: " + file.getAbsolutePath());
-			return;
-		}
-
-		// Create the SCM object representing a local file under version control.
-		// We assume the local SCM is already configured properly.
-		logger.debug("Loading SCM File object...");
-		IScmClientConfiguration clientConfig = client.requireScm(file, new NullProgressMonitor(), ScmUtils.SCMS);
-		IScmLocalCheckout scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
 
 		// Create the SCM ChangeSet object to upload.  You can attach
 		// many types of objects here from uncontrolled files as in this
@@ -111,10 +105,30 @@ public class AddControlledFileAction extends AnAction {
 		// to SCM-specific atomic changelists (e.g. with Perforce and Subversion).
 		logger.debug("Creating SCM Changeset...");
 		ScmChangeset changeset = new ScmChangeset();
-		changeset.addLocalCheckout(scmFile, new NullProgressMonitor());
+
+		IScmClientConfiguration clientConfig = null;
+		IScmLocalCheckout scmFile = null;
+		for (VirtualFile virtualFile : virtualFiles) {
+			String path = virtualFile.getPath();
+			logger.debug("Working with file: " + path);
+
+
+			File file = new File(path);
+			if (!file.exists() || (!file.isFile() /*&& !file.isDirectory()*/)) {
+				logger.error("error: path not an existing file or dir: " + file.getAbsolutePath());
+				return;
+			}
+
+			// Create the SCM object representing a local file under version control.
+			// We assume the local SCM is already configured properly.
+			logger.debug("Loading SCM File object...");
+			clientConfig = client.requireScm(file, new NullProgressMonitor(), ScmUtils.SCMS);
+			scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
+			changeset.addLocalCheckout(scmFile, new NullProgressMonitor());
+		}
 
 		// Upload this changeset to Collaborator.  Another form of this
-		// uploader lets us specific even more information; this form extracts it
+		// uploader lets us specify even more information; this form extracts it
 		// automatically from the files in the changeset.
 		logger.debug("Uploading SCM Changeset...");
 		Engine engine = client.getEngine(new NullProgressMonitor());
@@ -141,19 +155,18 @@ public class AddControlledFileAction extends AnAction {
 
 		//load options from config files
 		ISettableGlobalOptions options = GlobalOptions.copy(ConfigUtils.loadConfigFiles());
-		
+
 		//initialize interface to client api
 		client = new CollabClientConnection(new CommandLineClient(options), options);
 	}
 
 	/**
 	 * Called to clean up a previous call to <code>init()</code>.
-	 *
+	 * <p/>
 	 * <b>THIS IS CRITICAL</b>.  If you do not close out your <code>CollabClientConnection</code>
 	 * object, data might not be flushed out to the server!
 	 */
-	public static void finished()
-	{
+	private void finished() {
 		if (client != null) {
 			client.finished(true, new NullProgressMonitor());
 		}

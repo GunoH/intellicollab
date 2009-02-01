@@ -25,7 +25,9 @@
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/smartbear-common.jar!/" />
         </CLASSES>
-        <JAVADOC />
+        <JAVADOC>
+          <root url="http://smartbear.com/docs/javadocs/" />
+        </JAVADOC>
         <SOURCES />
       </library>
     </orderEntry>
@@ -34,7 +36,9 @@
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/smartbear-ccollab-datamodel.jar!/" />
         </CLASSES>
-        <JAVADOC />
+        <JAVADOC>
+          <root url="http://smartbear.com/docs/javadocs/" />
+        </JAVADOC>
         <SOURCES />
       </library>
     </orderEntry>
@@ -88,7 +92,9 @@
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/smartbear-scm.jar!/" />
         </CLASSES>
-        <JAVADOC />
+        <JAVADOC>
+          <root url="http://smartbear.com/docs/javadocs/" />
+        </JAVADOC>
         <SOURCES />
       </library>
     </orderEntry>
@@ -97,7 +103,9 @@
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/smartbear-code-analysis.jar!/" />
         </CLASSES>
-        <JAVADOC />
+        <JAVADOC>
+          <root url="http://smartbear.com/docs/javadocs/" />
+        </JAVADOC>
         <SOURCES />
       </library>
     </orderEntry>
@@ -106,7 +114,9 @@
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/smartbear-ccollab-cmdline.jar!/" />
         </CLASSES>
-        <JAVADOC />
+        <JAVADOC>
+          <root url="http://smartbear.com/docs/javadocs/" />
+        </JAVADOC>
         <SOURCES />
       </library>
     </orderEntry>

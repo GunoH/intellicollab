@@ -20,6 +20,8 @@
 			</action>
 			<separator/>
 			<add-to-group group-id="EditorTabPopupMenu" anchor="before" relative-to-action="Compile"/>
+			<add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
+			<!--<add-to-group group-id="ProjectViewPopupMenu" anchor="before" relative-to-action="Compile"/>-->
 		</group>
 	</actions>
 </idea-plugin>
