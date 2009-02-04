@@ -18,6 +18,7 @@ import com.smartbear.beans.GlobalOptions;
 import com.smartbear.beans.ISettableGlobalOptions;
 import com.smartbear.ccollab.CommandLineClient;
 import com.smartbear.ccollab.client.CollabClientConnection;
+import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.Changelist;
 import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.Review;
@@ -26,6 +27,7 @@ import com.smartbear.scm.IScmClientConfiguration;
 import com.smartbear.scm.IScmLocalCheckout;
 import com.smartbear.scm.ScmChangeset;
 import com.smartbear.scm.ScmUtils;
+import com.smartbear.scm.ScmConfigurationException;
 
 public class AddControlledFileAction extends AnAction {
 
@@ -55,10 +57,18 @@ public class AddControlledFileAction extends AnAction {
 				// Add the current file to the selected review.
 				attachControlledFiles(review, files);
 			}
-		} catch (CollabClientException e1) {
+		} catch (ScmConfigurationException e1) {
+			logger.debug(e1);
+			Messages.showMessageDialog("Something went wrong when determining which SCM system to use.",
+					"SCM Exception", Messages.getErrorIcon());
+		} catch (CollabClientServerConnectivityException e1) {
 			logger.debug(e1);
 			Messages.showMessageDialog("A connection error occured when trying to reach Code Collaborator server.",
 					"Connection Exception", Messages.getErrorIcon());
+		} catch (CollabClientException e1) {
+			logger.debug(e1);
+			Messages.showMessageDialog("An error occured.",
+					"General error", Messages.getErrorIcon());
 		} catch (IOException e1) {
 			logger.debug(e1);
 			Messages.showMessageDialog("An IO error occured.",
