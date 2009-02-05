@@ -2,8 +2,16 @@
 <idea-plugin>
 	<name>IntelliCcollab</name>
 	<description>Code Collaborator integration</description>
-	<version>0.2</version>
+	<version>0.3</version>
 	<vendor email="idea@guno.nl">Guno Heitman</vendor>
+	<change-notes><![CDATA[
+		<ul>
+			<li>v0.3: Improved error messages</li>
+			<li>v0.2: It is now possible to attach multiple files to a review at once (Using the changeset popup menu)</li>
+			<li>v0.1: Initial version</li>
+		</ul>
+		]]>
+	</change-notes>
 	<idea-version since-build="7757"/>
 	<!--<application-components>-->
 		<!--<component>-->
