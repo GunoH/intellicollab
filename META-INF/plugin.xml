@@ -13,12 +13,6 @@
 		]]>
 	</change-notes>
 	<idea-version since-build="7757"/>
-	<!--<application-components>-->
-		<!--<component>-->
-			<!--<implementation-class>com.quinity.ccollab.intellij.AddControlledFileAction</implementation-class>-->
-			<!--<interface-class>com.quinity.ccollab.intellij.AddControlledFileAction</interface-class>-->
-		<!--</component>-->
-	<!--</application-components>-->
 	<actions>
 		<group>
 			<separator/>
@@ -29,7 +23,6 @@
 			<separator/>
 			<add-to-group group-id="EditorTabPopupMenu" anchor="last"/>
 			<add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
-			<!--<add-to-group group-id="ProjectViewPopupMenu" anchor="before" relative-to-action="Compile"/>-->
 		</group>
 	</actions>
 </idea-plugin>
