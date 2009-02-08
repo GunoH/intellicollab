@@ -26,8 +26,8 @@ import com.smartbear.ccollab.datamodel.Scm;
 import com.smartbear.scm.IScmClientConfiguration;
 import com.smartbear.scm.IScmLocalCheckout;
 import com.smartbear.scm.ScmChangeset;
-import com.smartbear.scm.ScmUtils;
 import com.smartbear.scm.ScmConfigurationException;
+import com.smartbear.scm.ScmUtils;
 
 public class AddControlledFileAction extends AnAction {
 
@@ -124,14 +124,15 @@ public class AddControlledFileAction extends AnAction {
 
 
 			File file = new File(path);
-			if (!file.exists() || (!file.isFile() /*&& !file.isDirectory()*/)) {
-				logger.error("error: path not an existing file or dir: " + file.getAbsolutePath());
+			if (!file.exists() || (!file.isFile())) {
+				logger.error("error: path not an existing file: " + file.getAbsolutePath());
 				return;
 			}
 
 			// Create the SCM object representing a local file under version control.
 			// We assume the local SCM is already configured properly.
 			logger.debug("Loading SCM File object...");
+//			clientConfig = client.requireScm(CvsSystem.INSTANCE);
 			clientConfig = client.requireScm(file, new NullProgressMonitor(), ScmUtils.SCMS);
 			scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
 			changeset.addLocalCheckout(scmFile, new NullProgressMonitor());
