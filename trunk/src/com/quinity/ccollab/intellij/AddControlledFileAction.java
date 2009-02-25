@@ -19,6 +19,9 @@ import com.smartbear.beans.ISettableGlobalOptions;
 import com.smartbear.ccollab.CommandLineClient;
 import com.smartbear.ccollab.client.CollabClientConnection;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
+import com.smartbear.ccollab.client.CollabClientAskIOException;
+import com.smartbear.ccollab.client.CollabClientFilesNotManagedException;
+import com.smartbear.ccollab.client.CollabClientInvalidInputException;
 import com.smartbear.ccollab.datamodel.Changelist;
 import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.Review;
@@ -57,22 +60,26 @@ public class AddControlledFileAction extends AnAction {
 				// Add the current file to the selected review.
 				attachControlledFiles(review, files);
 			}
-		} catch (ScmConfigurationException e1) {
-			logger.debug(e1);
+		} catch (ScmConfigurationException e) {
+			logger.error(e);
 			Messages.showMessageDialog("Something went wrong when determining which SCM system to use.",
 					"SCM Exception", Messages.getErrorIcon());
-		} catch (CollabClientServerConnectivityException e1) {
-			logger.debug(e1);
+		} catch (CollabClientServerConnectivityException e) {
+			logger.error(e);
 			Messages.showMessageDialog("A connection error occured when trying to reach Code Collaborator server.",
 					"Connection Exception", Messages.getErrorIcon());
-		} catch (CollabClientException e1) {
-			logger.debug(e1);
+		} catch (CollabClientException e) {
+			logger.error(e);
 			Messages.showMessageDialog("An error occured.",
 					"General error", Messages.getErrorIcon());
-		} catch (IOException e1) {
-			logger.debug(e1);
+		} catch (IOException e) {
+			logger.error(e);
 			Messages.showMessageDialog("An IO error occured.",
 					"IO Error", Messages.getErrorIcon());
+		} catch (IntelliCcollabException e) {
+			logger.error(e);
+			Messages.showMessageDialog("An error occured: " + e.getMessage(),
+					"Error", Messages.getErrorIcon());
 		} finally {
 			finished();
 		}
@@ -102,10 +109,16 @@ public class AddControlledFileAction extends AnAction {
 	/**
 	 * Attaches local files that are under version control to the given review
 	 */
-	private void attachControlledFiles(Review review, VirtualFile... virtualFiles) throws CollabClientException, IOException {
+	private void attachControlledFiles(Review review, VirtualFile... virtualFiles) 
+			throws CollabClientException, IOException, IntelliCcollabException {
 		// Parameter validation
 		if (review == null) {
 			logger.error("error: no such review");
+			return;
+		}
+		
+		if (virtualFiles.length < 1) {
+			logger.info("No files to add to review");
 			return;
 		}
 
@@ -116,7 +129,7 @@ public class AddControlledFileAction extends AnAction {
 		logger.debug("Creating SCM Changeset...");
 		ScmChangeset changeset = new ScmChangeset();
 
-		IScmClientConfiguration clientConfig = null;
+		IScmClientConfiguration clientConfig = retrieveClientConfig(virtualFiles[0]);
 		IScmLocalCheckout scmFile = null;
 		for (VirtualFile virtualFile : virtualFiles) {
 			String path = virtualFile.getPath();
@@ -126,14 +139,12 @@ public class AddControlledFileAction extends AnAction {
 			File file = new File(path);
 			if (!file.exists() || (!file.isFile())) {
 				logger.error("error: path not an existing file: " + file.getAbsolutePath());
-				return;
+				throw new IntelliCcollabException("error: path not an existing file: " + file.getAbsolutePath());
 			}
 
 			// Create the SCM object representing a local file under version control.
 			// We assume the local SCM is already configured properly.
 			logger.debug("Loading SCM File object...");
-//			clientConfig = client.requireScm(CvsSystem.INSTANCE);
-			clientConfig = client.requireScm(file, new NullProgressMonitor(), ScmUtils.SCMS);
 			scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
 			changeset.addLocalCheckout(scmFile, new NullProgressMonitor());
 		}
@@ -152,6 +163,24 @@ public class AddControlledFileAction extends AnAction {
 		// if there's any error in uploading the changelist the review hasn't
 		// changed at all so no one will be affected.
 		review.addChangelist(changelist);
+	}
+
+	/**
+	 * Retrieves the client configuration that is used to access the SCM server.
+	 * @param virtualFile File used to retrieve the SCM information.
+	 * @return The client configuration that is used to access the SCM server.
+	 */
+	private IScmClientConfiguration retrieveClientConfig(VirtualFile virtualFile) throws CollabClientAskIOException,
+			CollabClientFilesNotManagedException, ScmConfigurationException, CollabClientInvalidInputException, 
+			IntelliCcollabException {
+		
+		File file = new File(virtualFile.getPath());
+		if (!file.exists() || (!file.isFile())) {
+			logger.error("error: path not an existing file: " + file.getAbsolutePath());
+			throw new IntelliCcollabException("error: path not an existing file: " + file.getAbsolutePath());
+		}
+		
+		return client.requireScm(file, new NullProgressMonitor(), ScmUtils.SCMS);
 	}
 
 	private Review[] getReviewsForUser() throws CollabClientException, IOException {
