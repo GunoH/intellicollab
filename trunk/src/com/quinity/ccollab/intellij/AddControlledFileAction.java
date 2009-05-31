@@ -31,6 +31,7 @@ import com.smartbear.scm.IScmLocalCheckout;
 import com.smartbear.scm.ScmChangeset;
 import com.smartbear.scm.ScmConfigurationException;
 import com.smartbear.scm.ScmUtils;
+import com.smartbear.scm.impl.concurrentvs.CvsSystem;
 
 public class AddControlledFileAction extends AnAction {
 
@@ -96,7 +97,7 @@ public class AddControlledFileAction extends AnAction {
 			reviewNames.add(review.getId() + " " + review.getTitle());
 		}
 
-		int selectedIndex = Messages.showChooseDialog("Please choose the review to add this file to", "Choose review",
+		int selectedIndex = Messages.showChooseDialog("Please choose the review to add this/these file(s) to", "Choose review",
 				reviewNames.toArray(new String[reviewNames.size()]), "", Messages.getQuestionIcon());
 
 		if (selectedIndex < 0) {
@@ -154,7 +155,8 @@ public class AddControlledFileAction extends AnAction {
 		// automatically from the files in the changeset.
 		logger.debug("Uploading SCM Changeset...");
 		Engine engine = client.getEngine(new NullProgressMonitor());
-		Scm scm = engine.scmByLocalCheckout(clientConfig.getScmSystem(), scmFile);			// select the SCM system that matches the client configuration
+//		Scm scm = engine.scmByLocalCheckout(clientConfig.getScmSystem(), scmFile);			// select the SCM system that matches the client configuration
+		Scm scm = engine.scmByLocalCheckout(CvsSystem.INSTANCE, scmFile);			// select the SCM system that matches the client configuration
 		Changelist changelist = scm.uploadChangeset(changeset, "Local Files", new NullProgressMonitor());
 
 		// The changelist has been uploaded but it hasn't been attached
