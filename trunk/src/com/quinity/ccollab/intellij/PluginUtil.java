@@ -12,6 +12,7 @@ import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.project.Project;
 
 public final class PluginUtil {
 	private PluginUtil() {
@@ -35,6 +36,10 @@ public final class PluginUtil {
 
 	public static PsiMethod getCurrentMethod(DataContext dataContext) {
 		return findMethod(getCurrentElement(dataContext));
+	}
+	
+	public static Project getProject(DataContext dataContext) {
+		return DataKeys.PROJECT.getData(dataContext);
 	}
 
 	public static SelectionModel getCurrentSelection(DataContext dataContext) {
