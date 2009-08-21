@@ -60,27 +60,26 @@ public class AddControlledFileAction extends AnAction {
 
 				// Add the current file to the selected review.
 				attachControlledFiles(review, files);
+				
+				showConfirmDialog(review, files);
 			}
 		} catch (ScmConfigurationException e) {
 			logger.error(e);
-			Messages.showMessageDialog("Something went wrong when determining which SCM system to use.",
-					"SCM Exception", Messages.getErrorIcon());
+			Messages.showErrorDialog("Something went wrong when determining which SCM system to use.",
+					"SCM Exception");
 		} catch (CollabClientServerConnectivityException e) {
 			logger.error(e);
-			Messages.showMessageDialog("A connection error occured when trying to reach Code Collaborator server.",
-					"Connection Exception", Messages.getErrorIcon());
+			Messages.showErrorDialog("A connection error occured when trying to reach Code Collaborator server.",
+					"Connection Exception");
 		} catch (CollabClientException e) {
 			logger.error(e);
-			Messages.showMessageDialog("An error occured.",
-					"General error", Messages.getErrorIcon());
+			Messages.showErrorDialog("An error occured.", "General error");
 		} catch (IOException e) {
 			logger.error(e);
-			Messages.showMessageDialog("An IO error occured.",
-					"IO Error", Messages.getErrorIcon());
+			Messages.showErrorDialog("An IO error occured.", "IO Error");
 		} catch (IntelliCcollabException e) {
 			logger.error(e);
-			Messages.showMessageDialog("An error occured: " + e.getMessage(),
-					"Error", Messages.getErrorIcon());
+			Messages.showErrorDialog("An error occured: " + e.getMessage(), "Error");
 		} finally {
 			finished();
 		}
@@ -105,6 +104,10 @@ public class AddControlledFileAction extends AnAction {
 			return null;
 		}
 		return reviews[selectedIndex].getId();
+	}
+	
+	private void showConfirmDialog(Review review, VirtualFile... files) throws CollabClientException, IOException {
+		Messages.showInfoMessage(files.length + " file(s) have been uploaded to review " + review.getId() + ": " + review.getTitle(), "Success");
 	}
 
 	/**
