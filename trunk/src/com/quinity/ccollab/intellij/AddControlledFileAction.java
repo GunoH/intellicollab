@@ -36,6 +36,15 @@ public class AddControlledFileAction extends AnAction {
 		try {
 			init();
 
+			// Retrieve the current file(s)
+			VirtualFile[] files = PluginUtil.getCurrentVirtualFiles(event.getDataContext());
+
+			if (files.length == 0) {
+				logger.debug("No files selected.");
+				Messages.showErrorDialog("No files selected that can be added to review.", "No files selected.");
+				return;
+			}
+			
 			Project project = PluginUtil.getProject(event.getDataContext());
 
 			FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, client);
@@ -46,9 +55,6 @@ public class AddControlledFileAction extends AnAction {
 			if (selectedReviewId != null) {
 				// Retrieve the selected review.
 				Review review = client.getEngine(new NullProgressMonitor()).reviewById(selectedReviewId);
-
-				// Retrieve the current file(s)
-				VirtualFile[] files = PluginUtil.getCurrentVirtualFiles(event.getDataContext());
 
 				// Add the current file to the selected review.
 				attachControlledFiles(event, review, files);
