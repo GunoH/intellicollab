@@ -34,7 +34,8 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 	private VirtualFile[] virtualFiles;
 
-	ScmChangeset changeset = new ScmChangeset();
+	private boolean wasSuccessful;
+	private String errorMessage;
 
 	public AddToReviewTask(Project project, Review review, VirtualFile... virtualFiles) {
 		super(project, "Add file(s) to review", false);
@@ -54,7 +55,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 			// example to controlled files (both local and server-side-only)
 			// to SCM-specific atomic changelists (e.g. with Perforce and Subversion).
 			logger.debug("Creating SCM Changeset...");
-			changeset = new ScmChangeset();
+			ScmChangeset changeset = new ScmChangeset();
 
 			
 			IScmClientConfiguration clientConfig = retrieveClientConfig(virtualFiles[0]);
@@ -62,6 +63,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 
 			if (virtualFiles.length == 0) {
+				wasSuccessful = true;
 				return;
 			}
 
@@ -107,26 +109,30 @@ public class AddToReviewTask extends Task.Backgroundable {
 			// changed at all so no one will be affected.
 			review.addChangelist(changelist);
 
+			wasSuccessful = true;
 		} catch (ScmConfigurationException e) {
 			logger.error(e);
-			Messages.showErrorDialog("Something went wrong when determining which SCM system to use.",
-					"SCM Exception");
+			errorMessage = "Something went wrong when determining which SCM system to use.";
 		} catch (CollabClientException e) {
 			logger.error(e);
-			Messages.showErrorDialog("An error occured.", "General error");
+			errorMessage = "An error occured.";
 		} catch (IntelliCcollabException e) {
 			logger.error(e);
-			Messages.showErrorDialog("An error occured: " + e.getMessage(), "Error");
+			errorMessage = "An error occured: " + e.getMessage();
 		} catch (IOException e) {
 			logger.error(e);
-			Messages.showErrorDialog("An IO error occured.", "IO Error");
+			errorMessage = "An IO error occured.";
 		}
 		
 	}
 
 	@Override
 	public void onSuccess() {
-		showConfirmDialog(review, virtualFiles);
+		if (wasSuccessful) {
+			showConfirmDialog(review, virtualFiles);
+		} else {
+			Messages.showErrorDialog(errorMessage, "An error occured.");
+		}
 	}
 	
 	/**
