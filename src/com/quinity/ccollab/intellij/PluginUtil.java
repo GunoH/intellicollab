@@ -1,5 +1,16 @@
 package com.quinity.ccollab.intellij;
 
+import com.intellij.cvsSupport2.actions.cvsContext.CvsContext;
+import com.intellij.cvsSupport2.actions.cvsContext.CvsContextWrapper;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.SelectionModel;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vcs.FilePath;
+import com.intellij.openapi.vcs.changes.Change;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiAnonymousClass;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
@@ -7,12 +18,7 @@ import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DataKeys;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.SelectionModel;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.project.Project;
+import com.intellij.util.ArrayUtil;
 
 public final class PluginUtil {
 	private PluginUtil() {
@@ -24,6 +30,18 @@ public final class PluginUtil {
 
 	public static VirtualFile[] getCurrentVirtualFiles(DataContext dataContext) {
 		return DataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
+	}
+	
+	public static FilePath[] getSelectedFilePaths(AnActionEvent actionEvent) {
+		Change[] changes = CvsContextWrapper.createInstance(actionEvent).getSelectedChanges();
+		
+		FilePath[] files = new FilePath[changes.length];
+
+		for (int i = 0; i < changes.length; i++) {
+			files[i] = changes[i].getBeforeRevision().getFile();
+		}
+		
+		return files;
 	}
 
 	public static PsiClass getCurrentClass(DataContext dataContext) {
