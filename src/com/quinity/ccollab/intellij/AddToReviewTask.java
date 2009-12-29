@@ -75,8 +75,8 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 
 				if (filePath.isDirectory()) {
-					logger.error("error: path points to a direcory instead of to a file: " + filePath.getPath());
-					throw new IntelliCcollabException("error: path points to a direcory instead of to a file: " + filePath.getPath());
+					logger.error("error: path points to a directory instead of to a file: " + filePath.getPath());
+					throw new IntelliCcollabException("error: path points to a directory instead of to a file: " + filePath.getPath());
 				}
 
 				File file = filePath.getIOFile();
@@ -146,8 +146,8 @@ public class AddToReviewTask extends Task.Backgroundable {
 			IntelliCcollabException {
 
 		if (filePath.isDirectory()) {
-			logger.error("error: path points to a direcory instead of to a file: " + filePath.getPath());
-			throw new IntelliCcollabException("error: path points to a direcory instead of to a file: " + filePath.getPath());
+			logger.error("error: path points to a directory instead of to a file: " + filePath.getPath());
+			throw new IntelliCcollabException("error: path points to a directory instead of to a file: " + filePath.getPath());
 		}
 
 		File file = filePath.getIOFile();
