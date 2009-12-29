@@ -147,6 +147,16 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Cvs plugin">
+        <CLASSES>
+          <root url="file://$APPLICATION_HOME_DIR$/plugins/cvsIntegration/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$APPLICATION_HOME_DIR$/plugins/cvsIntegration/lib" recursive="false" />
+      </library>
+    </orderEntry>
     <orderEntryProperties />
   </component>
 </module>

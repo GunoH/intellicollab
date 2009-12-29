@@ -10,6 +10,7 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientAskIOException;
@@ -32,16 +33,16 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 	private Review review;
 
-	private VirtualFile[] virtualFiles;
+	private FilePath[] files;
 
 	private boolean wasSuccessful;
 	private String errorMessage;
 
-	public AddToReviewTask(Project project, Review review, VirtualFile... virtualFiles) {
+	public AddToReviewTask(Project project, Review review, FilePath... files) {
 		super(project, "Add file(s) to review", false);
 
 		this.review = review;
-		this.virtualFiles = virtualFiles;
+		this.files = files;
 	}
 
 	@Override
@@ -58,28 +59,27 @@ public class AddToReviewTask extends Task.Backgroundable {
 			ScmChangeset changeset = new ScmChangeset();
 
 			
-			IScmClientConfiguration clientConfig = retrieveClientConfig(virtualFiles[0]);
+			IScmClientConfiguration clientConfig = retrieveClientConfig(files[0]);
 			IScmLocalCheckout scmFile = null;
 
 
-			if (virtualFiles.length == 0) {
+			if (files.length == 0) {
 				wasSuccessful = true;
 				return;
 			}
 
 			int fileCounter = 0;
-			for (VirtualFile virtualFile : virtualFiles) {
-				progressIndicator.setText2(virtualFile.getName() + " (" + ++fileCounter + " of " + virtualFiles.length + ")");
-				String path = virtualFile.getPath();
-				logger.debug("Working with file: " + path);
+			for (FilePath filePath : files) {
+				progressIndicator.setText2(filePath.getName() + " (" + ++fileCounter + " of " + files.length + ")");
+				logger.debug("Working with file: " + filePath.getPath());
 
 
-				File file = new File(path);
-				if (!file.exists() || (!file.isFile())) {
-					logger.error("error: path not an existing file: " + file.getAbsolutePath());
-					throw new IntelliCcollabException("error: path not an existing file: " + file.getAbsolutePath());
+				if (filePath.isDirectory()) {
+					logger.error("error: path points to a direcory instead of to a file: " + filePath.getPath());
+					throw new IntelliCcollabException("error: path points to a direcory instead of to a file: " + filePath.getPath());
 				}
 
+				File file = filePath.getIOFile();
 				// Create the SCM object representing a local file under version control.
 				// We assume the local SCM is already configured properly.
 				logger.debug("Loading SCM File object...");
@@ -129,7 +129,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 	@Override
 	public void onSuccess() {
 		if (wasSuccessful) {
-			showConfirmDialog(review, virtualFiles);
+			showConfirmDialog(review, files);
 		} else {
 			Messages.showErrorDialog(errorMessage, "An error occured.");
 		}
@@ -138,23 +138,29 @@ public class AddToReviewTask extends Task.Backgroundable {
 	/**
 	 * Retrieves the client configuration that is used to access the SCM server.
 	 *
-	 * @param virtualFile File used to retrieve the SCM information.
+	 * @param filePath Filepath used to retrieve the SCM information.
 	 * @return The client configuration that is used to access the SCM server.
 	 */
-	private IScmClientConfiguration retrieveClientConfig(VirtualFile virtualFile) throws CollabClientAskIOException,
+	private IScmClientConfiguration retrieveClientConfig(FilePath filePath) throws CollabClientAskIOException,
 			CollabClientFilesNotManagedException, ScmConfigurationException, CollabClientInvalidInputException,
 			IntelliCcollabException {
 
-		File file = new File(virtualFile.getPath());
-		if (!file.exists() || (!file.isFile())) {
-			logger.error("error: path not an existing file: " + file.getAbsolutePath());
-			throw new IntelliCcollabException("error: path not an existing file: " + file.getAbsolutePath());
+		if (filePath.isDirectory()) {
+			logger.error("error: path points to a direcory instead of to a file: " + filePath.getPath());
+			throw new IntelliCcollabException("error: path points to a direcory instead of to a file: " + filePath.getPath());
 		}
 
+		File file = filePath.getIOFile();
+		
+		// If the file does not exist, we go up in the tree until we find a file that does exist in order to get vcs information.
+		while (!file.exists()) {
+			file = file.getParentFile();
+		}
+		
 		return AddControlledFileAction.client.requireScm(file, new NullProgressMonitor(), ScmUtils.SCMS);
 	}
 
-	private void showConfirmDialog(Review review, VirtualFile... files) {
+	private void showConfirmDialog(Review review, FilePath... files) {
 		Messages.showInfoMessage(files.length + " file(s) have been uploaded to review " + review.getId() + ": " + review.getTitle(), "Success");
 	}
 
