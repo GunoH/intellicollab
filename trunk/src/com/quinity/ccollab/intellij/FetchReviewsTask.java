@@ -24,7 +24,7 @@ public class FetchReviewsTask extends Task.Modal {
 	private Review[] reviews;
 
 	public FetchReviewsTask(Project project, CollabClientConnection client) {
-		super(project, "Select review", false);
+		super(project, MessageResources.message("dialog.selectReview.title"), false);
 		
 		this.client = client;
 	}
@@ -33,7 +33,7 @@ public class FetchReviewsTask extends Task.Modal {
 	public void run(ProgressIndicator progressIndicator) {
 
 		try {
-			progressIndicator.setText("Retrieving list of reviews from server");
+			progressIndicator.setText(MessageResources.message("progressIndicator.retrievingReviews"));
 
 			// Retrieve all reviews the user can upload to.
 			reviews = client.getUser().getReviewsCanUploadChangelists(null);
@@ -45,14 +45,16 @@ public class FetchReviewsTask extends Task.Modal {
 
 		} catch (CollabClientException e) {
 			logger.error(e);
-			Messages.showErrorDialog("An error occured.", "General error");
+			Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"), 
+					MessageResources.message("errorDialog.errorOccured.title"));
 		}
 	}
 
 	@Override
 	public void onSuccess() {
-		int selectedIndex = Messages.showChooseDialog("Please choose the review to add this/these file(s) to", "Choose review",
-				reviewNames.toArray(new String[reviewNames.size()]), "", Messages.getQuestionIcon());
+		int selectedIndex = Messages.showChooseDialog(MessageResources.message("dialog.selectReview.text"),
+				MessageResources.message("dialog.selectReview.title"), reviewNames.toArray(new String[reviewNames.size()]), "", 
+				Messages.getQuestionIcon());
 
 		if (selectedIndex < 0) {
 			// User pressed the cancel button.

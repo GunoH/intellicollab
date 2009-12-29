@@ -41,7 +41,8 @@ public class AddControlledFileAction extends AnAction {
 
 			if (files.length == 0) {
 				logger.debug("No files selected.");
-				Messages.showErrorDialog("No files selected that can be added to review.", "No files selected.");
+				Messages.showErrorDialog(MessageResources.message("dialog.addFilesToReview.noFilesSelected.text"), 
+						MessageResources.message("dialog.addFilesToReview.noFilesSelected.title"));
 				return;
 			}
 			
@@ -61,21 +62,24 @@ public class AddControlledFileAction extends AnAction {
 			}
 		} catch (CollabClientServerConnectivityException e) {
 			logger.error(e);
-			Messages.showErrorDialog("A connection error occured when trying to reach Code Collaborator server.",
-					"Connection Exception");
+			Messages.showErrorDialog(MessageResources.message("errorDialog.connectionException.text"),
+					MessageResources.message("errorDialog.connectionException.title"));
 		} catch (ScmConfigurationException e) {
 			logger.error(e);
-			Messages.showErrorDialog("Something went wrong when determining which SCM system to use.",
-			"SCM Exception");
+			Messages.showErrorDialog(MessageResources.message("errorDialog.scmException.text"),
+			MessageResources.message("errorDialog.scmException.title"));
 		} catch (CollabClientException e) {
 			logger.error(e);
-			Messages.showErrorDialog("An error occured.", "General error");
+			Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"), 
+					MessageResources.message("errorDialog.errorOccured.title"));
 		} catch (IOException e) {
 			logger.error(e);
-			Messages.showErrorDialog("An IO error occured.", "IO Error");
+			Messages.showErrorDialog(MessageResources.message("errorDialog.ioErrorOccured.text"), 
+					MessageResources.message("errorDialog.ioErrorOccured.title"));
 		} catch (InterruptedException e) {
 			logger.error(e);
-			Messages.showErrorDialog("The upload process was interrupted.", "Interrupted");
+			Messages.showErrorDialog(MessageResources.message("errorDialog.uploadInterrupted.text"), 
+					MessageResources.message("errorDialog.uploadInterrupted.title"));
 		} finally {
 			finished();
 		}

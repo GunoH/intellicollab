@@ -11,7 +11,6 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientAskIOException;
 import com.smartbear.ccollab.client.CollabClientFilesNotManagedException;
@@ -39,7 +38,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 	private String errorMessage;
 
 	public AddToReviewTask(Project project, Review review, FilePath... files) {
-		super(project, "Add file(s) to review", false);
+		super(project, MessageResources.message("dialog.addFilesToReview.title"), false);
 
 		this.review = review;
 		this.files = files;
@@ -49,7 +48,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 	public void run(ProgressIndicator progressIndicator) {
 
 		try {
-			progressIndicator.setText("Preparing files for addition to review");
+			progressIndicator.setText(MessageResources.message("progressIndicator.preparing"));
 			
 			// Create the SCM ChangeSet object to upload.  You can attach
 			// many types of objects here from uncontrolled files as in this
@@ -70,13 +69,15 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 			int fileCounter = 0;
 			for (FilePath filePath : files) {
-				progressIndicator.setText2(filePath.getName() + " (" + ++fileCounter + " of " + files.length + ")");
+				progressIndicator.setText2(MessageResources.message("progressIndicator.fileUploadProgress", filePath.getName(), 
+						++fileCounter, files.length));
 				logger.debug("Working with file: " + filePath.getPath());
 
 
 				if (filePath.isDirectory()) {
 					logger.error("error: path points to a directory instead of to a file: " + filePath.getPath());
-					throw new IntelliCcollabException("error: path points to a directory instead of to a file: " + filePath.getPath());
+					throw new IntelliCcollabException("error: path points to a directory instead of to a file: " 
+							+ filePath.getPath());
 				}
 
 				File file = filePath.getIOFile();
@@ -87,7 +88,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 				changeset.addLocalCheckout(scmFile, new NullProgressMonitor());
 			}
 
-			progressIndicator.setText("Uploading changeset");
+			progressIndicator.setText(MessageResources.message("progressIndicator.uploading"));
 			progressIndicator.setText2("");
 			
 			// Upload this changeset to Collaborator.  Another form of this
@@ -100,7 +101,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 			Scm scm = engine.scmByLocalCheckout(CvsSystem.INSTANCE, scmFile);			// Uses the CVS SCM system
 			Changelist changelist = scm.uploadChangeset(changeset, "Local Files", new NullProgressMonitor());
 
-			progressIndicator.setText("Attaching changes to review " + review.getId());
+			progressIndicator.setText(MessageResources.message("progressIndicator.attaching", review.getId()));
 			
 			// The changelist has been uploaded but it hasn't been attached
 			// to any particular review!  This two-step process not only allows for
@@ -112,16 +113,16 @@ public class AddToReviewTask extends Task.Backgroundable {
 			wasSuccessful = true;
 		} catch (ScmConfigurationException e) {
 			logger.error(e);
-			errorMessage = "Something went wrong when determining which SCM system to use.";
+			errorMessage = MessageResources.message("errorDialog.cannotDetermineSCMSystem.text");
 		} catch (CollabClientException e) {
 			logger.error(e);
-			errorMessage = "An error occured.";
+			errorMessage = MessageResources.message("errorDialog.errorOccured.text");
 		} catch (IntelliCcollabException e) {
 			logger.error(e);
-			errorMessage = "An error occured: " + e.getMessage();
+			errorMessage = MessageResources.message("errorDialog.errorOccured.error.text", e.getMessage());
 		} catch (IOException e) {
 			logger.error(e);
-			errorMessage = "An IO error occured.";
+			errorMessage = MessageResources.message("errorDialog.ioErrorOccured.text");
 		}
 		
 	}
@@ -131,7 +132,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 		if (wasSuccessful) {
 			showConfirmDialog(review, files);
 		} else {
-			Messages.showErrorDialog(errorMessage, "An error occured.");
+			Messages.showErrorDialog(errorMessage, MessageResources.message("errorDialog.errorOccured.title"));
 		}
 	}
 	
@@ -161,7 +162,8 @@ public class AddToReviewTask extends Task.Backgroundable {
 	}
 
 	private void showConfirmDialog(Review review, FilePath... files) {
-		Messages.showInfoMessage(files.length + " file(s) have been uploaded to review " + review.getId() + ": " + review.getTitle(), "Success");
+		Messages.showInfoMessage(MessageResources.message("dialog.filesHaveBeenUploaded.text", files.length , review.getId(), review.getTitle()), 
+				MessageResources.message("dialog.filesHaveBeenUploaded.title"));
 	}
 
 	@Override
