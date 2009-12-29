@@ -16,6 +16,8 @@ public class FetchReviewsTask extends Task.Modal {
 
 	private static Logger logger = Logger.getInstance(FetchReviewsTask.class.getName());
 
+	private boolean success;
+	
 	private Integer selectedReviewId;
 
 	private CollabClientConnection client;
@@ -42,16 +44,23 @@ public class FetchReviewsTask extends Task.Modal {
 			for (Review review : reviews) {
 				reviewNames.add(review.getId() + " " + review.getTitle());
 			}
+			
+			success = true;
 
 		} catch (CollabClientException e) {
 			logger.error(e);
-			Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"), 
-					MessageResources.message("errorDialog.errorOccured.title"));
 		}
 	}
 
 	@Override
 	public void onSuccess() {
+		if (!success) {
+			Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"), 
+					MessageResources.message("errorDialog.errorOccured.title"));
+			
+			return;
+		}
+
 		int selectedIndex = Messages.showChooseDialog(MessageResources.message("dialog.selectReview.text"),
 				MessageResources.message("dialog.selectReview.title"), reviewNames.toArray(new String[reviewNames.size()]), "", 
 				Messages.getQuestionIcon());
