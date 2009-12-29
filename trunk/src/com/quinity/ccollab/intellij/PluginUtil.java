@@ -1,6 +1,5 @@
 package com.quinity.ccollab.intellij;
 
-import com.intellij.cvsSupport2.actions.cvsContext.CvsContext;
 import com.intellij.cvsSupport2.actions.cvsContext.CvsContextWrapper;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -10,6 +9,7 @@ import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.changes.Change;
+import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiAnonymousClass;
 import com.intellij.psi.PsiClass;
@@ -18,7 +18,6 @@ import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.ArrayUtil;
 
 public final class PluginUtil {
 	private PluginUtil() {
@@ -38,7 +37,16 @@ public final class PluginUtil {
 		FilePath[] files = new FilePath[changes.length];
 
 		for (int i = 0; i < changes.length; i++) {
-			files[i] = changes[i].getBeforeRevision().getFile();
+			Change.Type changeType = changes[i].getType();
+			ContentRevision revision;
+			if (changeType == Change.Type.DELETED) {
+				// The file was deleted, so we use the revision that was active before the deletion.
+				revision = changes[i].getBeforeRevision();
+			} else {
+				// In all other cases, we use the new revision.
+				revision = changes[i].getAfterRevision();
+			}
+			files[i] = revision.getFile();
 		}
 		
 		return files;
