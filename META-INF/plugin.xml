@@ -2,11 +2,12 @@
 <idea-plugin>
 	<name>IntelliCcollab</name>
 	<description>Code Collaborator integration</description>
-	<version>0.7</version>
+	<version>0.8</version>
 	<vendor email="idea@guno.nl">Guno Heitman</vendor>
 	<depends>CVS</depends>
 	<change-notes><![CDATA[
 		<ul>
+			<li>v0.8: Bugfixes</li>
 			<li>v0.7: Implemented progress bars</li>
 			<li>v0.6: Improved feedback to user</li>
 			<li>v0.5: Until further notice, builds will be CVS-only from now</li>
