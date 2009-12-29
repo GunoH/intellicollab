@@ -9,7 +9,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vcs.FilePath;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
 import com.smartbear.beans.GlobalOptions;
@@ -37,7 +37,7 @@ public class AddControlledFileAction extends AnAction {
 			init();
 
 			// Retrieve the current file(s)
-			VirtualFile[] files = PluginUtil.getCurrentVirtualFiles(event.getDataContext());
+			FilePath[] files = PluginUtil.getSelectedFilePaths(event);
 
 			if (files.length == 0) {
 				logger.debug("No files selected.");
@@ -85,11 +85,11 @@ public class AddControlledFileAction extends AnAction {
 	/**
 	 * Attaches local files that are under version control to the given review
 	 */
-	private void attachControlledFiles(AnActionEvent event, final Review review, final VirtualFile... virtualFiles) throws InterruptedException {
+	private void attachControlledFiles(AnActionEvent event, final Review review, final FilePath... files) throws InterruptedException {
 
 		Project project = PluginUtil.getProject(event.getDataContext());
 
-		AddToReviewTask addToReviewTask = new AddToReviewTask(project, review, virtualFiles);
+		AddToReviewTask addToReviewTask = new AddToReviewTask(project, review, files);
 		addToReviewTask.queue();
 	}
 
