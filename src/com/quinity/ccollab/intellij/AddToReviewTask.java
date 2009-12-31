@@ -48,7 +48,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 	public void run(ProgressIndicator progressIndicator) {
 
 		try {
-			progressIndicator.setText(MessageResources.message("progressIndicator.preparing"));
+			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.preparing"));
 			
 			// Create the SCM ChangeSet object to upload.  You can attach
 			// many types of objects here from uncontrolled files as in this
@@ -69,7 +69,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 			int fileCounter = 0;
 			for (FilePath filePath : files) {
-				progressIndicator.setText2(MessageResources.message("progressIndicator.fileUploadProgress", filePath.getName(), 
+				progressIndicator.setText2(MessageResources.message("progressIndicator.addToReview.fileUploadProgress", filePath.getName(), 
 						++fileCounter, files.length));
 				logger.debug("Working with file: " + filePath.getPath());
 
@@ -88,7 +88,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 				changeset.addLocalCheckout(scmFile, new NullProgressMonitor());
 			}
 
-			progressIndicator.setText(MessageResources.message("progressIndicator.uploading"));
+			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.uploading"));
 			progressIndicator.setText2("");
 			
 			// Upload this changeset to Collaborator.  Another form of this
@@ -101,7 +101,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 			Scm scm = engine.scmByLocalCheckout(CvsSystem.INSTANCE, scmFile);			// Uses the CVS SCM system
 			Changelist changelist = scm.uploadChangeset(changeset, "Local Files", new NullProgressMonitor());
 
-			progressIndicator.setText(MessageResources.message("progressIndicator.attaching", review.getId()));
+			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.attaching", review.getId()));
 			
 			// The changelist has been uploaded but it hasn't been attached
 			// to any particular review!  This two-step process not only allows for
