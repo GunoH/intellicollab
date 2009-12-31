@@ -26,7 +26,7 @@ public class FetchReviewsTask extends Task.Modal {
 	private Review[] reviews;
 
 	public FetchReviewsTask(Project project, CollabClientConnection client) {
-		super(project, MessageResources.message("dialog.selectReview.title"), false);
+		super(project, MessageResources.message("task.selectReview.title"), false);
 		
 		this.client = client;
 	}

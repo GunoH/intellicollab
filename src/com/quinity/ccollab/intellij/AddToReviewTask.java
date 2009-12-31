@@ -38,7 +38,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 	private String errorMessage;
 
 	public AddToReviewTask(Project project, Review review, FilePath... files) {
-		super(project, MessageResources.message("dialog.addFilesToReview.title"), false);
+		super(project, MessageResources.message("task.addFilesToReview.title"), false);
 
 		this.review = review;
 		this.files = files;
