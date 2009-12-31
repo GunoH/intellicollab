@@ -17,6 +17,8 @@ import com.smartbear.beans.ISettableGlobalOptions;
 import com.smartbear.ccollab.CommandLineClient;
 import com.smartbear.ccollab.client.CollabClientConnection;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
+import com.smartbear.ccollab.client.CollabClientInvalidInputException;
+import com.smartbear.ccollab.client.CollabClientAskIOException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.scm.ScmConfigurationException;
 
@@ -36,6 +38,13 @@ public class AddControlledFileAction extends AnAction {
 		try {
 			init();
 
+			if (!checkConnection()) {
+				logger.debug("Could not connect to Code Collaborator server.");
+				Messages.showErrorDialog(MessageResources.message("dialog.addFilesToReview.noConnection.text"), 
+						MessageResources.message("dialog.addFilesToReview.noConnection.title"));
+				return;
+			}
+			
 			// Retrieve the current file(s)
 			FilePath[] files = PluginUtil.getSelectedFilePaths(event);
 
@@ -84,6 +93,21 @@ public class AddControlledFileAction extends AnAction {
 			finished();
 		}
 
+	}
+
+	/**
+	 * Checks if the Code Collaborator server is reachable.
+	 * @return <code>true</code> if the server is reachable, <code>false</code> otherwise.
+	 */
+	private boolean checkConnection() {
+		try {
+			// Try to fetch the user info from the server. If this succeeds, the server is reachable.
+			client.getUser();
+			return true;
+		} catch (CollabClientException e) {
+			// Connection failed.
+			return false;
+		}
 	}
 
 	/**
