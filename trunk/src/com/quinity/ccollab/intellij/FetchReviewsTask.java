@@ -35,7 +35,7 @@ public class FetchReviewsTask extends Task.Modal {
 	public void run(ProgressIndicator progressIndicator) {
 
 		try {
-			progressIndicator.setText(MessageResources.message("progressIndicator.retrievingReviews"));
+			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.retrievingReviews"));
 
 			// Retrieve all reviews the user can upload to.
 			reviews = client.getUser().getReviewsCanUploadChangelists(null);
