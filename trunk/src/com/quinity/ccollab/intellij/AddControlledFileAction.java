@@ -1,6 +1,8 @@
 package com.quinity.ccollab.intellij;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
@@ -10,6 +12,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vcs.FilePath;
+import com.intellij.openapi.util.Pair;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
 import com.smartbear.beans.GlobalOptions;
@@ -17,10 +20,9 @@ import com.smartbear.beans.ISettableGlobalOptions;
 import com.smartbear.ccollab.CommandLineClient;
 import com.smartbear.ccollab.client.CollabClientConnection;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
-import com.smartbear.ccollab.client.CollabClientInvalidInputException;
-import com.smartbear.ccollab.client.CollabClientAskIOException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.scm.ScmConfigurationException;
+import com.quinity.ccollab.intellij.ui.FileSelector;
 
 public class AddControlledFileAction extends AnAction {
 
@@ -48,6 +50,23 @@ public class AddControlledFileAction extends AnAction {
 			// Retrieve the current file(s)
 			FilePath[] files = PluginUtil.getSelectedFilePaths(event);
 
+
+            List<Pair<FilePath, Boolean>> fileList = new ArrayList<Pair<FilePath, Boolean>>();
+            for (FilePath filePath : files) {
+                fileList.add(Pair.create(filePath, Boolean.TRUE));
+            }
+            
+            FileSelector fileSelector = new FileSelector(fileList);
+            fileSelector.pack();
+            fileSelector.setVisible(true);
+			
+            if (!fileSelector.isOkPressed()) {
+                logger.debug("User pressed cancel.");
+                return;
+            }
+            
+            files = fileSelector.retrieveSelectedFiles(); 
+            
 			if (files.length == 0) {
 				logger.debug("No files selected.");
 				Messages.showErrorDialog(MessageResources.message("dialog.addFilesToReview.noFilesSelected.text"), 
