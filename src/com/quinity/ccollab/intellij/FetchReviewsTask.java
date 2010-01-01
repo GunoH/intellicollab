@@ -26,7 +26,7 @@ public class FetchReviewsTask extends Task.Modal {
 	private Review[] reviews;
 
 	public FetchReviewsTask(Project project, CollabClientConnection client) {
-		super(project, MessageResources.message("dialog.selectReview.title"), false);
+		super(project, MessageResources.message("task.selectReview.title"), false);
 		
 		this.client = client;
 	}
@@ -35,7 +35,7 @@ public class FetchReviewsTask extends Task.Modal {
 	public void run(ProgressIndicator progressIndicator) {
 
 		try {
-			progressIndicator.setText(MessageResources.message("progressIndicator.retrievingReviews"));
+			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.retrievingReviews"));
 
 			// Retrieve all reviews the user can upload to.
 			reviews = client.getUser().getReviewsCanUploadChangelists(null);
