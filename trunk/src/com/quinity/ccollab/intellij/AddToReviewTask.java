@@ -162,8 +162,8 @@ public class AddToReviewTask extends Task.Backgroundable {
 	}
 
 	private void showConfirmDialog(Review review, FilePath... files) {
-		Messages.showInfoMessage(MessageResources.message("dialog.filesHaveBeenUploaded.text", files.length , review.getId(), review.getTitle()), 
-				MessageResources.message("dialog.filesHaveBeenUploaded.title"));
+		Messages.showInfoMessage(MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text", files.length , review.getId(), review.getTitle()), 
+				MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.title"));
 	}
 
 	@Override
