@@ -42,8 +42,8 @@ public class AddControlledFileAction extends AnAction {
 
 			if (!checkConnection()) {
 				logger.debug("Could not connect to Code Collaborator server.");
-				Messages.showErrorDialog(MessageResources.message("dialog.addFilesToReview.noConnection.text"), 
-						MessageResources.message("dialog.addFilesToReview.noConnection.title"));
+				Messages.showErrorDialog(MessageResources.message("task.addFilesToReview.noConnection.text"), 
+						MessageResources.message("task.addFilesToReview.noConnection.title"));
 				return;
 			}
 			
@@ -69,8 +69,8 @@ public class AddControlledFileAction extends AnAction {
             
 			if (files.length == 0) {
 				logger.debug("No files selected.");
-				Messages.showErrorDialog(MessageResources.message("dialog.addFilesToReview.noFilesSelected.text"), 
-						MessageResources.message("dialog.addFilesToReview.noFilesSelected.title"));
+				Messages.showErrorDialog(MessageResources.message("task.addFilesToReview.noFilesSelected.text"), 
+						MessageResources.message("task.addFilesToReview.noFilesSelected.title"));
 				return;
 			}
 			
