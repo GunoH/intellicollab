@@ -22,7 +22,7 @@ import com.smartbear.ccollab.client.CollabClientConnection;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.scm.ScmConfigurationException;
-import com.quinity.ccollab.intellij.ui.FileSelector;
+import com.quinity.ccollab.intellij.ui.FileAndReviewSelector;
 
 public class AddControlledFileAction extends AnAction {
 
@@ -56,16 +56,24 @@ public class AddControlledFileAction extends AnAction {
                 fileList.add(Pair.create(filePath, Boolean.TRUE));
             }
             
-            FileSelector fileSelector = new FileSelector(fileList);
-            fileSelector.pack();
-            fileSelector.setVisible(true);
+			Project project = PluginUtil.getProject(event.getDataContext());
+
+			// Retrieve the reviews the user can upload to
+			FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, client);
+			fetchReviewsTask.queue();
+
+			Review[] reviews = fetchReviewsTask.getReviews();
+
+            FileAndReviewSelector fileAndReviewSelector = new FileAndReviewSelector(fileList, reviews);
+            fileAndReviewSelector.pack();
+            fileAndReviewSelector.setVisible(true);
 			
-            if (!fileSelector.isOkPressed()) {
+            if (!fileAndReviewSelector.isOkPressed()) {
                 logger.debug("User pressed cancel.");
                 return;
             }
             
-            files = fileSelector.retrieveSelectedFiles(); 
+            files = fileAndReviewSelector.retrieveSelectedFiles(); 
             
 			if (files.length == 0) {
 				logger.debug("No files selected.");
@@ -74,12 +82,7 @@ public class AddControlledFileAction extends AnAction {
 				return;
 			}
 			
-			Project project = PluginUtil.getProject(event.getDataContext());
-
-			FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, client);
-			fetchReviewsTask.queue();
-
-			Integer selectedReviewId = fetchReviewsTask.getSelectedReviewId();
+			Integer selectedReviewId = fileAndReviewSelector.getSelectedReviewId();
 			
 			if (selectedReviewId != null) {
 				// Retrieve the selected review.

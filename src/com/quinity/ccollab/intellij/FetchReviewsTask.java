@@ -18,11 +18,8 @@ public class FetchReviewsTask extends Task.Modal {
 
 	private boolean success;
 	
-	private Integer selectedReviewId;
-
 	private CollabClientConnection client;
 	
-	private List<String> reviewNames;
 	private Review[] reviews;
 
 	public FetchReviewsTask(Project project, CollabClientConnection client) {
@@ -40,11 +37,6 @@ public class FetchReviewsTask extends Task.Modal {
 			// Retrieve all reviews the user can upload to.
 			reviews = client.getUser().getReviewsCanUploadChangelists(null);
 
-			reviewNames = new ArrayList<String>();
-			for (Review review : reviews) {
-				reviewNames.add(review.getId() + " " + review.getTitle());
-			}
-			
 			success = true;
 
 		} catch (CollabClientException e) {
@@ -57,23 +49,10 @@ public class FetchReviewsTask extends Task.Modal {
 		if (!success) {
 			Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"), 
 					MessageResources.message("errorDialog.errorOccured.title"));
-			
-			return;
 		}
-
-		int selectedIndex = Messages.showChooseDialog(MessageResources.message("dialog.selectReview.text"),
-				MessageResources.message("dialog.selectReview.title"), reviewNames.toArray(new String[reviewNames.size()]), "", 
-				Messages.getQuestionIcon());
-
-		if (selectedIndex < 0) {
-			// User pressed the cancel button.
-			return;
-		}
-
-		selectedReviewId = reviews[selectedIndex].getId();
 	}
-	
-	public Integer getSelectedReviewId() {
-		return selectedReviewId;
+
+	public Review[] getReviews() {
+		return reviews;
 	}
 }
