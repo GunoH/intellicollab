@@ -3,15 +3,11 @@ package com.quinity.ccollab.intellij.ui;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vcs.FilePath;
+import com.intellij.openapi.ui.ComboBox;
 import com.quinity.ccollab.intellij.MessageResources;
+import com.smartbear.ccollab.datamodel.Review;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -19,25 +15,35 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
-public class FileSelector extends JDialog implements CheckBoxListListener {
+public class FileAndReviewSelector extends JDialog implements CheckBoxListListener {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JPanel buttonPane;
     private JPanel headerPane;
     private JPanel checkboxListPane;
-    private CheckBoxList myCheckBoxList;
+    private CheckBoxList fileCheckBoxList;
+	private JPanel reviewPane;
+	private JComboBox reviewComboBox;
 
-    private List<Pair<FilePath, Boolean>> myInitialList;
-    private List<Pair<FilePath, Boolean>> myWorkingList;
-    private DefaultListModel myListModel;
+	private List<Pair<FilePath, Boolean>> initialFileList;
+	private List<Pair<FilePath, Boolean>> workingFileList;
+	private DefaultListModel fileListModel;
 
-    private boolean okPressed;
+	private List<Review> reviewList;
+	private DefaultComboBoxModel reviewComboBoxModel;
+
+	private boolean okPressed;
     
-    public FileSelector(List<Pair<FilePath, Boolean>> list) {
-        myInitialList = list;
-        reset();
+    public FileAndReviewSelector(List<Pair<FilePath, Boolean>> fileList, Review[] reviewList) {
+        initialFileList = fileList;
+		
+		this.reviewList = new ArrayList<Review>();
+		this.reviewList.addAll(Arrays.asList(reviewList));
+		
+		reset();
 
         prepareUI();
     }
@@ -48,7 +54,9 @@ public class FileSelector extends JDialog implements CheckBoxListListener {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK.addActionListener(new ActionListener() {
+		
+		
+		buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
             }
@@ -87,21 +95,30 @@ public class FileSelector extends JDialog implements CheckBoxListListener {
     }
 
     private void createUIComponents() {
-        myListModel = new DefaultListModel();
-        myCheckBoxList = new CheckBoxList(myListModel, this);
-    }
+        fileListModel = new DefaultListModel();
+        fileCheckBoxList = new CheckBoxList(fileListModel, this);
+		
+		reviewComboBoxModel = new DefaultComboBoxModel();
+		reviewComboBox = new ComboBox(reviewComboBoxModel, -1);
+		reviewComboBox.setRenderer(new ReviewComboboxRenderer());
+	}
 
     public void reset() {
-        myWorkingList = new ArrayList<Pair<FilePath, Boolean>>(myInitialList);
+        workingFileList = new ArrayList<Pair<FilePath, Boolean>>(initialFileList);
         update();
     }
 
     public void update() {
-        myListModel.clear();
-        for (Pair<FilePath, Boolean> pair : myWorkingList) {
-            myListModel.addElement(createCheckBox(pair.first, pair.second.booleanValue()));
+        fileListModel.clear();
+        for (Pair<FilePath, Boolean> pair : workingFileList) {
+            fileListModel.addElement(createCheckBox(pair.first, pair.second.booleanValue()));
         }
-    }
+
+		reviewComboBoxModel.removeAllElements();
+		for (Review review : reviewList) {
+			reviewComboBoxModel.addElement(review);
+		}
+	}
 
     public JCheckBox createCheckBox(FilePath path, boolean checked) {
         return new JCheckBox(FileUtil.toSystemDependentName(path.getPath()), checked);
@@ -109,15 +126,10 @@ public class FileSelector extends JDialog implements CheckBoxListListener {
 
     public static void main(String[] args) {
 
-        List<Pair<FilePath, Boolean>> l = new ArrayList<Pair<FilePath, Boolean>>();
-//        l.add(Pair.create("aap", Boolean.TRUE));
-//        l.add(Pair.create("noot", Boolean.FALSE));
-//        l.add(Pair.create("mies", Boolean.TRUE));
-//        l.add(Pair.create("vuur", Boolean.TRUE));
-//        l.add(Pair.create("wim", Boolean.TRUE));
-//        l.add(Pair.create("kees", Boolean.FALSE));
-
-        FileSelector dialog = new FileSelector(l);
+        List<Pair<FilePath, Boolean>> fileList = new ArrayList<Pair<FilePath, Boolean>>();
+        Review[] reviews = new Review[0];
+		
+		FileAndReviewSelector dialog = new FileAndReviewSelector(fileList, reviews);
 
         dialog.pack();
         dialog.setVisible(true);
@@ -125,14 +137,14 @@ public class FileSelector extends JDialog implements CheckBoxListListener {
     }
 
     public void checkBoxSelectionChanged(int index, boolean value) {
-        final Pair<FilePath, Boolean> pair = myWorkingList.remove(index);
-        myWorkingList.add(index, Pair.create(pair.first, Boolean.valueOf(value)));
+        final Pair<FilePath, Boolean> pair = workingFileList.remove(index);
+        workingFileList.add(index, Pair.create(pair.first, Boolean.valueOf(value)));
     }
 
     public FilePath[] retrieveSelectedFiles() {
         List<FilePath> result = new ArrayList<FilePath>();
-        for (Pair<FilePath, Boolean> pair : myWorkingList) {
-            if (pair.second) {
+        for (Pair<FilePath, Boolean> pair : workingFileList) {
+            if (pair.second.booleanValue()) {
                 result.add(pair.first);
             }
         }
@@ -143,4 +155,8 @@ public class FileSelector extends JDialog implements CheckBoxListListener {
     public boolean isOkPressed() {
         return okPressed;
     }
+	
+	public Integer getSelectedReviewId() {
+		return ((Review)reviewComboBox.getSelectedItem()).getId();
+	}
 }
