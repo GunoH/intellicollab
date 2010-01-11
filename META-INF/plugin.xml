@@ -2,7 +2,7 @@
 <idea-plugin>
 	<name>IntelliCcollab</name>
 	<description>Code Collaborator integration</description>
-	<version>0.8</version>
+	<version>0.9dev</version>
 	<vendor email="idea@guno.nl">Guno Heitman</vendor>
 	<depends>CVS</depends>
 	<change-notes><![CDATA[
