@@ -27,7 +27,7 @@
 					description="Adds one or more version-controlled file(s) to an existing Code Collaborator review">
 			</action>
 			<separator/>
-			<add-to-group group-id="EditorTabPopupMenu" anchor="last"/>
+			<!--<add-to-group group-id="EditorTabPopupMenu" anchor="last"/>-->
 			<add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
 		</group>
 	</actions>
