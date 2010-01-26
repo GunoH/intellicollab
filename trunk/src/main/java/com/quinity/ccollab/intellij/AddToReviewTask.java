@@ -25,6 +25,7 @@ import com.smartbear.scm.ScmChangeset;
 import com.smartbear.scm.ScmConfigurationException;
 import com.smartbear.scm.ScmUtils;
 import com.smartbear.scm.impl.concurrentvs.CvsSystem;
+import org.jetbrains.annotations.NotNull;
 
 public class AddToReviewTask extends Task.Backgroundable {
 
@@ -45,7 +46,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 	}
 
 	@Override
-	public void run(ProgressIndicator progressIndicator) {
+	public void run(@NotNull ProgressIndicator progressIndicator) {
 
 		try {
 			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.preparing"));
