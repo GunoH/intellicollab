@@ -4,48 +4,78 @@
  */
 package com.smartbear.ccollab;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.eclipse.core.runtime.NullProgressMonitor;
+
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
-import com.smartbear.beans.GlobalOptions;
-import com.smartbear.beans.ISettableGlobalOptions;
-import com.smartbear.ccollab.client.CollabClientConnection;
+import com.smartbear.beans.IGlobalOptions;
+import com.smartbear.beans.IScmOptions;
+import com.smartbear.ccollab.client.ICollabClientInterface;
+import com.smartbear.ccollab.client.LoginUtils;
 import com.smartbear.ccollab.datamodel.ActionItem;
 import com.smartbear.ccollab.datamodel.Assignment;
 import com.smartbear.ccollab.datamodel.Changelist;
-import com.smartbear.ccollab.datamodel.Comment;
-import com.smartbear.ccollab.datamodel.Conversation;
-import com.smartbear.ccollab.datamodel.ConversationSet;
-import com.smartbear.ccollab.datamodel.Defect;
 import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.Scm;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.ccollab.datamodel.Version;
-import com.smartbear.scm.IScmAtomicChange;
+import com.smartbear.ccollab.datamodel.api.IComment;
+import com.smartbear.ccollab.datamodel.api.IDefect;
+import com.smartbear.ccollab.datamodel.api.IVersion;
+import com.smartbear.ccollab.datamodel.displaymodel.ChatThread;
+import com.smartbear.ccollab.datamodel.displaymodel.ChatThreadSet;
+import com.smartbear.collections.Pair;
+import com.smartbear.scm.IScmChangelist;
 import com.smartbear.scm.IScmClientConfiguration;
 import com.smartbear.scm.IScmLocalCheckout;
 import com.smartbear.scm.ScmChangeset;
 import com.smartbear.scm.ScmUtils;
 import com.smartbear.scm.impl.perforce.PerforceSystem;
 import com.smartbear.scm.impl.subversion.SubversionSystem;
-import org.eclipse.core.runtime.NullProgressMonitor;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * A set of example sub-routines and full routines that do
  * various things with the Collaborator data model.
+ * 
+ * For full documentation, refer to:  http://smartbear.com/docs/javadocs/
  */
 @SuppressWarnings({"UseOfSystemOutOrSystemErr"})
 public class Examples
 {	
 	
 	/**
-	 * Connection to the Collaborator server, created by init().
+	 * Global and SCM options, created by {@link #init()}
 	 */
-	private static CollabClientConnection client;
+	static private IGlobalOptions globalOptions;
+
+	/**
+	 * SCM options, created by {@link #init()}
+	 */
+	static private IScmOptions scmOptions;
+
+	/**
+	 * Interface to user for prompting, etc...
+	 * created by {@link #init()}
+	 */
+	static ICollabClientInterface clientInterface;
+	
+	/**
+	 * Connection to Code Collaborator server
+	 * created by {@link #init()}
+	 */
+	static Engine engine;
+	
+	/**
+	 * Currently logged-in user
+	 * created by {@link #init()}
+	 */
+	static User user;
 	
 	/**
 	 * Initialize the global connection to Collaborator.
@@ -53,15 +83,22 @@ public class Examples
 	public static void init() throws CollabClientException, IOException
 	{
 		// If we've already initialized, don't do it again.
-		if ( client != null ) {
+		if ( engine != null ) {
 			return;
 		}
 		
 		//load options from config files
-		ISettableGlobalOptions options = GlobalOptions.copy(ConfigUtils.loadConfigFiles());
+		Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
+		globalOptions = configOptions.getA();
+		scmOptions = configOptions.getB();
 		
-		//initialize interface to client api
-		client = new CollabClientConnection(new CommandLineClient(options),options);
+		//initialize client interface
+		clientInterface = new CommandLineClient(globalOptions);
+		
+		//connect to server and log in (throws exception if authentication fails, can't find server, etc...)
+		user = LoginUtils.login(globalOptions, clientInterface);
+		engine = user.getEngine();
+		
 	}
 	
 	/**
@@ -72,9 +109,7 @@ public class Examples
 	 */
 	public static void finished()
 	{
-		if (client != null) {
-			client.finished(true, new NullProgressMonitor());
-		}
+		engine.close(true);
 	}
 
 	/**
@@ -86,20 +121,12 @@ public class Examples
 		// Make sure we have all our global variables
 		init();
 		
-		// Load the user object for the local user
-		User localUser = client.getUser();
-		if ( localUser == null )
-		{
-			System.out.println( "error: user not found: " + client.getOptions().getUser() );
-			return;
-		}
-		
 		// Display some information
-		System.out.println( "local user: unique ID: " + localUser.getId() );
-		System.out.println( "local user: login: " + localUser.getLogin() );
-		System.out.println( "local user: name to display: " + localUser.getDisplayName() );
-		System.out.println( "local user: email: " + localUser.getEmail() );
-		System.out.println( "local user: lines of context for diff view: " + localUser.getNumLinesContext() );
+		System.out.println( "local user: unique ID: " + user.getId() );
+		System.out.println( "local user: login: " + user.getLogin() );
+		System.out.println( "local user: name to display: " + user.getDisplayName() );
+		System.out.println( "local user: email: " + user.getEmail() );
+		System.out.println( "local user: lines of context for diff view: " + user.getNumLinesContext() );
 	}
 	
 	/**
@@ -111,18 +138,10 @@ public class Examples
 		// Make sure we have all our global variables
 		init();
 		
-		// Load the user object for the local user
-		User localUser = client.getUser();
-		if ( localUser == null )
-		{
-			System.out.println( "error: user not found: " + client.getOptions().getUser() );
-			return;
-		}
-		
 		// Load the list of Action Items.
 		// Actions Items are always returned in the order they should be displayed
 		// to the end user.
-		ActionItem[] items = localUser.getActionItems();
+		ActionItem[] items = user.getActionItems();
 		
 		// Display the list of Action Items.
 		for ( int k = 0; k < items.length; k++ )
@@ -144,24 +163,15 @@ public class Examples
 		// Make sure we have all our global variables
 		init();
 		
-		// Load the user object for the local user
-		User localUser = client.getUser();
-		if ( localUser == null )
-		{
-			System.out.println( "error: user not found: " + client.getOptions().getUser() );
-			return;
-		}
-		
 		// Load the first 100 assignments that name this user.
-		Assignment[] assignments = client.getEngine(new NullProgressMonitor()).assignmentsFind( 100, null, localUser );
+		Assignment[] assignments = engine.assignmentsFind( 100, null, user );
 		
 		// Display them.
-		for ( int k = 0; k < assignments.length; k++ )
-		{
-			System.out.println( "===== " + assignments[k].getReview().getDisplayText( false ) + " ======" );
-			System.out.println( "Review: " + assignments[k].getReview().getDisplayText( true ) );
-			System.out.println( "Role of this user: " + assignments[k].getRole().getDisplayName() );
-			System.out.println( "Is this user the author? " + ( assignments[k].getRole().isAuthor() ? "yes" : "no" ) );
+		for (Assignment assignment : assignments) {
+			System.out.println("===== " + assignment.getReview().getDisplayText(false) + " ======");
+			System.out.println("Review: " + assignment.getReview().getDisplayText(true));
+			System.out.println("Role of this user: " + assignment.getRole().getDisplayName());
+			System.out.println("Is this user the author? " + (assignment.getRole().isAuthor() ? "yes" : "no"));
 		}
 	}
 	
@@ -179,7 +189,7 @@ public class Examples
 		System.out.println( "Review ID: " + review.getId() );
 		System.out.println( "Review Title: " + review.getTitle() );
 		System.out.println( "Review Creator: " + review.getCreator().getDisplayName() );
-		System.out.println( "Review Created On: " + review.getCreationDate() );
+		System.out.println( "Review Created On: " + user.getDisplayDate( review.getCreationDate() ) );
 		System.out.println( "Review Phase: " + review.getPhase().getName() );
 		
 		// Dump information about the participants
@@ -199,7 +209,7 @@ public class Examples
 		{
 			System.out.println( "Active Changelist #" + c + ": Collab ID: " + changelists[c].getId() );
 			System.out.println( "Active Changelist #" + c + ": SCM ID: " + changelists[c].getScmIdentifier() );
-			System.out.println( "Active Changelist #" + c + ": Date: " + changelists[c].getDate() );
+			System.out.println( "Active Changelist #" + c + ": Date: " + user.getDisplayDate( changelists[c].getDate() ) );
 			System.out.println( "Active Changelist #" + c + ": Author: " + changelists[c].getAuthor() );
 			System.out.println( "Active Changelist #" + c + ": Comment: " + changelists[c].getComment() );
 			
@@ -222,18 +232,15 @@ public class Examples
 		// Dump information about all conversations in this review,
 		// threaded by changelist and version, with comments on old changelists
 		// automatically promoted to new changelists.
-		//
-		// NOTE: YOU ALWAYS WANT TO PROMOTE!  It sometimes seems like you don't,
-		//       but you probably do!
-		ConversationSet conversationSet = review.getConversations( true );		// compute promoted conversations
-		Conversation[] conversations = conversationSet.getConversations();		// access the entire list of conversations
-		for ( int c = 0; c < conversations.length; c++ )
+		ChatThreadSet conversationSet = review.getConversations();		// compute promoted conversations
+		List<ChatThread> conversations = conversationSet.getAllThreads( true );		// access the entire list of conversations
+		for ( int c = 0; c < conversations.size(); c++ )
 		{
-			Conversation conversation = conversations[c];
-			Version version = conversation.getVersion();
+			ChatThread conversation = conversations.get(c);
+			IVersion version = conversation.getLogicalVersion().getRealVersion();
 			System.out.println( "Conversation #" + c + ": Changelist ID: " + ( version == null ? "Whole Review" : version.getChangelist().getId().toString() ) );
 			System.out.println( "Conversation #" + c + ": Version ID: " + ( version == null ? "Whole Review" : version.getId().toString() ) );
-			System.out.println( "Conversation #" + c + ": Line: " + ( conversation.getLineNumber() <= 0 ? "Whole File" : conversation.getLineNumber().toString() ) );
+			System.out.println( "Conversation #" + c + ": Line: " + conversation.getLocator() );
 			
 			// Say if each of the users in this review will perceive this conversation as having "new" comments
 			for (Assignment assignment : assignments) {
@@ -242,23 +249,25 @@ public class Examples
 			}
 
 			// Print the comments associated with this conversation
-			Comment[] comments = conversation.getComments();
-			for ( int k = 0; k < comments.length; k++ )
+			List<IComment> comments = conversation.getComments();
+            for ( int k = 0; k < comments.size(); k++ )
 			{
-				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Date: " + comments[k].getCreationDate() );
-				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Author: " + comments[k].getCreator().getDisplayName() );
-				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Text: " + comments[k].getText() );
-				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Type: " + comments[k].getType().getCode() );
-				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Should display: " + comments[k].getType().isVisible() );
+			    IComment comment = comments.get(k);
+				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Date: " + user.getDisplayDate( comment.getCreationDate() ) );
+				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Author: " + comment.getCreator().getDisplayName() );
+				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Text: " + comment.getText() );
+				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Type: " + comment.getType().getCode() );
+				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Should display: " + comment.getType().isVisible() );
 			}
 			
 			// Print the defects associated with this conversation
-			Defect[] defects = conversation.getDefects();
-			for ( int k = 0; k < defects.length; k++ )
+			List<IDefect> defects = conversation.getDefects();
+            for ( int k = 0; k < defects.size(); k++ )
 			{
-				System.out.println( "Conversation #" + c + ": Defect #" + k + ": Date: " + defects[k].getCreationDate() );
-				System.out.println( "Conversation #" + c + ": Defect #" + k + ": Author: " + defects[k].getCreator().getDisplayName() );
-				System.out.println( "Conversation #" + c + ": Defect #" + k + ": Text: " + defects[k].getText() );
+                IDefect defect = defects.get(k);
+				System.out.println( "Conversation #" + c + ": Defect #" + k + ": Date: " + user.getDisplayDate( defect.getCreationDate() ) );
+				System.out.println( "Conversation #" + c + ": Defect #" + k + ": Author: " + defect.getCreator().getDisplayName() );
+				System.out.println( "Conversation #" + c + ": Defect #" + k + ": Text: " + defect.getText() );
 			}
 		}
 	}
@@ -271,16 +280,8 @@ public class Examples
 		// Make sure we have all our global variables
 		init();
 		
-		// Load the user object for the local user
-		User localUser = client.getUser();
-		if ( localUser == null )
-		{
-			System.out.println( "error: user not found: " + client.getOptions().getUser() );
-			return;
-		}
-		
 		// Create the new review object with the local user as the creator
-		Review review = client.getEngine(new NullProgressMonitor()).reviewCreate( localUser, "Untitled Review" );
+		Review review = engine.reviewCreate( user, "Untitled Review" );
 		review.setTitle( "Untitled Review" );
 		review.save();	// when you change fields in objects, it's not really saved until you call save()
 		System.out.println( "New review created: " + review.getDisplayText( true ) );
@@ -318,13 +319,13 @@ public class Examples
 		// to SCM-specific atomic changelists (e.g. with Perforce and Subversion).
 		System.out.println( "Creating SCM Changeset..." );
 		ScmChangeset changeset = new ScmChangeset();
-		changeset.addLocalCheckout( scmFile, new NullProgressMonitor() );
+		changeset.addLocalCheckout( scmFile, false, new NullProgressMonitor() );
 		
 		// Upload this changeset to Collaborator.  Another form of this
 		// uploader lets us specific even more information; this form extracts it
 		// automatically from the files in the changeset.
 		System.out.println( "Uploading SCM Changeset..." );
-		Scm scm = client.getEngine(new NullProgressMonitor()).scmNone(); // Use this when the files aren't under version control; otherwise we would be using scmConfiguredExternal().
+		Scm scm = engine.scmNone(); // Use this when the files aren't under version control; otherwise we would be using scmConfiguredExternal().
 		Changelist changelist = scm.uploadChangeset( changeset, "Uncontrolled Files", new NullProgressMonitor() );
 		
 		// The changelist has been uploaded but it hasn't been attached
@@ -332,7 +333,7 @@ public class Examples
 		// a changelist to be part of more than one review, but also means that
 		// if there's any error in uploading the changelist the review hasn't
 		// changed at all so no one will be affected.
-		review.addChangelist( changelist );
+		review.addChangelist( changelist, user );
 	}
 	
 	/**
@@ -359,8 +360,13 @@ public class Examples
 		// Create the SCM object representing a local file under version control.
 		// We assume the local SCM is already configured properly.
 		System.out.println( "Loading SCM File object..." );
-		IScmClientConfiguration clientConfig = client.requireScm(null, new NullProgressMonitor(), ScmUtils.SCMS);
+		IScmClientConfiguration clientConfig = ScmUtils.requireScm(null, scmOptions, new NullProgressMonitor(), ScmUtils.SCMS);
 		IScmLocalCheckout scmFile = clientConfig.getLocalCheckout( file, new NullProgressMonitor() );
+		if ( scmFile == null )
+		{
+			System.err.println( "error: file is not under version control: " + file.getAbsolutePath() );
+			return;
+		}
 		
 		// Create the SCM ChangeSet object to upload.  You can attach
 		// many types of objects here from uncontrolled files as in this
@@ -368,14 +374,13 @@ public class Examples
 		// to SCM-specific atomic changelists (e.g. with Perforce and Subversion).
 		System.out.println( "Creating SCM Changeset..." );
 		ScmChangeset changeset = new ScmChangeset();
-		changeset.addLocalCheckout( scmFile, new NullProgressMonitor() );
+		changeset.addLocalCheckout( scmFile, true, new NullProgressMonitor() );
 		
 		// Upload this changeset to Collaborator.  Another form of this
 		// uploader lets us specific even more information; this form extracts it
 		// automatically from the files in the changeset.
 		System.out.println( "Uploading SCM Changeset..." );
-		Engine engine = client.getEngine(new NullProgressMonitor());
-		Scm scm = engine.scmByLocalCheckout( clientConfig.getScmSystem(), scmFile );			// select the SCM system that matches the client configuration
+		Scm scm = engine.scmByLocalCheckout( scmFile );			// select the SCM system that matches the client configuration
 		Changelist changelist = scm.uploadChangeset( changeset, "Local Files", new NullProgressMonitor() );
 		
 		// The changelist has been uploaded but it hasn't been attached
@@ -383,7 +388,7 @@ public class Examples
 		// a changelist to be part of more than one review, but also means that
 		// if there's any error in uploading the changelist the review hasn't
 		// changed at all so no one will be affected.
-		review.addChangelist( changelist );
+		review.addChangelist( changelist, user );
 	}
 	
 	/**
@@ -396,11 +401,11 @@ public class Examples
 		init();
 		
 		//get SCM connection to perforce or subversion
-		IScmClientConfiguration clientConfig = client.requireScm(
+		IScmClientConfiguration clientConfig = ScmUtils.requireScm(
 				null, //get configuration from working directory
+				scmOptions,
 				new NullProgressMonitor(), 
-				Arrays.asList(
-						PerforceSystem.INSTANCE, SubversionSystem.INSTANCE)
+				Arrays.asList(PerforceSystem.INSTANCE, SubversionSystem.INSTANCE)
 				);
 		
 		// Parameter validation
@@ -413,7 +418,7 @@ public class Examples
 		// Load the SCM object representing the atomic changelist.
 		// Leave with error if there's a problem.
 		System.out.println( "Loading SCM changelist object..." );
-		IScmAtomicChange scmChange = clientConfig.getChangelist( changelistId, new NullProgressMonitor() );
+		IScmChangelist scmChange = clientConfig.getChangelist( changelistId, new NullProgressMonitor() );
 		if ( scmChange == null )
 		{
 			System.err.println( "error: either the changelist `" + changelistId + "` doesn't exist," );
@@ -423,8 +428,7 @@ public class Examples
 		
 		// Upload this atomic changelist to Collaborator.
 		System.out.println( "Uploading SCM changelist to server..." );
-		Engine engine = client.getEngine(new NullProgressMonitor());
-		Scm scm = engine.scmByAtomicChange( clientConfig.getScmSystem(), clientConfig, scmChange );			// select the SCM system that matches the client configuration
+		Scm scm = engine.scmByAtomicChange( scmChange );			// select the SCM system that matches the client configuration
 		Changelist changelist = scm.uploadChangelist( scmChange, new NullProgressMonitor() );
 		
 		// The changelist has been uploaded but it hasn't been attached
@@ -432,7 +436,7 @@ public class Examples
 		// a changelist to be part of more than one review, but also means that
 		// if there's any error in uploading the changelist the review hasn't
 		// changed at all so no one will be affected.
-		review.addChangelist( changelist );
+		review.addChangelist( changelist, user );
 	}
 	
 	/**
@@ -442,7 +446,7 @@ public class Examples
 	{
 		System.err.println( "Possible invocations of the command-line:" );
 		System.err.println( "\tprintUserInfo" );
-		System.err.println( "\tgetUserActionItems" );
+		System.err.println( "\tprintUserActionItems" );
 		System.err.println( "\tprintAssignments" );
 		System.err.println( "\tprintReview <review-id>" );
 		System.err.println( "\tattachUncontrolledFile <review-id> <local-file>" );
@@ -461,8 +465,6 @@ public class Examples
 			// initialize the system
 			init();
 			
-			Engine engine = client.getEngine(new NullProgressMonitor());
-			
 			if ( argv.length == 0 )
 			{
 				System.err.println( "ERROR: Must supply the name of an example to execute." );
@@ -471,7 +473,7 @@ public class Examples
 			else if ( argv[0].equals( "printUserInfo" ) ) {
 				printUserInfo();
 			}
-			else if ( argv[0].equals( "getUserActionItems" ) ) {
+			else if ( argv[0].equals( "printUserActionItems" ) ) {
 				printUserActionItems();
 			}
 			else if ( argv[0].equals( "printAssignments" ) ) {
