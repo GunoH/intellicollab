@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
-
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
@@ -15,22 +13,48 @@ import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.util.Pair;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
-import com.smartbear.beans.GlobalOptions;
-import com.smartbear.beans.ISettableGlobalOptions;
+import com.smartbear.beans.IGlobalOptions;
+import com.smartbear.beans.IScmOptions;
 import com.smartbear.ccollab.CommandLineClient;
-import com.smartbear.ccollab.client.CollabClientConnection;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
+import com.smartbear.ccollab.client.LoginUtils;
+import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.datamodel.Review;
+import com.smartbear.ccollab.datamodel.Engine;
+import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.scm.ScmConfigurationException;
 import com.quinity.ccollab.intellij.ui.FileAndReviewSelector;
 
 public class AddControlledFileAction extends AnAction {
 
 	/**
-	 * Connection to the Collaborator server, created by init().
+	 * Global and SCM options, created by {@link #init()}
 	 */
-	protected static CollabClientConnection client;
+	static private IGlobalOptions globalOptions;
 
+	/**
+	 * SCM options, created by {@link #init()}
+	 */
+	static IScmOptions scmOptions;
+
+	/**
+	 * Interface to user for prompting, etc...
+	 * created by {@link #init()}
+	 */
+	static ICollabClientInterface clientInterface;
+	
+	/**
+	 * Connection to Code Collaborator server
+	 * created by {@link #init()}
+	 */
+	static Engine engine;
+	
+	/**
+	 * Currently logged-in user
+	 * created by {@link #init()}
+	 */
+	static User user;
+	
 	private static Logger logger = Logger.getInstance(AddControlledFileAction.class.getName());
 
 
@@ -40,13 +64,6 @@ public class AddControlledFileAction extends AnAction {
 		try {
 			init();
 
-			if (!checkConnection()) {
-				logger.debug("Could not connect to Code Collaborator server.");
-				Messages.showErrorDialog(MessageResources.message("task.addFilesToReview.noConnection.text"), 
-						MessageResources.message("task.addFilesToReview.noConnection.title"));
-				return;
-			}
-			
 			// Retrieve the current file(s)
 			FilePath[] files = PluginUtil.getSelectedFilePaths(event);
 
@@ -59,7 +76,7 @@ public class AddControlledFileAction extends AnAction {
 			Project project = PluginUtil.getProject(event.getDataContext());
 
 			// Retrieve the reviews the user can upload to
-			FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, client);
+			FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, user);
 			fetchReviewsTask.queue();
 
 			Review[] reviews = fetchReviewsTask.getReviews();
@@ -86,7 +103,7 @@ public class AddControlledFileAction extends AnAction {
 			
 			if (selectedReviewId != null) {
 				// Retrieve the selected review.
-				Review review = client.getEngine(new NullProgressMonitor()).reviewById(selectedReviewId);
+				Review review = engine.reviewById(selectedReviewId);
 
 				// Add the current file to the selected review.
 				attachControlledFiles(event, review, files);
@@ -118,44 +135,35 @@ public class AddControlledFileAction extends AnAction {
 	}
 
 	/**
-	 * Checks if the Code Collaborator server is reachable.
-	 * @return <code>true</code> if the server is reachable, <code>false</code> otherwise.
-	 */
-	private boolean checkConnection() {
-		try {
-			// Try to fetch the user info from the server. If this succeeds, the server is reachable.
-			client.getUser();
-			return true;
-		} catch (CollabClientException e) {
-			// Connection failed.
-			return false;
-		}
-	}
-
-	/**
 	 * Attaches local files that are under version control to the given review
 	 */
 	private void attachControlledFiles(AnActionEvent event, final Review review, final FilePath... files) throws InterruptedException {
 
 		Project project = PluginUtil.getProject(event.getDataContext());
 
-		AddToReviewTask addToReviewTask = new AddToReviewTask(project, review, files);
+		AddToReviewTask addToReviewTask = new AddToReviewTask(project, review, user, files);
 		addToReviewTask.queue();
 	}
 
 	private static void init() throws CollabClientException, IOException {
 		// If we've already initialized, don't do it again.
-		if (client != null) {
+		if ( engine != null ) {
 			return;
 		}
-
+		
 		//load options from config files
-		ISettableGlobalOptions options = GlobalOptions.copy(ConfigUtils.loadConfigFiles());
-
-		//initialize interface to client api
-		client = new CollabClientConnection(new CommandLineClient(options), options);
+		com.smartbear.collections.Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
+		globalOptions = configOptions.getA();
+		scmOptions = configOptions.getB();
+		
+		//initialize client interface
+		clientInterface = new CommandLineClient(globalOptions);
+		
+		//connect to server and log in (throws exception if authentication fails, can't find server, etc...)
+		user = LoginUtils.login(globalOptions, clientInterface);
+		engine = user.getEngine();
 	}
-
+	
 	/**
 	 * Called to clean up a previous call to <code>init()</code>.
 	 * <p/>
@@ -163,8 +171,8 @@ public class AddControlledFileAction extends AnAction {
 	 * object, data might not be flushed out to the server!
 	 */
 	private void finished() {
-		if (client != null) {
-			client.finished(true, new NullProgressMonitor());
+		if (engine != null) {
+			engine.close(true);
 		}
 	}
 
