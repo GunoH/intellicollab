@@ -10,7 +10,6 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vcs.FilePath;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.datamodel.Changelist;
 import com.smartbear.ccollab.datamodel.Engine;
@@ -31,14 +30,14 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 	private Review review;
 
-	private FilePath[] files;
+	private File[] files;
 
 	private User user;
 
 	private boolean wasSuccessful;
 	private String errorMessage;
 
-	public AddToReviewTask(Project project, Review review, User user, FilePath... files) {
+	public AddToReviewTask(Project project, Review review, User user, File... files) {
 		super(project, MessageResources.message("task.addFilesToReview.title"), false);
 
 		this.review = review;
@@ -70,19 +69,18 @@ public class AddToReviewTask extends Task.Backgroundable {
 			}
 
 			int fileCounter = 0;
-			for (FilePath filePath : files) {
-				progressIndicator.setText2(MessageResources.message("progressIndicator.addToReview.fileUploadProgress", filePath.getName(),
+			for (File file : files) {
+				progressIndicator.setText2(MessageResources.message("progressIndicator.addToReview.fileUploadProgress", file.getName(),
 						Integer.valueOf(++fileCounter), Integer.valueOf(files.length)));
-				logger.debug("Working with file: " + filePath.getPath());
+				logger.debug("Working with file: " + file.getPath());
 
 
-				if (filePath.isDirectory()) {
-					logger.error("error: path points to a directory instead of to a file: " + filePath.getPath());
+				if (file.isDirectory()) {
+					logger.error("error: path points to a directory instead of to a file: " + file.getPath());
 					throw new IntelliCcollabException("error: path points to a directory instead of to a file: " 
-							+ filePath.getPath());
+							+ file.getPath());
 				}
 
-				File file = filePath.getIOFile();
 				// Create the SCM object representing a local file under version control.
 				// We assume the local SCM is already configured properly.
 				logger.debug("Loading SCM File object...");
@@ -141,7 +139,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 		}
 	}
 	
-	private void showConfirmDialog(Review review, FilePath... files) {
+	private void showConfirmDialog(Review review, File... files) {
 		Messages.showInfoMessage(MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text", 
 				Integer.valueOf(files.length), review.getId(), review.getTitle()), 
 				MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.title"));
