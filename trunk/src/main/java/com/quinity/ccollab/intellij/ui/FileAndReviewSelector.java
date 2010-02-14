@@ -1,21 +1,29 @@
 package com.quinity.ccollab.intellij.ui;
 
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.ui.ComboBox;
 import com.quinity.ccollab.intellij.MessageResources;
 import com.smartbear.ccollab.datamodel.Review;
 
-import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 public class FileAndReviewSelector extends JDialog implements CheckBoxListListener {
     private JPanel contentPane;
@@ -28,8 +36,8 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
 	private JPanel reviewPane;
 	private JComboBox reviewComboBox;
 
-	private List<Pair<FilePath, Boolean>> initialFileList;
-	private List<Pair<FilePath, Boolean>> workingFileList;
+	private List<Pair<File, Boolean>> initialFileList;
+	private List<Pair<File, Boolean>> workingFileList;
 	private DefaultListModel fileListModel;
 
 	private List<Review> reviewList;
@@ -37,7 +45,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
 
 	private boolean okPressed;
     
-    public FileAndReviewSelector(List<Pair<FilePath, Boolean>> fileList, Review[] reviewList) {
+    public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, Review[] reviewList) {
         initialFileList = fileList;
 		
 		this.reviewList = new ArrayList<Review>();
@@ -104,13 +112,13 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
 	}
 
     public void reset() {
-        workingFileList = new ArrayList<Pair<FilePath, Boolean>>(initialFileList);
+        workingFileList = new ArrayList<Pair<File, Boolean>>(initialFileList);
         update();
     }
 
     public void update() {
         fileListModel.clear();
-        for (Pair<FilePath, Boolean> pair : workingFileList) {
+        for (Pair<File, Boolean> pair : workingFileList) {
             fileListModel.addElement(createCheckBox(pair.first, pair.second.booleanValue()));
         }
 
@@ -120,13 +128,13 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
 		}
 	}
 
-    public JCheckBox createCheckBox(FilePath path, boolean checked) {
-        return new JCheckBox(FileUtil.toSystemDependentName(path.getPath()), checked);
+    public JCheckBox createCheckBox(File file, boolean checked) {
+        return new JCheckBox(FileUtil.toSystemDependentName(file.getPath()), checked);
     }
 
     public static void main(String[] args) {
 
-        List<Pair<FilePath, Boolean>> fileList = new ArrayList<Pair<FilePath, Boolean>>();
+        List<Pair<File, Boolean>> fileList = new ArrayList<Pair<File, Boolean>>();
         Review[] reviews = new Review[0];
 		
 		FileAndReviewSelector dialog = new FileAndReviewSelector(fileList, reviews);
@@ -137,19 +145,19 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     }
 
     public void checkBoxSelectionChanged(int index, boolean value) {
-        final Pair<FilePath, Boolean> pair = workingFileList.remove(index);
+        final Pair<File, Boolean> pair = workingFileList.remove(index);
         workingFileList.add(index, Pair.create(pair.first, Boolean.valueOf(value)));
     }
 
-    public FilePath[] retrieveSelectedFiles() {
-        List<FilePath> result = new ArrayList<FilePath>();
-        for (Pair<FilePath, Boolean> pair : workingFileList) {
+    public File[] retrieveSelectedFiles() {
+        List<File> result = new ArrayList<File>();
+        for (Pair<File, Boolean> pair : workingFileList) {
             if (pair.second.booleanValue()) {
                 result.add(pair.first);
             }
         }
         
-        return result.toArray(new FilePath[result.size()]);
+        return result.toArray(new File[result.size()]);
     }
 
     public boolean isOkPressed() {

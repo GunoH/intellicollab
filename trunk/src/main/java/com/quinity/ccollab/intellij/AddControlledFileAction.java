@@ -1,6 +1,7 @@
 package com.quinity.ccollab.intellij;
 
 import java.io.IOException;
+import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -9,7 +10,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.util.Pair;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
@@ -65,12 +65,12 @@ public class AddControlledFileAction extends AnAction {
 			init();
 
 			// Retrieve the current file(s)
-			FilePath[] files = PluginUtil.getSelectedFilePaths(event);
+			File[] files = getCurrentlySelectedFiles(event);
 
 
-            List<Pair<FilePath, Boolean>> fileList = new ArrayList<Pair<FilePath, Boolean>>();
-            for (FilePath filePath : files) {
-                fileList.add(Pair.create(filePath, Boolean.TRUE));
+			List<Pair<File, Boolean>> fileList = new ArrayList<Pair<File, Boolean>>();
+            for (File file : files) {
+                fileList.add(Pair.create(file, Boolean.TRUE));
             }
             
 			Project project = PluginUtil.getProject(event.getDataContext());
@@ -134,10 +134,14 @@ public class AddControlledFileAction extends AnAction {
 
 	}
 
+	protected File[] getCurrentlySelectedFiles(AnActionEvent event) {
+		return PluginUtil.getSelectedFiles(event);
+	}
+
 	/**
 	 * Attaches local files that are under version control to the given review
 	 */
-	private void attachControlledFiles(AnActionEvent event, final Review review, final FilePath... files) throws InterruptedException {
+	private void attachControlledFiles(AnActionEvent event, final Review review, final File... files) throws InterruptedException {
 
 		Project project = PluginUtil.getProject(event.getDataContext());
 

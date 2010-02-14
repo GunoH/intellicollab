@@ -7,10 +7,10 @@ import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.psi.PsiAnonymousClass;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
@@ -18,6 +18,8 @@ import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.util.PsiTreeUtil;
+
+import java.io.File;
 
 public final class PluginUtil {
 	private PluginUtil() {
@@ -30,11 +32,21 @@ public final class PluginUtil {
 	public static VirtualFile[] getCurrentVirtualFiles(DataContext dataContext) {
 		return DataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
 	}
+
+	public static File[] getCurrentFiles(DataContext dataContext) {
+		VirtualFile[] virtualFiles = getCurrentVirtualFiles(dataContext);
+		
+		File[] files = new File[virtualFiles.length];
+		for (int i = 0; i < virtualFiles.length; i++) {
+			files[i] = VfsUtil.virtualToIoFile(virtualFiles[i]);
+		}
+		return files;
+	}
 	
-	public static FilePath[] getSelectedFilePaths(AnActionEvent actionEvent) {
+	public static File[] getSelectedFiles(AnActionEvent actionEvent) {
 		Change[] changes = CvsContextWrapper.createInstance(actionEvent).getSelectedChanges();
 		
-		FilePath[] files = new FilePath[changes.length];
+		File[] files = new File[changes.length];
 
 		for (int i = 0; i < changes.length; i++) {
 			Change.Type changeType = changes[i].getType();
@@ -46,7 +58,7 @@ public final class PluginUtil {
 				// In all other cases, we use the new revision.
 				revision = changes[i].getAfterRevision();
 			}
-			files[i] = revision.getFile();
+			files[i] = revision.getFile().getIOFile();
 		}
 		
 		return files;
