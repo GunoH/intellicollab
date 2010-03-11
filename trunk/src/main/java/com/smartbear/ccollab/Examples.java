@@ -25,9 +25,8 @@ import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.Scm;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.ccollab.datamodel.Version;
-import com.smartbear.ccollab.datamodel.api.IComment;
-import com.smartbear.ccollab.datamodel.api.IDefect;
-import com.smartbear.ccollab.datamodel.api.IVersion;
+import com.smartbear.ccollab.datamodel.Comment;
+import com.smartbear.ccollab.datamodel.Defect;
 import com.smartbear.ccollab.datamodel.displaymodel.ChatThread;
 import com.smartbear.ccollab.datamodel.displaymodel.ChatThreadSet;
 import com.smartbear.collections.Pair;
@@ -237,7 +236,7 @@ public class Examples
 		for ( int c = 0; c < conversations.size(); c++ )
 		{
 			ChatThread conversation = conversations.get(c);
-			IVersion version = conversation.getLogicalVersion().getRealVersion();
+			Version version = conversation.getLogicalVersion().getRealVersion();
 			System.out.println( "Conversation #" + c + ": Changelist ID: " + ( version == null ? "Whole Review" : version.getChangelist().getId().toString() ) );
 			System.out.println( "Conversation #" + c + ": Version ID: " + ( version == null ? "Whole Review" : version.getId().toString() ) );
 			System.out.println( "Conversation #" + c + ": Line: " + conversation.getLocator() );
@@ -249,10 +248,10 @@ public class Examples
 			}
 
 			// Print the comments associated with this conversation
-			List<IComment> comments = conversation.getComments();
+			List<Comment> comments = conversation.getComments();
             for ( int k = 0; k < comments.size(); k++ )
 			{
-			    IComment comment = comments.get(k);
+			    Comment comment = comments.get(k);
 				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Date: " + user.getDisplayDate( comment.getCreationDate() ) );
 				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Author: " + comment.getCreator().getDisplayName() );
 				System.out.println( "Conversation #" + c + ": Comment #" + k + ": Text: " + comment.getText() );
@@ -261,10 +260,10 @@ public class Examples
 			}
 			
 			// Print the defects associated with this conversation
-			List<IDefect> defects = conversation.getDefects();
+			List<Defect> defects = conversation.getDefects();
             for ( int k = 0; k < defects.size(); k++ )
 			{
-                IDefect defect = defects.get(k);
+                Defect defect = defects.get(k);
 				System.out.println( "Conversation #" + c + ": Defect #" + k + ": Date: " + user.getDisplayDate( defect.getCreationDate() ) );
 				System.out.println( "Conversation #" + c + ": Defect #" + k + ": Author: " + defect.getCreator().getDisplayName() );
 				System.out.println( "Conversation #" + c + ": Defect #" + k + ": Text: " + defect.getText() );
@@ -405,8 +404,7 @@ public class Examples
 				null, //get configuration from working directory
 				scmOptions,
 				new NullProgressMonitor(), 
-				Arrays.asList(PerforceSystem.INSTANCE, SubversionSystem.INSTANCE)
-				);
+				Arrays.asList(PerforceSystem.INSTANCE, SubversionSystem.INSTANCE));
 		
 		// Parameter validation
 		if ( review == null )
