@@ -119,7 +119,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     public void update() {
         fileListModel.clear();
         for (Pair<File, Boolean> pair : workingFileList) {
-            fileListModel.addElement(createCheckBox(pair.first, pair.second.booleanValue()));
+            fileListModel.addElement(createCheckBox(pair.first, pair.second));
         }
 
 		reviewComboBoxModel.removeAllElements();
@@ -146,13 +146,13 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
 
     public void checkBoxSelectionChanged(int index, boolean value) {
         final Pair<File, Boolean> pair = workingFileList.remove(index);
-        workingFileList.add(index, Pair.create(pair.first, Boolean.valueOf(value)));
+        workingFileList.add(index, Pair.create(pair.first, value));
     }
 
     public File[] retrieveSelectedFiles() {
         List<File> result = new ArrayList<File>();
         for (Pair<File, Boolean> pair : workingFileList) {
-            if (pair.second.booleanValue()) {
+            if (pair.second) {
                 result.add(pair.first);
             }
         }
