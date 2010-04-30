@@ -109,23 +109,23 @@ public class AddControlledFileAction extends AnAction {
 				attachControlledFiles(event, review, files);
 			}
 		} catch (CollabClientServerConnectivityException e) {
-			logger.error(e);
+			logger.warn(e);
 			Messages.showErrorDialog(MessageResources.message("errorDialog.connectionException.text"),
 					MessageResources.message("errorDialog.connectionException.title"));
 		} catch (ScmConfigurationException e) {
-			logger.error(e);
+			logger.warn(e);
 			Messages.showErrorDialog(MessageResources.message("errorDialog.scmException.text"),
 			MessageResources.message("errorDialog.scmException.title"));
 		} catch (CollabClientException e) {
-			logger.error(e);
+			logger.warn(e);
 			Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"), 
 					MessageResources.message("errorDialog.errorOccured.title"));
 		} catch (IOException e) {
-			logger.error(e);
+			logger.warn(e);
 			Messages.showErrorDialog(MessageResources.message("errorDialog.ioErrorOccured.text"), 
 					MessageResources.message("errorDialog.ioErrorOccured.title"));
 		} catch (InterruptedException e) {
-			logger.error(e);
+			logger.warn(e);
 			Messages.showErrorDialog(MessageResources.message("errorDialog.uploadInterrupted.text"), 
 					MessageResources.message("errorDialog.uploadInterrupted.title"));
 		} finally {
