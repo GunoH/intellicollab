@@ -76,7 +76,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 
 				if (file.isDirectory()) {
-					logger.error("error: path points to a directory instead of to a file: " + file.getPath());
+					logger.warn("error: path points to a directory instead of to a file: " + file.getPath());
 					throw new IntelliCcollabException("error: path points to a directory instead of to a file: " 
 							+ file.getPath());
 				}
@@ -115,16 +115,16 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 			wasSuccessful = true;
 		} catch (ScmConfigurationException e) {
-			logger.error(e);
+			logger.warn(e);
 			errorMessage = MessageResources.message("errorDialog.cannotDetermineSCMSystem.text");
 		} catch (CollabClientException e) {
-			logger.error(e);
+			logger.warn(e);
 			errorMessage = MessageResources.message("errorDialog.errorOccured.text");
 		} catch (IntelliCcollabException e) {
-			logger.error(e);
+			logger.warn(e);
 			errorMessage = MessageResources.message("errorDialog.errorOccured.error.text", e.getMessage());
 		} catch (IOException e) {
-			logger.error(e);
+			logger.warn(e);
 			errorMessage = MessageResources.message("errorDialog.ioErrorOccured.text");
 		}
 		
