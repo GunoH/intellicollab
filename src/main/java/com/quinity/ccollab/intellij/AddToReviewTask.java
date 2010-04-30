@@ -71,7 +71,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 			int fileCounter = 0;
 			for (File file : files) {
 				progressIndicator.setText2(MessageResources.message("progressIndicator.addToReview.fileUploadProgress", file.getName(),
-						Integer.valueOf(++fileCounter), Integer.valueOf(files.length)));
+						++fileCounter, files.length));
 				logger.debug("Working with file: " + file.getPath());
 
 
@@ -140,8 +140,8 @@ public class AddToReviewTask extends Task.Backgroundable {
 	}
 	
 	private void showConfirmDialog(Review review, File... files) {
-		Messages.showInfoMessage(MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text", 
-				Integer.valueOf(files.length), review.getId(), review.getTitle()), 
+		Messages.showInfoMessage(MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
+				files.length, review.getId(), review.getTitle()), 
 				MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.title"));
 	}
 
