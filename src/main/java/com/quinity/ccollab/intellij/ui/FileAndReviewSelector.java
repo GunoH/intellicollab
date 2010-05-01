@@ -5,6 +5,7 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
 import com.quinity.ccollab.intellij.MessageResources;
 import com.smartbear.ccollab.datamodel.Review;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -45,7 +46,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
 
 	private boolean okPressed;
     
-    public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, Review[] reviewList) {
+    public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, @NotNull Review[] reviewList) {
         initialFileList = fileList;
 		
 		this.reviewList = new ArrayList<Review>();
