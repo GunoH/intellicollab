@@ -6,22 +6,21 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.smartbear.ccollab.datamodel.DataModelException;
-import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.User;
 import org.jetbrains.annotations.NotNull;
 
-public class FetchReviewsTask extends Task.Modal {
+public class FetchUsersTask extends Task.Modal {
 
-	private static Logger logger = Logger.getInstance(FetchReviewsTask.class.getName());
+	private static Logger logger = Logger.getInstance(FetchUsersTask.class.getName());
 
 	private boolean success;
 	
 	private User user;
 	
-	private Review[] reviews;
+	private User[] users;
 
-	public FetchReviewsTask(Project project, User user) {
-		super(project, MessageResources.message("task.selectReview.title"), false);
+	public FetchUsersTask(Project project, User user) {
+		super(project, MessageResources.message("task.createReview.title"), false);
 		
 		this.user = user;
 	}
@@ -29,13 +28,13 @@ public class FetchReviewsTask extends Task.Modal {
 	@Override
 	public void run(@NotNull ProgressIndicator progressIndicator) {
 
-		progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.retrievingReviews"));
+		progressIndicator.setText(MessageResources.message("progressIndicator.createReview.retrievingUsers"));
 
 		try {
-			// Retrieve all reviews the user can upload to.
-			reviews = user.getReviewsCanUploadChangelists(null);
+			// Retrieve all user from the code collaborator server
+			users = user.getEngine().usersPossibleReviewParticipants(null);
 		} catch (DataModelException e) {
-			logger.warn("Error when retrieving reviews.", e);
+			logger.warn("Error when retrieving users.", e);
 			return;
 		}
 		success = true;
@@ -49,7 +48,7 @@ public class FetchReviewsTask extends Task.Modal {
 		}
 	}
 
-	public Review[] getReviews() {
-		return reviews;
+	public User[] getUsers() {
+		return users;
 	}
 }
