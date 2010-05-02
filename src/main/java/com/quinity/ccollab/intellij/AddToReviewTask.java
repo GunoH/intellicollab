@@ -38,7 +38,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 	private String errorMessage;
 
 	public AddToReviewTask(Project project, Review review, User user, File... files) {
-		super(project, MessageResources.message("task.addFilesToReview.title"), false);
+		super(project, MessageResources.message("task.addFilesToReview.title"), true);
 
 		this.review = review;
 		this.user = user;
@@ -70,6 +70,9 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 			int fileCounter = 0;
 			for (File file : files) {
+				
+				progressIndicator.checkCanceled();
+				
 				progressIndicator.setText2(MessageResources.message("progressIndicator.addToReview.fileUploadProgress", file.getName(),
 						++fileCounter, files.length));
 				logger.debug("Working with file: " + file.getPath());
@@ -89,6 +92,8 @@ public class AddToReviewTask extends Task.Backgroundable {
 				changeset.addLocalCheckout(scmFile, true, new NullProgressMonitor());
 			}
 
+			progressIndicator.checkCanceled();
+
 			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.uploading"));
 			progressIndicator.setText2("");
 			
@@ -106,6 +111,8 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.attaching", review.getId()));
 			
+			progressIndicator.checkCanceled();
+
 			// The changelist has been uploaded but it hasn't been attached
 			// to any particular review!  This two-step process not only allows for
 			// a changelist to be part of more than one review, but also means that
@@ -136,6 +143,16 @@ public class AddToReviewTask extends Task.Backgroundable {
 			showConfirmDialog(review, files);
 		} else {
 			Messages.showErrorDialog(errorMessage, MessageResources.message("errorDialog.errorOccured.title"));
+		}
+	}
+
+	@Override
+	public void onCancel() {
+		if (wasSuccessful) {
+			showConfirmDialog(review, files);
+		} else {
+			Messages.showErrorDialog(MessageResources.message("errorDialog.cancelledAddToReview.text"), 
+					MessageResources.message("errorDialog.errorOccured.title"));
 		}
 	}
 	
