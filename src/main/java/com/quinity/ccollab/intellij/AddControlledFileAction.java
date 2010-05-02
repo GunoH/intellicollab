@@ -81,6 +81,11 @@ public class AddControlledFileAction extends AnAction {
 
 			Review[] reviews = fetchReviewsTask.getReviews();
 
+			if (reviews == null) {
+				logger.debug("No reviews found");
+				return;
+			}
+			
             FileAndReviewSelector fileAndReviewSelector = new FileAndReviewSelector(fileList, reviews);
             fileAndReviewSelector.pack();
             fileAndReviewSelector.setVisible(true);
