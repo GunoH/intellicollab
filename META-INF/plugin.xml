@@ -1,8 +1,11 @@
 <!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
 <idea-plugin>
 	<name>IntelliCcollab</name>
-	<description>Code Collaborator integration</description>
-	<version>0.9</version>
+	<description><![CDATA[
+	<h4>Code Collaborator integration</h4>
+	]]>
+	</description>
+	<version>0.10</version>
 	<vendor email="idea@guno.nl">Guno Heitman</vendor>
 	<depends>CVS</depends>
 	<change-notes><![CDATA[
@@ -40,6 +43,16 @@
 			</action>
 			<separator/>
 			<add-to-group group-id="EditorTabPopupMenu" anchor="last"/>
+		</group>
+		<group>
+			<separator/>
+			<action id="com.quinity.ccollab.intellij.CreateReviewTask"
+					class="com.quinity.ccollab.intellij.CreateReviewAction"
+					text="IntelliCcollab: Create new review..."
+					description="Creates a new Code Collaborator review">
+			</action>
+			<separator/>
+			<add-to-group group-id="ToolsMenu" anchor="last"/>
 		</group>
 	</actions>
 </idea-plugin>
