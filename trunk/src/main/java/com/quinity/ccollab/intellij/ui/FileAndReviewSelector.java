@@ -7,15 +7,8 @@ import com.quinity.ccollab.intellij.MessageResources;
 import com.smartbear.ccollab.datamodel.Review;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -167,5 +160,26 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
 	
 	public Integer getSelectedReviewId() {
 		return ((Review)reviewComboBox.getSelectedItem()).getId();
+	}
+}
+
+class ReviewComboboxRenderer extends JLabel implements ListCellRenderer {
+
+	public ReviewComboboxRenderer() {
+		setOpaque(true);
+	}
+
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		Review review = (Review) value;
+		
+		if (isSelected) {
+			setBackground(Color.BLUE);
+		} else {
+			setBackground(list.getBackground());
+		}
+		
+		setText(review.getId() + " " + review.getTitle());
+		
+		return this;
 	}
 }
