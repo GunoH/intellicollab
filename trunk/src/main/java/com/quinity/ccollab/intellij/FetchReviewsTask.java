@@ -5,6 +5,7 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.User;
 import org.jetbrains.annotations.NotNull;
@@ -30,9 +31,13 @@ public class FetchReviewsTask extends Task.Modal {
 
 		progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.retrievingReviews"));
 
-		// Retrieve all reviews the user can upload to.
-		reviews = user.getReviewsCanUploadChangelists(null);
-
+		try {
+			// Retrieve all reviews the user can upload to.
+			reviews = user.getReviewsCanUploadChangelists(null);
+		} catch (DataModelException e) {
+			logger.warn("Error when retrieving changelists.", e);
+			return;
+		}
 		success = true;
 	}
 
