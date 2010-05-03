@@ -1,10 +1,15 @@
 package com.quinity.ccollab.intellij;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
+import com.intellij.openapi.vcs.AbstractVcs;
+import com.intellij.openapi.vcs.VcsDataKeys;
+import com.intellij.openapi.vcs.changes.Change;
+import com.intellij.openapi.vcs.changes.ChangesUtil;
 import com.quinity.ccollab.intellij.ui.FileAndReviewSelector;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
@@ -120,5 +125,24 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 
 		AddToReviewTask addToReviewTask = new AddToReviewTask(project, review, user, files);
 		addToReviewTask.queue();
+	}
+	
+	public void update(AnActionEvent e) {
+	  Project project = e.getData(PlatformDataKeys.PROJECT);
+	  boolean enabled = false;
+	  if (project != null) {
+		Change[] changes = e.getData(VcsDataKeys.CHANGES);
+
+		if (changes != null && ChangesUtil.allChangesInOneList(project, changes)) {
+		  for(Change c: changes) {
+			final AbstractVcs vcs = ChangesUtil.getVcsForChange(c, project);
+			if (vcs != null && vcs.getCheckinEnvironment() != null) {
+			  enabled = true;
+			  break;
+			}
+		  }
+		}
+	  }
+	  e.getPresentation().setEnabled(enabled);
 	}
 }
