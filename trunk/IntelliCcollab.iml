@@ -13,6 +13,16 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="CVS Plugin" level="project" />
     <orderEntry type="library" name="IntelliCcollab libs" level="project" />
+    <orderEntry type="module-library">
+      <library name="resources">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/src/main/resources" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>
 
