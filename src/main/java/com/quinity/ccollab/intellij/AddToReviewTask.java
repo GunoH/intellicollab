@@ -21,7 +21,6 @@ import com.smartbear.scm.IScmLocalCheckout;
 import com.smartbear.scm.ScmChangeset;
 import com.smartbear.scm.ScmConfigurationException;
 import com.smartbear.scm.ScmUtils;
-import com.smartbear.scm.impl.concurrentvs.CvsSystem;
 import org.jetbrains.annotations.NotNull;
 
 public class AddToReviewTask extends Task.Backgroundable {
@@ -60,7 +59,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 			
 			IScmClientConfiguration clientConfig;
-			IScmLocalCheckout scmFile;
+			IScmLocalCheckout scmFile = null;
 
 
 			if (files.length == 0) {
@@ -102,10 +101,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 			// automatically from the files in the changeset.
 			logger.debug("Uploading SCM Changeset...");
 			Engine engine = AddControlledFileAction.engine;
-//			Scm scm = engine.scmByLocalCheckout(scmFile);			// select the SCM system that matches the client configuration
-
-			Scm scm = engine.scmCreate();
-			scm.setScmConfig(engine.scmConfigCreate(CvsSystem.INSTANCE));// Use the CVS SCM system
+			Scm scm = engine.scmByLocalCheckout(scmFile);			// select the SCM system that matches the client configuration
 
 			Changelist changelist = scm.uploadChangeset(changeset, "Local Files", new NullProgressMonitor());
 
