@@ -31,7 +31,7 @@ public class FetchUsersTask extends Task.Modal {
 		progressIndicator.setText(MessageResources.message("progressIndicator.createReview.retrievingUsers"));
 
 		try {
-			// Retrieve all user from the code collaborator server
+			// Retrieve all users from the code collaborator server
 			users = user.getEngine().usersPossibleReviewParticipants(null);
 		} catch (DataModelException e) {
 			logger.warn("Error when retrieving users.", e);
