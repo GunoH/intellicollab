@@ -128,21 +128,21 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 	}
 	
 	public void update(AnActionEvent e) {
-	  Project project = e.getData(PlatformDataKeys.PROJECT);
-	  boolean enabled = false;
-	  if (project != null) {
-		Change[] changes = e.getData(VcsDataKeys.CHANGES);
+		Project project = e.getData(PlatformDataKeys.PROJECT);
+		boolean enabled = false;
+		if (project != null) {
+			Change[] changes = e.getData(VcsDataKeys.CHANGES);
 
-		if (changes != null && ChangesUtil.allChangesInOneList(project, changes)) {
-		  for(Change c: changes) {
-			final AbstractVcs vcs = ChangesUtil.getVcsForChange(c, project);
-			if (vcs != null && vcs.getCheckinEnvironment() != null) {
-			  enabled = true;
-			  break;
+			if (changes != null && ChangesUtil.allChangesInOneList(project, changes)) {
+				for(Change c: changes) {
+					final AbstractVcs vcs = ChangesUtil.getVcsForChange(c, project);
+					if (vcs != null && vcs.getCheckinEnvironment() != null) {
+						enabled = true;
+						break;
+					}
+				}
 			}
-		  }
 		}
-	  }
-	  e.getPresentation().setEnabled(enabled);
+		e.getPresentation().setEnabled(enabled);
 	}
 }
