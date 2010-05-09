@@ -6,7 +6,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import java.util.Date;
 
-class IncrementalKeySelManager implements JComboBox.KeySelectionManager {
+public abstract class IncrementalKeySelManager implements JComboBox.KeySelectionManager {
  
 	private long lastKeyPressTime = new Date().getTime();
 	private StringBuffer searchString = new StringBuffer("");
@@ -26,11 +26,11 @@ class IncrementalKeySelManager implements JComboBox.KeySelectionManager {
 			lastKeyPressTime = actKeyPressTime;
 	
 			for (int i = 0; i < aModel.getSize(); i++) {
-				User user = (User) aModel.getElementAt(i);
-				if (user == null) {
+				Object element = aModel.getElementAt(i);
+				if (element == null) {
 					continue;
 				}
-				String listItem = user.getDisplayName().toUpperCase();
+				String listItem = getDisplayedText(element);
 	
 				if (listItem.startsWith(searchString.toString().toUpperCase())) {
 					return i;
@@ -41,4 +41,6 @@ class IncrementalKeySelManager implements JComboBox.KeySelectionManager {
 			return -1;
 		}
 	}
+
+	protected abstract String getDisplayedText(Object object);
 }

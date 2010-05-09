@@ -2,6 +2,7 @@ package com.quinity.ccollab.intellij.ui;
 
 import com.intellij.openapi.ui.ComboBox;
 import com.quinity.ccollab.intellij.MessageResources;
+import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.IDropDownItem;
 import com.smartbear.ccollab.datamodel.MetaDataSelectItem;
 import com.smartbear.ccollab.datamodel.ReviewAccess;
@@ -21,7 +22,6 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -41,7 +41,7 @@ public class CreateReviewDialog extends JDialog {
 	private JComboBox authorComboBox;
 	private JComboBox reviewerComboBox;
 	private JComboBox observerComboBox;
-	private JComboBox projectComboBox;
+	private JComboBox groupComboBox;
 	private JComboBox bugzillaInstantieComboBox;
 	private JComboBox reviewAccessComboBox;
 	private JComboBox restrictUploadsToReviewComboBox;
@@ -76,7 +76,7 @@ public class CreateReviewDialog extends JDialog {
 	private DefaultComboBoxModel reviewerComboBoxModel;
 	private DefaultComboBoxModel authorComboBoxModel;
 	private DefaultComboBoxModel observerComboBoxModel;
-	private DefaultComboBoxModel projectComboBoxModel;
+	private DefaultComboBoxModel groupComboBoxModel;
 	private DefaultComboBoxModel bugzillaInstantieComboBoxModel;
 	private DefaultComboBoxModel reviewAccessComboBoxModel;
 
@@ -89,6 +89,11 @@ public class CreateReviewDialog extends JDialog {
 	 * Lijst met bugzillaInstanties waar uit gekozen kan worden in de userinterface.
 	 */
 	private List<IDropDownItem> bugzillaInstantieList;
+
+	/**
+	 * Lijst met groepen waar uit gekozen kan worden in de userinterface.
+	 */
+	private List<GroupDescription> groupList;
 
 	/**
 	 * Geeft aan of de gebruiker op de OK knop heeft gedrukt of niet.
@@ -110,23 +115,22 @@ public class CreateReviewDialog extends JDialog {
 	 */
 	private static final int BUGZILLANUMMER_MAXLENGTH = 255;
 
-	public CreateReviewDialog(User[] userList, IDropDownItem[] bugzillaInstantieList, User currentUser) {
+	public CreateReviewDialog(User[] userList, List<GroupDescription> groupList, IDropDownItem[] bugzillaInstantieList, 
+							  User currentUser) {
 
 		this.userList = new ArrayList<User>();
 		this.userList.addAll(Arrays.asList(userList));
 
 		this.bugzillaInstantieList = new ArrayList<IDropDownItem>();
 		this.bugzillaInstantieList.addAll(Arrays.asList(bugzillaInstantieList));
-		
-		reset();
+
+		this.groupList = groupList;
+
+		update();
 
 		authorComboBoxModel.setSelectedItem(currentUser);
 
 		prepareUI();
-	}
-
-	private void reset() {
-		update();
 	}
 
 	private void prepareUI() {
@@ -178,30 +182,62 @@ public class CreateReviewDialog extends JDialog {
 		authorComboBoxModel = new DefaultComboBoxModel();
 		authorComboBox = new ComboBox(authorComboBoxModel, -1);
 		authorComboBox.setRenderer(new UserComboboxRenderer());
-		authorComboBox.setKeySelectionManager(new IncrementalKeySelManager());
+		authorComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
+			@Override
+			protected String getDisplayedText(Object object) {
+				return ((User)object).getDisplayName().toUpperCase();
+			}
+		});
 
 		reviewerComboBoxModel = new DefaultComboBoxModel();
 		reviewerComboBox = new ComboBox(reviewerComboBoxModel, -1);
 		reviewerComboBox.setRenderer(new UserComboboxRenderer());
-		reviewerComboBox.setKeySelectionManager(new IncrementalKeySelManager());
+		reviewerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
+			@Override
+			protected String getDisplayedText(Object object) {
+				return ((User)object).getDisplayName().toUpperCase();
+			}
+		});
 
 		observerComboBoxModel = new DefaultComboBoxModel();
 		observerComboBox = new ComboBox(observerComboBoxModel, -1);
 		observerComboBox.setRenderer(new UserComboboxRenderer());
-		observerComboBox.setKeySelectionManager(new IncrementalKeySelManager());
+		observerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
+			@Override
+			protected String getDisplayedText(Object object) {
+				return ((User)object).getDisplayName().toUpperCase();
+			}
+		});
 
-		projectComboBoxModel = new DefaultComboBoxModel();
-		projectComboBox = new ComboBox(projectComboBoxModel, -1);
-		projectComboBox.setRenderer(new DefaultListCellRenderer());
+		groupComboBoxModel = new DefaultComboBoxModel();
+		groupComboBox = new ComboBox(groupComboBoxModel, -1);
+		groupComboBox.setRenderer(new GroupDescriptionRenderer());
+		groupComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
+			@Override
+			protected String getDisplayedText(Object object) {
+				return ((GroupDescription)object).getDisplayName().toUpperCase();
+			}
+		});
 
 		bugzillaInstantieComboBoxModel = new DefaultComboBoxModel();
 		bugzillaInstantieComboBox = new ComboBox(bugzillaInstantieComboBoxModel, -1);
 		bugzillaInstantieComboBox.setRenderer(new IDropDownItemComboboxRenderer());
-		bugzillaInstantieComboBox.setKeySelectionManager(new IncrementalKeySelManager());
+		bugzillaInstantieComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
+			@Override
+			protected String getDisplayedText(Object object) {
+				return ((MetaDataSelectItem)object).getDisplayName().toUpperCase();
+			}
+		});
 
 		reviewAccessComboBoxModel = new DefaultComboBoxModel();
 		reviewAccessComboBox = new ComboBox(reviewAccessComboBoxModel, -1);
 		reviewAccessComboBox.setRenderer(new ReviewAccessComboboxRenderer());
+		reviewAccessComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
+			@Override
+			protected String getDisplayedText(Object object) {
+				return ((ReviewAccess)object).getDisplayName().toUpperCase();
+			}
+		});
 	}
 
 	public void update() {
@@ -209,14 +245,14 @@ public class CreateReviewDialog extends JDialog {
 		authorComboBoxModel.removeAllElements();
 		reviewerComboBoxModel.removeAllElements();
 		observerComboBoxModel.removeAllElements();
-		projectComboBoxModel.removeAllElements();
+		groupComboBoxModel.removeAllElements();
 		bugzillaInstantieComboBoxModel.removeAllElements();
 		reviewAccessComboBoxModel.removeAllElements();
 
 		// Set default to empty value
 		reviewerComboBoxModel.addElement(null);
 		observerComboBoxModel.addElement(null);
-		projectComboBoxModel.addElement(null);
+		groupComboBoxModel.addElement(null);
 
 		for (User user : userList) {
 			authorComboBoxModel.addElement(user);
@@ -228,15 +264,31 @@ public class CreateReviewDialog extends JDialog {
 			bugzillaInstantieComboBoxModel.addElement(item);
 		}
 		
+		for (GroupDescription group : groupList) {
+			groupComboBoxModel.addElement(group);
+		}
+		
 		reviewAccessComboBoxModel.addElement(ReviewAccess.ANYONE);
 		reviewAccessComboBoxModel.addElement(ReviewAccess.PARTICIPANTS);
 	}
 
 	private boolean validateUserInput() {
 		boolean result = true;
+		if (groupComboBoxModel.getSelectedItem() == null) {
+			groupComboBox.setBorder(highlightBorder);
+			if (result) {
+				// This is the first error, so set focus to this field.
+				groupComboBox.grabFocus();
+			}
+			result = false;
+		} else {
+			groupComboBox.setBorder(defaultBorder);
+		}
+
 		if (StringUtils.isEmpty(titleTextField.getText())) {
 			titleTextField.setBorder(highlightBorder);
 			if (result) {
+				// This is the first error, so set focus to this field.
 				titleTextField.grabFocus();
 			}
 			result = false;
@@ -247,6 +299,7 @@ public class CreateReviewDialog extends JDialog {
 		if (authorComboBoxModel.getSelectedItem() == null) {
 			authorComboBox.setBorder(highlightBorder);
 			if (result) {
+				// This is the first error, so set focus to this field.
 				authorComboBox.grabFocus();
 			}
 			result = false;
@@ -257,6 +310,7 @@ public class CreateReviewDialog extends JDialog {
 		if (reviewerComboBoxModel.getSelectedItem() == null) {
 			reviewerComboBox.setBorder(highlightBorder);
 			if (result) {
+				// This is the first error, so set focus to this field.
 				reviewerComboBox.grabFocus();
 			}
 			result = false;
@@ -280,14 +334,8 @@ public class CreateReviewDialog extends JDialog {
 		dispose();
 	}
 
-	public static void main(String[] args) {
-		User[] users = new User[0];
-		MetaDataSelectItem[] descriptions = new MetaDataSelectItem[0];
-
-		CreateReviewDialog dialog = new CreateReviewDialog(users, descriptions, null);
-		dialog.pack();
-		dialog.setVisible(true);
-		System.exit(0);
+	public GroupDescription getSelectedGroup() {
+		return (GroupDescription) groupComboBoxModel.getSelectedItem();
 	}
 
 	public User getSelectedAuthor() {
@@ -388,6 +436,31 @@ public class CreateReviewDialog extends JDialog {
 
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			IDropDownItem item = (IDropDownItem) value;
+
+			if (isSelected) {
+				setBackground(Color.BLUE);
+			} else {
+				setBackground(list.getBackground());
+			}
+
+			String name = "";
+			if (value != null) {
+				name = item.getDisplayName();
+			}
+			setText(name);
+
+			return this;
+		}
+	}
+	
+	class GroupDescriptionRenderer extends JLabel implements ListCellRenderer {
+
+		public GroupDescriptionRenderer() {
+			setOpaque(true);
+		}
+
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			GroupDescription item = (GroupDescription) value;
 
 			if (isSelected) {
 				setBackground(Color.BLUE);
