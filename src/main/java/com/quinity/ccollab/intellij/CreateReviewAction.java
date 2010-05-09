@@ -41,7 +41,7 @@ public class CreateReviewAction extends IntelliCcollabAction {
 			User[] users = fetchUsersTask.getUsers();
 
 			// Retrieve the avaliable metadata
-//			MetaDataDescription overview = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Overview")[0];
+			MetaDataDescription overview = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Overview")[0];
 			MetaDataDescription bugzillaInstantie = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzilla-instantie")[0];
 			MetaDataDescription bugzillanummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer")[0];
 			
@@ -57,7 +57,6 @@ public class CreateReviewAction extends IntelliCcollabAction {
 			}
 
 			String enteredTitle = createReviewDialog.getEnteredTitle();
-			String enteredOverview = createReviewDialog.getEnteredOverview();
 			boolean uploadRestricted = createReviewDialog.isUploadRestricted();
 			ReviewAccess reviewAccess = createReviewDialog.getReviewAccess();
 			User selectedAuthor = createReviewDialog.getSelectedAuthor();
@@ -65,11 +64,12 @@ public class CreateReviewAction extends IntelliCcollabAction {
 			User selectedObserver = createReviewDialog.getSelectedObserver();
 
 			Map<MetaDataDescription, Object> metadata = new HashMap<MetaDataDescription, Object>(); 
+			metadata.put(overview, createReviewDialog.getEnteredOverview());
 			metadata.put(bugzillaInstantie, createReviewDialog.getSelectedBugzillaInstantie());
 			metadata.put(bugzillanummer, createReviewDialog.getEnteredBugzillanummer());
 
-			CreateReviewTask createReviewTask = new CreateReviewTask(project, user, enteredTitle, enteredOverview, 
-					uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadata);
+			CreateReviewTask createReviewTask = new CreateReviewTask(project, user, enteredTitle, uploadRestricted, 
+					reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadata);
 			createReviewTask.queue();
 
 		} catch (CollabClientServerConnectivityException e) {

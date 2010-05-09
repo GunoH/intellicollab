@@ -29,7 +29,6 @@ public class CreateReviewTask extends Task.Modal {
 
 	private User user;
 	private String reviewTitle;
-	private String reviewOverview;
 	private boolean uploadRestricted;
 	private ReviewAccess reviewAccess;
 	private User author;
@@ -39,14 +38,13 @@ public class CreateReviewTask extends Task.Modal {
 	
 	private Review review; 
 	
-	public CreateReviewTask(Project project, User user, String reviewTitle, String reviewOverview, 
-							boolean uploadRestricted, ReviewAccess reviewAccess, User author, User reviewer, 
-							User observer, Map<MetaDataDescription, Object> metadata) {
+	public CreateReviewTask(Project project, User user, String reviewTitle, boolean uploadRestricted, 
+							ReviewAccess reviewAccess, User author, User reviewer, User observer, 
+							Map<MetaDataDescription, Object> metadata) {
 		super(project, MessageResources.message("task.createReview.title"), false);
 
 		this.user = user;
 		this.reviewTitle = reviewTitle;
-		this.reviewOverview = reviewOverview;
 		this.uploadRestricted = uploadRestricted;
 		this.reviewAccess = reviewAccess;
 		this.author = author;
@@ -79,7 +77,6 @@ public class CreateReviewTask extends Task.Modal {
 
 		// Create the new review object with the local user as the creator
 		review = user.getEngine().reviewCreate(user, reviewTitle);
-		review.setOverview(reviewOverview);
 		review.setUploadRestricted(uploadRestricted);
 		review.setReviewAccess(reviewAccess);
 
