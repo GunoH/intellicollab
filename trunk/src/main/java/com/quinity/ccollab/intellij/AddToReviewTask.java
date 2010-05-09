@@ -33,7 +33,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 	private User user;
 
-	private boolean wasSuccessful;
+	private boolean success;
 	private String errorMessage;
 
 	public AddToReviewTask(Project project, Review review, User user, File... files) {
@@ -63,7 +63,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 
 			if (files.length == 0) {
-				wasSuccessful = true;
+				success = true;
 				return;
 			}
 
@@ -116,7 +116,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 			// changed at all so no one will be affected.
 			review.addChangelist(changelist, user);
 
-			wasSuccessful = true;
+			success = true;
 		} catch (ScmConfigurationException e) {
 			logger.warn(e);
 			errorMessage = MessageResources.message("errorDialog.cannotDetermineSCMSystem.text");
@@ -135,7 +135,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 	@Override
 	public void onSuccess() {
-		if (wasSuccessful) {
+		if (success) {
 			showConfirmDialog(review, files);
 		} else {
 			Messages.showErrorDialog(errorMessage, MessageResources.message("errorDialog.errorOccured.title"));
@@ -144,7 +144,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 
 	@Override
 	public void onCancel() {
-		if (wasSuccessful) {
+		if (success) {
 			showConfirmDialog(review, files);
 		} else {
 			Messages.showErrorDialog(MessageResources.message("errorDialog.cancelledAddToReview.text"), 
