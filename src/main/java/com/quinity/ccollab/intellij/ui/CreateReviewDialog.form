@@ -51,13 +51,11 @@
               <text resource-bundle="com/quinity/ccollab/intellij/MessageResources" key="dialog.createReview.label.project"/>
             </properties>
           </component>
-          <component id="46779" class="javax.swing.JComboBox" binding="projectComboBox" custom-create="true" default-binding="true">
+          <component id="46779" class="javax.swing.JComboBox" binding="groupComboBox" custom-create="true" default-binding="true">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties>
-              <enabled value="false"/>
-            </properties>
+            <properties/>
           </component>
         </children>
       </grid>
@@ -164,9 +162,7 @@
                     <maximum-size width="80" height="-1"/>
                   </grid>
                 </constraints>
-                <properties>
-                  <enabled value="true"/>
-                </properties>
+                <properties/>
               </component>
               <component id="ed474" class="javax.swing.JLabel">
                 <constraints>
@@ -183,9 +179,7 @@
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties>
-                  <enabled value="true"/>
-                </properties>
+                <properties/>
               </component>
               <hspacer id="63dfe">
                 <constraints>

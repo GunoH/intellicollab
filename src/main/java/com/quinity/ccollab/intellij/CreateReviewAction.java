@@ -7,6 +7,7 @@ import com.intellij.openapi.ui.Messages;
 import com.quinity.ccollab.intellij.ui.CreateReviewDialog;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
+import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.IDropDownItem;
 import com.smartbear.ccollab.datamodel.MetaDataDescription;
 import com.smartbear.ccollab.datamodel.ReviewAccess;
@@ -15,6 +16,7 @@ import com.smartbear.scm.ScmConfigurationException;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CreateReviewAction extends IntelliCcollabAction {
@@ -40,14 +42,22 @@ public class CreateReviewAction extends IntelliCcollabAction {
 
 			User[] users = fetchUsersTask.getUsers();
 
+			// Retrieve the avaliable groups
+			FetchGroupsTask fetchGroupsTask = new FetchGroupsTask(project, user);
+			fetchGroupsTask.queue();
+
+			List<GroupDescription> groups = fetchGroupsTask.getGroups();
+
 			// Retrieve the avaliable metadata
-			MetaDataDescription overview = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Overview")[0];
-			MetaDataDescription bugzillaInstantie = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzilla-instantie")[0];
-			MetaDataDescription bugzillanummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer")[0];
+			FetchMetadataTask fetchMetadataTask = new FetchMetadataTask(project, user);
+			fetchMetadataTask.queue();
+			MetaDataDescription overview = fetchMetadataTask.getOverview();
+			MetaDataDescription bugzillaInstantie = fetchMetadataTask.getBugzillaInstantie();
+			MetaDataDescription bugzillanummer = fetchMetadataTask.getBugzillanummer();
 			
 			IDropDownItem[] bugzillaInstanties = bugzillaInstantie.getDropDownItems(true);
 
-			CreateReviewDialog createReviewDialog = new CreateReviewDialog(users, bugzillaInstanties, user);
+			CreateReviewDialog createReviewDialog = new CreateReviewDialog(users, groups, bugzillaInstanties, user);
 			createReviewDialog.pack();
 			createReviewDialog.setVisible(true);
 
@@ -56,6 +66,7 @@ public class CreateReviewAction extends IntelliCcollabAction {
 				return;
 			}
 
+			GroupDescription selectedGroup = createReviewDialog.getSelectedGroup();
 			String enteredTitle = createReviewDialog.getEnteredTitle();
 			boolean uploadRestricted = createReviewDialog.isUploadRestricted();
 			ReviewAccess reviewAccess = createReviewDialog.getReviewAccess();
@@ -68,8 +79,8 @@ public class CreateReviewAction extends IntelliCcollabAction {
 			metadata.put(bugzillaInstantie, createReviewDialog.getSelectedBugzillaInstantie());
 			metadata.put(bugzillanummer, createReviewDialog.getEnteredBugzillanummer());
 
-			CreateReviewTask createReviewTask = new CreateReviewTask(project, user, enteredTitle, uploadRestricted, 
-					reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadata);
+			CreateReviewTask createReviewTask = new CreateReviewTask(project, user, selectedGroup, enteredTitle, 
+					uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadata);
 			createReviewTask.queue();
 
 		} catch (CollabClientServerConnectivityException e) {

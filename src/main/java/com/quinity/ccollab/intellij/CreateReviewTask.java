@@ -11,6 +11,7 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.smartbear.CollabClientException;
+import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.IDropDownItem;
 import com.smartbear.ccollab.datamodel.MetaDataDescription;
 import com.smartbear.ccollab.datamodel.MetaDataSelectItem;
@@ -28,6 +29,7 @@ public class CreateReviewTask extends Task.Modal {
 	private boolean success;
 
 	private User user;
+	private GroupDescription group;
 	private String reviewTitle;
 	private boolean uploadRestricted;
 	private ReviewAccess reviewAccess;
@@ -38,12 +40,13 @@ public class CreateReviewTask extends Task.Modal {
 	
 	private Review review; 
 	
-	public CreateReviewTask(Project project, User user, String reviewTitle, boolean uploadRestricted, 
-							ReviewAccess reviewAccess, User author, User reviewer, User observer, 
-							Map<MetaDataDescription, Object> metadata) {
+	public CreateReviewTask(Project project, User user, GroupDescription group, String reviewTitle, 
+							boolean uploadRestricted, ReviewAccess reviewAccess, User author, User reviewer, 
+							User observer, Map<MetaDataDescription, Object> metadata) {
 		super(project, MessageResources.message("task.createReview.title"), false);
 
 		this.user = user;
+		this.group = group;
 		this.reviewTitle = reviewTitle;
 		this.uploadRestricted = uploadRestricted;
 		this.reviewAccess = reviewAccess;
@@ -77,6 +80,7 @@ public class CreateReviewTask extends Task.Modal {
 
 		// Create the new review object with the local user as the creator
 		review = user.getEngine().reviewCreate(user, reviewTitle);
+		review.setGroup(group);
 		review.setUploadRestricted(uploadRestricted);
 		review.setReviewAccess(reviewAccess);
 
