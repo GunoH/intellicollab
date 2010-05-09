@@ -2,6 +2,8 @@ package com.quinity.ccollab.intellij.ui;
 
 import com.intellij.openapi.ui.ComboBox;
 import com.quinity.ccollab.intellij.MessageResources;
+import com.smartbear.ccollab.datamodel.IDropDownItem;
+import com.smartbear.ccollab.datamodel.MetaDataSelectItem;
 import com.smartbear.ccollab.datamodel.ReviewAccess;
 import com.smartbear.ccollab.datamodel.User;
 import org.apache.commons.lang.StringUtils;
@@ -84,6 +86,11 @@ public class CreateReviewDialog extends JDialog {
 	private List<User> userList;
 
 	/**
+	 * Lijst met bugzillaInstanties waar uit gekozen kan worden in de userinterface.
+	 */
+	private List<IDropDownItem> bugzillaInstantieList;
+
+	/**
 	 * Geeft aan of de gebruiker op de OK knop heeft gedrukt of niet.
 	 */
 	private boolean okPressed;
@@ -103,11 +110,14 @@ public class CreateReviewDialog extends JDialog {
 	 */
 	private static final int BUGZILLANUMMER_MAXLENGTH = 255;
 
-	public CreateReviewDialog(User[] userList, User currentUser) {
+	public CreateReviewDialog(User[] userList, IDropDownItem[] bugzillaInstantieList, User currentUser) {
 
 		this.userList = new ArrayList<User>();
 		this.userList.addAll(Arrays.asList(userList));
 
+		this.bugzillaInstantieList = new ArrayList<IDropDownItem>();
+		this.bugzillaInstantieList.addAll(Arrays.asList(bugzillaInstantieList));
+		
 		reset();
 
 		authorComboBoxModel.setSelectedItem(currentUser);
@@ -186,7 +196,8 @@ public class CreateReviewDialog extends JDialog {
 
 		bugzillaInstantieComboBoxModel = new DefaultComboBoxModel();
 		bugzillaInstantieComboBox = new ComboBox(bugzillaInstantieComboBoxModel, -1);
-		bugzillaInstantieComboBox.setRenderer(new DefaultListCellRenderer());
+		bugzillaInstantieComboBox.setRenderer(new IDropDownItemComboboxRenderer());
+		bugzillaInstantieComboBox.setKeySelectionManager(new IncrementalKeySelManager());
 
 		reviewAccessComboBoxModel = new DefaultComboBoxModel();
 		reviewAccessComboBox = new ComboBox(reviewAccessComboBoxModel, -1);
@@ -206,7 +217,6 @@ public class CreateReviewDialog extends JDialog {
 		reviewerComboBoxModel.addElement(null);
 		observerComboBoxModel.addElement(null);
 		projectComboBoxModel.addElement(null);
-		bugzillaInstantieComboBoxModel.addElement(null);
 
 		for (User user : userList) {
 			authorComboBoxModel.addElement(user);
@@ -214,6 +224,10 @@ public class CreateReviewDialog extends JDialog {
 			observerComboBoxModel.addElement(user);
 		}
 
+		for (IDropDownItem item : bugzillaInstantieList) {
+			bugzillaInstantieComboBoxModel.addElement(item);
+		}
+		
 		reviewAccessComboBoxModel.addElement(ReviewAccess.ANYONE);
 		reviewAccessComboBoxModel.addElement(ReviewAccess.PARTICIPANTS);
 	}
@@ -268,8 +282,9 @@ public class CreateReviewDialog extends JDialog {
 
 	public static void main(String[] args) {
 		User[] users = new User[0];
+		MetaDataSelectItem[] descriptions = new MetaDataSelectItem[0];
 
-		CreateReviewDialog dialog = new CreateReviewDialog(users, null);
+		CreateReviewDialog dialog = new CreateReviewDialog(users, descriptions, null);
 		dialog.pack();
 		dialog.setVisible(true);
 		System.exit(0);
@@ -287,12 +302,20 @@ public class CreateReviewDialog extends JDialog {
 		return (User) observerComboBoxModel.getSelectedItem();
 	}
 
+	public IDropDownItem getSelectedBugzillaInstantie() {
+		return (IDropDownItem) bugzillaInstantieComboBoxModel.getSelectedItem();
+	}
+
 	public String getEnteredTitle() {
 		return titleTextField.getText();
 	}
 
 	public String getEnteredOverview() {
 		return overviewTextArea.getText();
+	}
+
+	public String getEnteredBugzillanummer() {
+		return bugzillaNummerTextField.getText();
 	}
 
 	public boolean isUploadRestricted() {
@@ -306,54 +329,79 @@ public class CreateReviewDialog extends JDialog {
 	public boolean isOkPressed() {
 		return okPressed;
 	}
-}
 
-class UserComboboxRenderer extends JLabel implements ListCellRenderer {
+	class UserComboboxRenderer extends JLabel implements ListCellRenderer {
 
-	public UserComboboxRenderer() {
-		setOpaque(true);
+		public UserComboboxRenderer() {
+			setOpaque(true);
+		}
+
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			User user = (User) value;
+
+			if (isSelected) {
+				setBackground(Color.BLUE);
+			} else {
+				setBackground(list.getBackground());
+			}
+
+			String name = "";
+			if (value != null) {
+				name = user.getDisplayName();
+			}
+			setText(name);
+
+			return this;
+		}
 	}
 
-	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		User user = (User) value;
+	class ReviewAccessComboboxRenderer extends JLabel implements ListCellRenderer {
 
-		if (isSelected) {
-			setBackground(Color.BLUE);
-		} else {
-			setBackground(list.getBackground());
+		public ReviewAccessComboboxRenderer() {
+			setOpaque(true);
 		}
 
-		String name = "";
-		if (value != null) {
-			name = user.getDisplayName();
-		}
-		setText(name);
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			ReviewAccess reviewAccess = (ReviewAccess) value;
 
-		return this;
+			if (isSelected) {
+				setBackground(Color.BLUE);
+			} else {
+				setBackground(list.getBackground());
+			}
+
+			String name = "";
+			if (value != null) {
+				name = reviewAccess.getDisplayName();
+			}
+			setText(name);
+
+			return this;
+		}
 	}
-}
 
-class ReviewAccessComboboxRenderer extends JLabel implements ListCellRenderer {
+	class IDropDownItemComboboxRenderer extends JLabel implements ListCellRenderer {
 
-	public ReviewAccessComboboxRenderer() {
-		setOpaque(true);
-	}
-
-	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		ReviewAccess reviewAccess = (ReviewAccess) value;
-
-		if (isSelected) {
-			setBackground(Color.BLUE);
-		} else {
-			setBackground(list.getBackground());
+		public IDropDownItemComboboxRenderer() {
+			setOpaque(true);
 		}
 
-		String name = "";
-		if (value != null) {
-			name = reviewAccess.getDisplayName();
-		}
-		setText(name);
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			IDropDownItem item = (IDropDownItem) value;
 
-		return this;
+			if (isSelected) {
+				setBackground(Color.BLUE);
+			} else {
+				setBackground(list.getBackground());
+			}
+
+			String name = "";
+			if (value != null) {
+				name = item.getDisplayName();
+			}
+			setText(name);
+
+			return this;
+		}
 	}
 }
