@@ -7,11 +7,15 @@ import com.intellij.openapi.ui.Messages;
 import com.quinity.ccollab.intellij.ui.CreateReviewDialog;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
+import com.smartbear.ccollab.datamodel.IDropDownItem;
+import com.smartbear.ccollab.datamodel.MetaDataDescription;
 import com.smartbear.ccollab.datamodel.ReviewAccess;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.scm.ScmConfigurationException;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateReviewAction extends IntelliCcollabAction {
 
@@ -35,8 +39,15 @@ public class CreateReviewAction extends IntelliCcollabAction {
 			fetchUsersTask.queue();
 
 			User[] users = fetchUsersTask.getUsers();
+
+			// Retrieve the avaliable metadata
+//			MetaDataDescription overview = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Overview")[0];
+			MetaDataDescription bugzillaInstantie = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzilla-instantie")[0];
+			MetaDataDescription bugzillanummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer")[0];
 			
-			CreateReviewDialog createReviewDialog = new CreateReviewDialog(users, user);
+			IDropDownItem[] bugzillaInstanties = bugzillaInstantie.getDropDownItems(true);
+
+			CreateReviewDialog createReviewDialog = new CreateReviewDialog(users, bugzillaInstanties, user);
 			createReviewDialog.pack();
 			createReviewDialog.setVisible(true);
 
@@ -52,9 +63,13 @@ public class CreateReviewAction extends IntelliCcollabAction {
 			User selectedAuthor = createReviewDialog.getSelectedAuthor();
 			User selectedReviewer = createReviewDialog.getSelectedReviewer();
 			User selectedObserver = createReviewDialog.getSelectedObserver();
-			
+
+			Map<MetaDataDescription, Object> metadata = new HashMap<MetaDataDescription, Object>(); 
+			metadata.put(bugzillaInstantie, createReviewDialog.getSelectedBugzillaInstantie());
+			metadata.put(bugzillanummer, createReviewDialog.getEnteredBugzillanummer());
+
 			CreateReviewTask createReviewTask = new CreateReviewTask(project, user, enteredTitle, enteredOverview, 
-					uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver);
+					uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadata);
 			createReviewTask.queue();
 
 		} catch (CollabClientServerConnectivityException e) {
