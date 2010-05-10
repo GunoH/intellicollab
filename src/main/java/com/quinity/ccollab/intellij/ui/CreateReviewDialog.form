@@ -125,7 +125,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="ab375" class="javax.swing.JTextArea" binding="overviewTextArea">
+                  <component id="ab375" class="javax.swing.JTextArea" binding="overviewTextArea" custom-create="true">
                     <constraints/>
                     <properties>
                       <lineWrap value="true"/>
