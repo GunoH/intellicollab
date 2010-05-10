@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -18,6 +19,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -238,6 +240,13 @@ public class CreateReviewDialog extends JDialog {
 				return ((ReviewAccess)object).getDisplayName().toUpperCase();
 			}
 		});
+		
+		overviewTextArea = new JTextArea();
+		// Make sure tab and shift-tab move the focus instead of inserting tab characters.
+		overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, 
+				new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+		overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, 
+				new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
 	}
 
 	public void update() {
