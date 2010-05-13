@@ -8,6 +8,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.changes.Change;
+import com.intellij.openapi.vcs.changes.ChangeList;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VfsUtil;
@@ -78,6 +79,14 @@ public final class PluginUtil {
 	
 	public static Project getProject(DataContext dataContext) {
 		return DataKeys.PROJECT.getData(dataContext);
+	}
+
+	public static Change[] getChanges(DataContext dataContext) {
+		return DataKeys.CHANGES.getData(dataContext);
+	}
+
+	public static ChangeList[] getChangeLists(DataContext dataContext) {
+		return DataKeys.CHANGE_LISTS.getData(dataContext);
 	}
 
 	public static SelectionModel getCurrentSelection(DataContext dataContext) {

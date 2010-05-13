@@ -1,14 +1,14 @@
 package com.quinity.ccollab.intellij;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vcs.AbstractVcs;
-import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.changes.Change;
+import com.intellij.openapi.vcs.changes.ChangeList;
 import com.intellij.openapi.vcs.changes.ChangesUtil;
 import com.quinity.ccollab.intellij.ui.FileAndReviewSelector;
 import com.smartbear.CollabClientException;
@@ -19,6 +19,7 @@ import com.smartbear.scm.ScmConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class AddControlledFileAction extends IntelliCcollabAction {
@@ -128,12 +129,12 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 	}
 	
 	public void update(AnActionEvent e) {
-		Project project = e.getData(PlatformDataKeys.PROJECT);
+		Project project = PluginUtil.getProject(e.getDataContext());
 		boolean enabled = false;
 		if (project != null) {
-			Change[] changes = e.getData(VcsDataKeys.CHANGES);
+			Change[] changes = PluginUtil.getChanges(e.getDataContext());
 
-			if (changes != null && ChangesUtil.allChangesInOneList(project, changes)) {
+			if (changes != null && allChangesInOneList(e.getDataContext(), changes)) {
 				for(Change c: changes) {
 					final AbstractVcs vcs = ChangesUtil.getVcsForChange(c, project);
 					if (vcs != null && vcs.getCheckinEnvironment() != null) {
@@ -144,5 +145,30 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 			}
 		}
 		e.getPresentation().setEnabled(enabled);
+		e.getPresentation().setVisible(true);
+	}
+
+	private boolean allChangesInOneList(DataContext dataContext, Change[] changes) {
+		if (changes == null || changes.length == 0) {
+		  return false;
+		}
+
+		ChangeList[] changeLists = PluginUtil.getChangeLists(dataContext);
+		final Change first = changes[0];
+
+		for (ChangeList list : changeLists) {
+		  final Collection<Change> listChanges = list.getChanges();
+		  if (listChanges.contains(first)) {
+			// must contain all other
+			for (int i = 1; i < changes.length; i++) {
+			  final Change change = changes[i];
+			  if (! listChanges.contains(change)) {
+				return false;
+			  }
+			}
+			return true;
+		  }
+		}
+		return false;
 	}
 }
