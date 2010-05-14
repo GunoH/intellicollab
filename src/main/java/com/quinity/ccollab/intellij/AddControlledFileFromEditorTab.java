@@ -11,7 +11,7 @@ public class AddControlledFileFromEditorTab extends AddControlledFileAction {
 		return PluginUtil.getCurrentFiles(event.getDataContext());
 	}
 
-	public void update(AnActionEvent e) {
+	public void update(AnActionEvent event) {
 		// This action should always be enabled, because we know which file is selected.
 	}
 }
