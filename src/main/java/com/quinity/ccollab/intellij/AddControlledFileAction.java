@@ -1,7 +1,6 @@
 package com.quinity.ccollab.intellij;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
@@ -19,7 +18,6 @@ import com.smartbear.scm.ScmConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class AddControlledFileAction extends IntelliCcollabAction {
@@ -127,48 +125,23 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 		AddToReviewTask addToReviewTask = new AddToReviewTask(project, review, user, files);
 		addToReviewTask.queue();
 	}
-	
-	public void update(AnActionEvent e) {
-		Project project = PluginUtil.getProject(e.getDataContext());
+
+	public void update(AnActionEvent event) {
+		Project project = PluginUtil.getProject(event.getDataContext());
+		Change[] changes = PluginUtil.getChanges(event.getDataContext());
+
 		boolean enabled = false;
 		if (project != null) {
-			Change[] changes = PluginUtil.getChanges(e.getDataContext());
-
-			if (changes != null && allChangesInOneList(e.getDataContext(), changes)) {
-				for(Change c: changes) {
-					final AbstractVcs vcs = ChangesUtil.getVcsForChange(c, project);
-					if (vcs != null && vcs.getCheckinEnvironment() != null) {
+			ChangeList changelist = ChangesUtil.getChangeListIfOnlyOne(project, changes);
+			if (changes != null && changelist != null) {
+				for (Change change : changes) {
+					AbstractVcs abstractvcs = ChangesUtil.getVcsForChange(change, project);
+					if (abstractvcs != null && abstractvcs.getCheckinEnvironment() != null) {
 						enabled = true;
-						break;
 					}
 				}
 			}
 		}
-		e.getPresentation().setEnabled(enabled);
-		e.getPresentation().setVisible(true);
-	}
-
-	private boolean allChangesInOneList(DataContext dataContext, Change[] changes) {
-		if (changes == null || changes.length == 0) {
-		  return false;
-		}
-
-		ChangeList[] changeLists = PluginUtil.getChangeLists(dataContext);
-		final Change first = changes[0];
-
-		for (ChangeList list : changeLists) {
-		  final Collection<Change> listChanges = list.getChanges();
-		  if (listChanges.contains(first)) {
-			// must contain all other
-			for (int i = 1; i < changes.length; i++) {
-			  final Change change = changes[i];
-			  if (! listChanges.contains(change)) {
-				return false;
-			  }
-			}
-			return true;
-		  }
-		}
-		return false;
+		event.getPresentation().setEnabled(enabled);
 	}
 }
