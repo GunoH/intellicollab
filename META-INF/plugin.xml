@@ -24,6 +24,11 @@
 		]]>
 	</change-notes>
 	<idea-version since-build="7757"/>
+	<application-components>
+		<component>
+			<implementation-class>com.quinity.ccollab.intellij.IntelliCcollabApplicationComponent</implementation-class>
+		</component>
+	</application-components>
 	<actions>
 		<group>
 			<separator/>
