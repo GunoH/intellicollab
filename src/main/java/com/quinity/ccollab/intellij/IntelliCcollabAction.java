@@ -1,22 +1,15 @@
 package com.quinity.ccollab.intellij;
 
 import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.quinity.ccollab.intellij.ui.CreateReviewDialog;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
 import com.smartbear.beans.IGlobalOptions;
 import com.smartbear.beans.IScmOptions;
 import com.smartbear.ccollab.CommandLineClient;
-import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.datamodel.Engine;
-import com.smartbear.ccollab.datamodel.ReviewAccess;
 import com.smartbear.ccollab.datamodel.User;
-import com.smartbear.scm.ScmConfigurationException;
 
 import java.io.IOException;
 
@@ -58,7 +51,7 @@ public abstract class IntelliCcollabAction extends AnAction {
 		
 		//load options from config files
 		com.smartbear.collections.Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
-		globalOptions = configOptions.getA();
+		globalOptions = new IntelliCcollabGlobalOptions(configOptions.getA());
 		scmOptions = configOptions.getB();
 		
 		//initialize client interface
