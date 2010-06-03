@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import java.net.MalformedURLException;
 
 public class IntelliCcollabApplicationComponent implements ApplicationComponent, Configurable, JDOMExternalizable {
     private IntelliCcollabConfigurationForm form;
@@ -63,9 +64,12 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
 
     public void apply() throws ConfigurationException {
         if (form != null) {
-            // Get data from form to component
-            form.getData(this);
-        }
+			try {
+				form.getData(this);
+			} catch (MalformedURLException e) {
+				throw new ConfigurationException("Invalid URL");
+			}
+		}
     }
 
     public void reset() {
