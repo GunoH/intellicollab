@@ -1,14 +1,11 @@
 package com.quinity.ccollab.intellij.ui;
 
 import com.quinity.ccollab.intellij.IntelliCcollabApplicationComponent;
-import org.apache.commons.lang.StringUtils;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class IntelliCcollabConfigurationForm {
 	private JPanel rootComponent;
@@ -23,26 +20,23 @@ public class IntelliCcollabConfigurationForm {
 	}
 
 	public void setData(IntelliCcollabApplicationComponent data) {
-		URL serverURL = data.getServerURL();
-		if (serverURL != null) {
-			urlField.setText(serverURL.toString());
-		}
+		urlField.setText(data.getServerURL());
 	}
 
-	public void getData(IntelliCcollabApplicationComponent data) throws MalformedURLException {
-		String urlText = urlField.getText();
-		if (StringUtils.isNotEmpty(urlText)) {
-			data.setServerURL(new URL(urlText));
-		} else {
-			data.setServerURL(null);
-		}
+	public void getData(IntelliCcollabApplicationComponent data) {
+		data.setServerURL(urlField.getText());
 	}
 
 	public boolean isModified(IntelliCcollabApplicationComponent data) {
-		if (urlField.getText() != null && data.getServerURL() != null) {
-			return !urlField.getText().equals(data.getServerURL().toString());
-		} else {
-			return urlField.getText() != null || data.getServerURL() != null;
+		
+		if (data.getServerURL() == null) {
+			return urlField.getText() != null;
 		}
+		
+		if (urlField.getText() == null) {
+			return false;
+		}
+		
+		return !urlField.getText().equals(data.getServerURL());
 	}
 }
