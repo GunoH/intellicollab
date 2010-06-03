@@ -3,6 +3,7 @@ package com.quinity.ccollab.intellij;
 import com.intellij.openapi.application.ApplicationManager;
 import com.smartbear.beans.IGlobalOptions;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class IntelliCcollabGlobalOptions implements IGlobalOptions {
@@ -31,9 +32,13 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 
 	public URL getUrl() {
 		if (component.getServerURL() == null) {
-			component.setServerURL(wrappedOptions.getUrl());
+			component.setServerURL(wrappedOptions.getUrl().toString());
 		}
-		return component.getServerURL();
+		try {
+			return new URL(component.getServerURL());
+		} catch (MalformedURLException e) {
+			throw new RuntimeException("Invalid URL:" + component.getServerURL());
+		}
 	}
 
 	public String getUser() {
