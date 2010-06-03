@@ -62,7 +62,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
 		// Sort the list of reviews in descending order of last activity date.
 		Collections.sort(this.reviewList, new Comparator<Review>() {
 			public int compare(Review r1, Review r2) {
-				return r2.getLastActivity().compareTo(r1.getLastActivity());
+				return r2.getCreationDate().compareTo(r1.getCreationDate());
 			}
 		});
 		
