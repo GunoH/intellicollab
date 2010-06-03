@@ -14,7 +14,7 @@
         </constraints>
         <properties>
           <labelFor value="92103"/>
-          <text resource-bundle="com/quinity/ccollab/intellij/MessageResources" key="configuration.serverUrl.label"/>
+          <text resource-bundle="com/quinity/ccollab/intellij/MessageResources" key="configuration.serverURL.label"/>
         </properties>
       </component>
       <component id="92103" class="javax.swing.JTextField" binding="urlField">
