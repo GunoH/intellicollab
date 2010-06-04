@@ -4,6 +4,7 @@ import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.util.DefaultJDOMExternalizer;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizable;
 import com.intellij.openapi.util.WriteExternalException;
@@ -44,7 +45,7 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
     }
 
     public Icon getIcon() {
-        return null;
+        return IconLoader.getIcon("/icons/codecollaborator.png");
     }
 
     public String getHelpTopic() {
