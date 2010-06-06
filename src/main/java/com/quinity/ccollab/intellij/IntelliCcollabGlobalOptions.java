@@ -47,11 +47,11 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 	}
 
 	public String getServerProxyHost() {
-		return wrappedOptions.getServerProxyHost();
+		return component.getServerProxyHost();
 	}
 
 	public String getServerProxyPort() {
-		return wrappedOptions.getServerProxyPort();
+		return component.getServerProxyPort();
 	}
 
 	public String getEditor() {
