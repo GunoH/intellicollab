@@ -10,6 +10,7 @@ import com.smartbear.ccollab.CommandLineClient;
 import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.User;
+import com.smartbear.collections.Pair;
 
 import java.io.IOException;
 
@@ -50,7 +51,7 @@ public abstract class IntelliCcollabAction extends AnAction {
 		}
 		
 		//load options from config files
-		com.smartbear.collections.Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
+		Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
 		globalOptions = new IntelliCcollabGlobalOptions(configOptions.getA());
 		scmOptions = configOptions.getB();
 		
