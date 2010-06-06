@@ -23,9 +23,6 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 	}
 
 	public String getPassword() {
-		if (component.getPassword() == null) {
-			component.setPassword(wrappedOptions.getPassword());
-		}
 		return component.getPassword();
 	}
 
@@ -34,9 +31,6 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 	}
 
 	public URL getUrl() {
-		if (component.getServerURL() == null) {
-			component.setServerURL(wrappedOptions.getUrl().toString());
-		}
 		try {
 			return new URL(component.getServerURL());
 		} catch (MalformedURLException e) {
@@ -45,9 +39,6 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 	}
 
 	public String getUser() {
-		if (component.getUsername() == null) {
-			component.setUsername(wrappedOptions.getUser());
-		}
 		return component.getUsername();
 	}
 
