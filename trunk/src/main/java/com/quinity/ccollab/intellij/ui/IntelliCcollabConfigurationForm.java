@@ -1,13 +1,25 @@
 package com.quinity.ccollab.intellij.ui;
 
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.ui.Messages;
 import com.quinity.ccollab.intellij.IntelliCcollabApplicationComponent;
+import com.quinity.ccollab.intellij.MessageResources;
+import com.smartbear.CollabClientException;
+import com.smartbear.beans.ConfigUtils;
+import com.smartbear.beans.IGlobalOptions;
+import com.smartbear.beans.IScmOptions;
+import com.smartbear.collections.Pair;
 import org.apache.commons.lang.StringUtils;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -20,6 +32,36 @@ public class IntelliCcollabConfigurationForm {
 	private JLabel urlLabel;
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;
+	private JButton autofillButton;
+
+	private static Logger logger = Logger.getInstance(IntelliCcollabConfigurationForm.class.getName());
+
+	public IntelliCcollabConfigurationForm() {
+		autofillButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+				try {
+					autofill();
+				} catch (Exception ex) {
+					logger.error("Exception when reading metadata from filesystem. ", ex);
+					Messages.showErrorDialog(MessageResources.message("errorDialog.couldNotReadMetadata.text"),
+							MessageResources.message("errorDialog.couldNotReadMetadata.title"));
+				}
+			}
+        });
+	}
+
+	/**
+	 * Fills the preferences with the values retrieved from the filesystem metadata.
+	 */
+	private void autofill() throws IOException, CollabClientException {
+		Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
+		IGlobalOptions options = configOptions.getA();
+
+		urlField.setText(options.getUrl().toString());
+		usernameField.setText(options.getUser());
+		passwordField.setText(options.getPassword());
+	}
+
 
 	/**
 	 * Method return root component of form.
