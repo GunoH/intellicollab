@@ -23,7 +23,10 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 	}
 
 	public String getPassword() {
-		return wrappedOptions.getPassword();
+		if (component.getPassword() == null) {
+			component.setPassword(wrappedOptions.getPassword());
+		}
+		return component.getPassword();
 	}
 
 	public Boolean isNonInteractive() {
@@ -42,7 +45,10 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 	}
 
 	public String getUser() {
-		return wrappedOptions.getUser();
+		if (component.getUsername() == null) {
+			component.setUsername(wrappedOptions.getUser());
+		}
+		return component.getUsername();
 	}
 
 	public Boolean isQuiet() {
