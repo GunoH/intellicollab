@@ -18,18 +18,6 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 		
 	}
 
-	public Boolean isNoBrowser() {
-		return wrappedOptions.isNoBrowser();
-	}
-
-	public String getPassword() {
-		return component.getPassword();
-	}
-
-	public Boolean isNonInteractive() {
-		return wrappedOptions.isNonInteractive();
-	}
-
 	public URL getUrl() {
 		try {
 			return new URL(component.getServerURL());
@@ -38,20 +26,32 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 		}
 	}
 
-	public String getUser() {
-		return component.getUsername();
-	}
-
-	public Boolean isQuiet() {
-		return wrappedOptions.isQuiet();
-	}
-
 	public String getServerProxyHost() {
 		return component.getServerProxyHost();
 	}
 
 	public String getServerProxyPort() {
 		return component.getServerProxyPort();
+	}
+
+	public String getUser() {
+		return component.getUsername();
+	}
+
+	public String getPassword() {
+		return component.getPassword();
+	}
+
+	public Boolean isNoBrowser() {
+		return wrappedOptions.isNoBrowser();
+	}
+
+	public Boolean isNonInteractive() {
+		return wrappedOptions.isNonInteractive();
+	}
+
+	public Boolean isQuiet() {
+		return wrappedOptions.isQuiet();
 	}
 
 	public String getEditor() {
