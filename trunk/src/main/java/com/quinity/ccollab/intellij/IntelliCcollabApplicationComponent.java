@@ -19,6 +19,8 @@ import java.net.MalformedURLException;
 public class IntelliCcollabApplicationComponent implements ApplicationComponent, Configurable, JDOMExternalizable {
     private IntelliCcollabConfigurationForm form;
     public String serverURL;
+    public String username;
+    public String password;
 	
     public void initComponent() {
     }
@@ -39,7 +41,23 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
         this.serverURL = serverURL;
     }
 
-    public String getDisplayName() {
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getDisplayName() {
         // Return name of configuration icon in Settings dialog
         return "IntelliCcollab";
     }
