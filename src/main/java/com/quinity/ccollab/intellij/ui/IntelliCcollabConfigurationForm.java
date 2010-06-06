@@ -27,6 +27,8 @@ import java.util.Arrays;
 public class IntelliCcollabConfigurationForm {
 	private JPanel rootComponent;
 	private JTextField urlField;
+	private JTextField proxyPortField;
+	private JTextField proxyHostField;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private JLabel urlLabel;
@@ -58,6 +60,8 @@ public class IntelliCcollabConfigurationForm {
 		IGlobalOptions options = configOptions.getA();
 
 		urlField.setText(options.getUrl().toString());
+		proxyHostField.setText(options.getServerProxyHost());
+		proxyPortField.setText(options.getServerProxyPort());
 		usernameField.setText(options.getUser());
 		passwordField.setText(options.getPassword());
 	}
@@ -72,6 +76,8 @@ public class IntelliCcollabConfigurationForm {
 
 	public void setData(IntelliCcollabApplicationComponent data) {
 		urlField.setText(data.getServerURL());
+		proxyHostField.setText(data.getServerProxyHost());
+		proxyPortField.setText(data.getServerProxyPort());
 		usernameField.setText(data.getUsername());
 		passwordField.setText(data.getPassword());
 	}
@@ -86,6 +92,8 @@ public class IntelliCcollabConfigurationForm {
 			data.setServerURL(null);
 		}
 		
+		data.setServerProxyHost(proxyHostField.getText());
+		data.setServerProxyPort(proxyPortField.getText());
 		data.setUsername(usernameField.getText());
 		data.setPassword(String.valueOf(passwordField.getPassword()));
 	}
@@ -95,6 +103,12 @@ public class IntelliCcollabConfigurationForm {
 		if (data.getServerURL() == null) {
 			return urlField.getText() != null;
 		}
+		if (data.getServerProxyHost() == null) {
+			return proxyHostField.getText() != null;
+		}
+		if (data.getServerProxyPort() == null) {
+			return proxyPortField.getText() != null;
+		}
 		if (data.getUsername() == null) {
 			return usernameField.getText() != null;
 		}
@@ -103,6 +117,12 @@ public class IntelliCcollabConfigurationForm {
 		}
 		
 		if (urlField.getText() == null) {
+			return false;
+		}
+		if (proxyHostField.getText() == null) {
+			return false;
+		}
+		if (proxyPortField.getText() == null) {
 			return false;
 		}
 		if (usernameField.getText() == null) {
@@ -115,11 +135,15 @@ public class IntelliCcollabConfigurationForm {
 		if (!urlField.getText().equals(data.getServerURL())) {
 			return true;
 		}
-
+		if (!proxyHostField.getText().equals(data.getServerProxyHost())) {
+			return true;
+		}
+		if (!proxyPortField.getText().equals(data.getServerProxyPort())) {
+			return true;
+		}
 		if (!usernameField.getText().equals(data.getUsername())) {
 			return true;
 		}
-		
 		return !Arrays.equals(passwordField.getPassword(), data.getPassword().toCharArray());
 	}
 }
