@@ -5,11 +5,12 @@
 	<h4>Code Collaborator integration</h4>
 	]]>
 	</description>
-	<version>0.10</version>
+	<version>0.11</version>
 	<vendor email="idea@guno.nl">Guno Heitman</vendor>
 	<depends>CVS</depends>
 	<change-notes><![CDATA[
 		<ul>
+			<li>v0.11: Added keyboard shortcuts and plugin settings, bugfixes.</li>
 			<li>v0.10: No more CVS-only builds. Bugfixes. Added possibility to create a new review: Tools -> Create new review...</li>
 			<li>v0.9: Bugfixes; Upgraded to new Code Collaborator Libraries; Review selection and file selection now share a single dialog.</li>
 			<li>v0.8: Several bugfixes and a new feature: when adding files to a review, the file selection can now be altered using checkboxes.</li>
