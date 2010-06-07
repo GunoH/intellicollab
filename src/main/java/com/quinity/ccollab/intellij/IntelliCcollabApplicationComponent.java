@@ -76,7 +76,7 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
     }
 
     public Icon getIcon() {
-        return IconLoader.getIcon("/icons/codecollaborator.png");
+        return IconLoader.getIcon("/icons/settingsIcon.png");
     }
 
     public String getHelpTopic() {
