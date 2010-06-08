@@ -31,9 +31,6 @@ public class IntelliCcollabConfigurationForm {
 	private JTextField proxyHostField;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
-	private JLabel urlLabel;
-	private JLabel usernameLabel;
-	private JLabel passwordLabel;
 	private JButton autofillButton;
 
 	private static Logger logger = Logger.getInstance(IntelliCcollabConfigurationForm.class.getName());
