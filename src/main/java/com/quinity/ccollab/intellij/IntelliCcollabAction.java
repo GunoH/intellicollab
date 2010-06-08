@@ -2,6 +2,7 @@ package com.quinity.ccollab.intellij;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
 import com.smartbear.beans.IGlobalOptions;
@@ -19,7 +20,7 @@ public abstract class IntelliCcollabAction extends AnAction {
 	/**
 	 * Global and SCM options, created by {@link #init(com.intellij.openapi.project.Project)}
 	 */
-	protected static IGlobalOptions globalOptions;
+	protected static IntelliCcollabGlobalOptions globalOptions;
 
 	/**
 	 * SCM options, created by {@link #init(com.intellij.openapi.project.Project)}
@@ -53,6 +54,13 @@ public abstract class IntelliCcollabAction extends AnAction {
 		//load options from config files
 		Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
 		globalOptions = new IntelliCcollabGlobalOptions(configOptions.getA());
+		
+		if (globalOptions.settingsIncomplete()) {
+			Messages.showInfoMessage(MessageResources.message("error.mandatorySettingsMissing"), 
+					MessageResources.message("errorDialog.errorOccured.title"));
+			return;
+		}
+		
 		scmOptions = configOptions.getB();
 		
 		//initialize client interface
