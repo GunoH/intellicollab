@@ -103,7 +103,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 			Engine engine = AddControlledFileAction.engine;
 			Scm scm = engine.scmByLocalCheckout(scmFile);			// select the SCM system that matches the client configuration
 
-			Changelist changelist = scm.uploadChangeset(changeset, null, "N/A", null, user.getLogin(), 
+			Changelist changelist = scm.uploadChangeset(changeset, null, null, null, user.getLogin(), 
 					"Local changes uploaded from IntelliJ IDEA", new NullProgressMonitor());
 
 			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.attaching", review.getId()));
