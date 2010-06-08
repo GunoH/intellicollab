@@ -2,6 +2,7 @@ package com.quinity.ccollab.intellij;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.smartbear.beans.IGlobalOptions;
+import org.apache.commons.lang.StringUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,6 +19,16 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 		
 	}
 
+	/**
+	 * Indicates if any of the mandatory settings are missing.
+	 * @return <code>true</code> if any of the mandatory settings are missing, <code>false</code> otherwise.
+	 */
+	public boolean settingsIncomplete() {
+		return StringUtils.isEmpty(component.getServerURL()) 
+				|| StringUtils.isEmpty(component.getUsername())
+				|| StringUtils.isEmpty(component.getPassword());
+	}
+	
 	public URL getUrl() {
 		try {
 			return new URL(component.getServerURL());
