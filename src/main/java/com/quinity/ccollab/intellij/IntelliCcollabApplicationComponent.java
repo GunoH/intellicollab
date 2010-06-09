@@ -71,7 +71,6 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
 	}
 
 	public String getDisplayName() {
-        // Return name of configuration icon in Settings dialog
         return "IntelliCcollab";
     }
 
@@ -106,7 +105,6 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
 
     public void reset() {
         if (form != null) {
-            // Reset form data from component
             form.setData(this);
         }
     }
