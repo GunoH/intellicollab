@@ -3,15 +3,20 @@ package com.quinity.ccollab.intellij;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.util.DefaultJDOMExternalizer;
 import com.intellij.openapi.util.IconLoader;
+import com.intellij.openapi.util.InvalidDataException;
+import com.intellij.openapi.util.JDOMExternalizable;
+import com.intellij.openapi.util.WriteExternalException;
 import com.quinity.ccollab.intellij.ui.IntelliCcollabConfigurationForm;
+import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import java.net.MalformedURLException;
 
-public class IntelliCcollabApplicationComponent implements ApplicationComponent, Configurable {
+public class IntelliCcollabApplicationComponent implements ApplicationComponent, Configurable, JDOMExternalizable {
     private IntelliCcollabConfigurationForm form;
     public String serverURL;
     public String serverProxyHost;
@@ -111,5 +116,13 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
 
     public void disposeUIResources() {
         form = null;
+    }
+
+    public void readExternal(Element element) throws InvalidDataException {
+        DefaultJDOMExternalizer.readExternal(this, element);
+    }
+
+    public void writeExternal(Element element) throws WriteExternalException {
+        DefaultJDOMExternalizer.writeExternal(this, element);
     }
 }
