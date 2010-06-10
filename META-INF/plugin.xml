@@ -1,15 +1,16 @@
 <!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
-<idea-plugin>
+<idea-plugin url="https://guno.nl/confluence/display/IC">
 	<name>IntelliCcollab</name>
 	<description><![CDATA[
 	<h4>Code Collaborator integration</h4>
 	]]>
 	</description>
-	<version>0.11</version>
+	<version>0.12</version>
 	<vendor email="idea@guno.nl">Guno Heitman</vendor>
 	<depends>CVS</depends>
 	<change-notes><![CDATA[
 		<ul>
+			<li>v0.12: Bugfixes.</li>
 			<li>v0.11: Added keyboard shortcuts and plugin settings, bugfixes.</li>
 			<li>v0.10: No more CVS-only builds. Bugfixes. Added possibility to create a new review: Tools -> Create new review...</li>
 			<li>v0.9: Bugfixes; Upgraded to new Code Collaborator Libraries; Review selection and file selection now share a single dialog.</li>
