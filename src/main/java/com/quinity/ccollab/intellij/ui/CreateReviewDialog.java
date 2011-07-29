@@ -50,19 +50,23 @@ public class CreateReviewDialog extends JDialog {
 	private JTextField titleTextField;
 	private JTextArea overviewTextArea;
 	private JTextField bugzillaNummerTextField;
-	private JPanel contentPane;
-	private JPanel buttonPane;
-	private JPanel authorPane;
-	private JPanel reviewerPane;
-	private JPanel titlePane;
-	private JPanel headerPane;
-	private JPanel projectPane;
-	private JPanel overviewPane;
-	private JPanel basicInfoPane;
-	private JPanel bugzillaPane;
-	private JPanel participantsPane;
-	private JPanel observerPane;
-	private JPanel restrictionPane;
+    private JTextField foTextField;
+    private JTextField toTextField;
+    private JPanel contentPane;
+    private JPanel buttonPane;
+    private JPanel authorPane;
+    private JPanel reviewerPane;
+    private JPanel titlePane;
+    private JPanel headerPane;
+    private JPanel projectPane;
+    private JPanel overviewPane;
+    private JPanel basicInfoPane;
+    private JPanel bugzillaPane;
+    private JPanel participantsPane;
+    private JPanel observerPane;
+    private JPanel restrictionPane;
+    private JPanel FOPane;
+    private JPanel TOPane;
 
 	/**
 	 * De default border voor invoervelden; deze bewaren we zodat we na het tonen van een eventuele foutmelding de
@@ -374,6 +378,14 @@ public class CreateReviewDialog extends JDialog {
 	public String getEnteredBugzillanummer() {
 		return bugzillaNummerTextField.getText();
 	}
+
+    public String getEnteredFO() {
+        return foTextField.getText();
+    }
+
+    public String getEnteredTO() {
+        return toTextField.getText();
+    }
 
 	public boolean isUploadRestricted() {
 		return "yes".equalsIgnoreCase((String)restrictUploadsToReviewComboBox.getSelectedItem());

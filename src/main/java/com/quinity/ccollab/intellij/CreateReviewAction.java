@@ -54,6 +54,8 @@ public class CreateReviewAction extends IntelliCcollabAction {
 			MetaDataDescription overview = fetchMetadataTask.getOverview();
 			MetaDataDescription bugzillaInstantie = fetchMetadataTask.getBugzillaInstantie();
 			MetaDataDescription bugzillanummer = fetchMetadataTask.getBugzillanummer();
+			MetaDataDescription fo = fetchMetadataTask.getFO();
+			MetaDataDescription to = fetchMetadataTask.getTO();
 			
 			IDropDownItem[] bugzillaInstanties = bugzillaInstantie.getDropDownItems(true);
 
@@ -78,6 +80,8 @@ public class CreateReviewAction extends IntelliCcollabAction {
 			metadata.put(overview, createReviewDialog.getEnteredOverview());
 			metadata.put(bugzillaInstantie, createReviewDialog.getSelectedBugzillaInstantie());
 			metadata.put(bugzillanummer, createReviewDialog.getEnteredBugzillanummer());
+			metadata.put(fo, createReviewDialog.getEnteredFO());
+			metadata.put(to, createReviewDialog.getEnteredTO());
 
 			CreateReviewTask createReviewTask = new CreateReviewTask(project, user, selectedGroup, enteredTitle, 
 					uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadata);
