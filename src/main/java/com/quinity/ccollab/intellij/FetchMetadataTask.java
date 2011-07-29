@@ -22,6 +22,8 @@ public class FetchMetadataTask extends Task.Modal {
 	private MetaDataDescription overview;
 	private MetaDataDescription bugzillaInstantie;
 	private MetaDataDescription bugzillanummer;
+	private MetaDataDescription fo;
+	private MetaDataDescription to;
 		
 	public FetchMetadataTask(Project project, User user) {
 		super(project, MessageResources.message("task.createReview.title"), false);
@@ -39,6 +41,8 @@ public class FetchMetadataTask extends Task.Modal {
 			overview = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Overview")[0];
 			bugzillaInstantie = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzilla-instantie")[0];
 			bugzillanummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer")[0];
+			fo = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "FO")[0];
+			to = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "TO / Werkplan")[0];
 		} catch (DataModelException e) {
 			logger.warn("Error when retrieving metadata.", e);
 			return;
@@ -65,4 +69,12 @@ public class FetchMetadataTask extends Task.Modal {
 	public MetaDataDescription getBugzillanummer() {
 		return bugzillanummer;
 	}
+
+    public MetaDataDescription getFO() {
+        return fo;
+    }
+
+    public MetaDataDescription getTO() {
+        return to;
+    }
 }
