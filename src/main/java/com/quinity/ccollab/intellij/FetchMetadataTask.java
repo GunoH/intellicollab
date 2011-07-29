@@ -6,7 +6,6 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.smartbear.ccollab.datamodel.DataModelException;
-import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.MetaDataDescription;
 import com.smartbear.ccollab.datamodel.User;
 import org.jetbrains.annotations.NotNull;
