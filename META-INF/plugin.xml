@@ -5,11 +5,12 @@
 	<h4>Code Collaborator integration</h4>
 	]]>
 	</description>
-	<version>0.12</version>
+	<version>0.13</version>
 	<vendor email="idea@guno.nl">Guno Heitman</vendor>
 	<depends>CVS</depends>
 	<change-notes><![CDATA[
 		<ul>
+			<li>v0.13: Added fields for TO and FO.</li>
 			<li>v0.12: Bugfixes.</li>
 			<li>v0.11: Added keyboard shortcuts and plugin settings, bugfixes.</li>
 			<li>v0.10: No more CVS-only builds. Bugfixes. Added possibility to create a new review: Tools -> Create new review...</li>
