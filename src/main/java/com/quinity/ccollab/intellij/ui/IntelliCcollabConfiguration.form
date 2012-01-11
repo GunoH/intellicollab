@@ -48,7 +48,7 @@
         </constraints>
         <properties>
           <labelFor value="bd40b"/>
-          <text resource-bundle="com/quinity/ccollab/intellij/MessageResources" key="configuration.passord.label"/>
+          <text resource-bundle="com/quinity/ccollab/intellij/MessageResources" key="configuration.password.label"/>
         </properties>
       </component>
       <component id="bd40b" class="javax.swing.JPasswordField" binding="passwordField">
