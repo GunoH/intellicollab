@@ -23,7 +23,7 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
     public String serverProxyPort;
     public String username;
     public String password;
-	
+
     public void initComponent() {
     }
 
@@ -31,7 +31,7 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
     }
 
     @NotNull
-	public String getComponentName() {
+    public String getComponentName() {
         return "IntelliCcollabApplicationComponent";
     }
 
@@ -43,39 +43,39 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
         this.serverURL = serverURL;
     }
 
-	public String getServerProxyHost() {
-		return serverProxyHost;
-	}
+    public String getServerProxyHost() {
+        return serverProxyHost;
+    }
 
-	public void setServerProxyHost(String serverProxyHost) {
-		this.serverProxyHost = serverProxyHost;
-	}
+    public void setServerProxyHost(String serverProxyHost) {
+        this.serverProxyHost = serverProxyHost;
+    }
 
-	public String getServerProxyPort() {
-		return serverProxyPort;
-	}
+    public String getServerProxyPort() {
+        return serverProxyPort;
+    }
 
-	public void setServerProxyPort(String serverProxyPort) {
-		this.serverProxyPort = serverProxyPort;
-	}
+    public void setServerProxyPort(String serverProxyPort) {
+        this.serverProxyPort = serverProxyPort;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getDisplayName() {
+    public String getDisplayName() {
         return "IntelliCcollab";
     }
 
@@ -100,12 +100,12 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
 
     public void apply() throws ConfigurationException {
         if (form != null) {
-			try {
-				form.getData(this);
-			} catch (MalformedURLException e) {
-				throw new ConfigurationException("Invalid URL");
-			}
-		}
+            try {
+                form.getData(this);
+            } catch (MalformedURLException e) {
+                throw new ConfigurationException("Invalid URL");
+            }
+        }
     }
 
     public void reset() {
