@@ -17,57 +17,57 @@ import java.util.List;
 
 public class FetchGroupsTask extends Task.Modal {
 
-	private static Logger logger = Logger.getInstance(FetchGroupsTask.class.getName());
+    private static Logger logger = Logger.getInstance(FetchGroupsTask.class.getName());
 
-	private boolean success;
-	
-	private User user;
-	
-	private List<GroupDescription> groups;
+    private boolean success;
 
-	public FetchGroupsTask(Project project, User user) {
-		super(project, MessageResources.message("task.createReview.title"), false);
-		
-		this.user = user;
-	}
+    private User user;
 
-	@Override
-	public void run(@NotNull ProgressIndicator progressIndicator) {
+    private List<GroupDescription> groups;
 
-		progressIndicator.setText(MessageResources.message("progressIndicator.createReview.retrievingGroups"));
+    public FetchGroupsTask(Project project, User user) {
+        super(project, MessageResources.message("task.createReview.title"), false);
 
-		try {
-			// Retrieve all groups from the code collaborator server
-			groups = new ArrayList<GroupDescription>();
-			for (GroupDescription group : user.getEngine().groupsFind()) {
-				if (!group.isReportingOnly()) {
-					groups.add(group);
-				}
-			}
-			
-			// Sort groups.
-			Collections.sort(groups, new Comparator<GroupDescription>() {
-				public int compare(GroupDescription o1, GroupDescription o2) {
-					return o1.getDisplayName().compareTo(o2.getDisplayName());
-				}
-			});
-			
-		} catch (DataModelException e) {
-			logger.warn("Error when retrieving groups.", e);
-			return;
-		}
-		success = true;
-	}
+        this.user = user;
+    }
 
-	@Override
-	public void onSuccess() {
-		if (!success) {
-			Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"), 
-					MessageResources.message("errorDialog.errorOccured.title"));
-		}
-	}
+    @Override
+    public void run(@NotNull ProgressIndicator progressIndicator) {
 
-	public List<GroupDescription> getGroups() {
-		return groups;
-	}
+        progressIndicator.setText(MessageResources.message("progressIndicator.createReview.retrievingGroups"));
+
+        try {
+            // Retrieve all groups from the code collaborator server
+            groups = new ArrayList<GroupDescription>();
+            for (GroupDescription group : user.getEngine().groupsFind()) {
+                if (!group.isReportingOnly()) {
+                    groups.add(group);
+                }
+            }
+
+            // Sort groups.
+            Collections.sort(groups, new Comparator<GroupDescription>() {
+                public int compare(GroupDescription o1, GroupDescription o2) {
+                    return o1.getDisplayName().compareTo(o2.getDisplayName());
+                }
+            });
+
+        } catch (DataModelException e) {
+            logger.warn("Error when retrieving groups.", e);
+            return;
+        }
+        success = true;
+    }
+
+    @Override
+    public void onSuccess() {
+        if (!success) {
+            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"),
+                    MessageResources.message("errorDialog.errorOccured.title"));
+        }
+    }
+
+    public List<GroupDescription> getGroups() {
+        return groups;
+    }
 }
