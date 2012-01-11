@@ -25,142 +25,142 @@ import org.jetbrains.annotations.NotNull;
 
 public class AddToReviewTask extends Task.Backgroundable {
 
-	private static Logger logger = Logger.getInstance(AddToReviewTask.class.getName());
+    private static Logger logger = Logger.getInstance(AddToReviewTask.class.getName());
 
-	private Review review;
+    private Review review;
 
-	private File[] files;
+    private File[] files;
 
-	private User user;
+    private User user;
 
-	private boolean success;
-	private String errorMessage;
+    private boolean success;
+    private String errorMessage;
 
-	public AddToReviewTask(Project project, Review review, User user, File... files) {
-		super(project, MessageResources.message("task.addFilesToReview.title"), true);
+    public AddToReviewTask(Project project, Review review, User user, File... files) {
+        super(project, MessageResources.message("task.addFilesToReview.title"), true);
 
-		this.review = review;
-		this.user = user;
-		this.files = files;
-	}
+        this.review = review;
+        this.user = user;
+        this.files = files;
+    }
 
-	@Override
-	public void run(@NotNull ProgressIndicator progressIndicator) {
+    @Override
+    public void run(@NotNull ProgressIndicator progressIndicator) {
 
-		try {
-			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.preparing"));
-			
-			// Create the SCM ChangeSet object to upload.  You can attach
-			// many types of objects here from uncontrolled files as in this
-			// example to controlled files (both local and server-side-only)
-			// to SCM-specific atomic changelists (e.g. with Perforce and Subversion).
-			logger.debug("Creating SCM Changeset...");
-			ScmChangeset changeset = new ScmChangeset();
+        try {
+            progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.preparing"));
 
-			
-			IScmClientConfiguration clientConfig;
-			IScmLocalCheckout scmFile = null;
+            // Create the SCM ChangeSet object to upload.  You can attach
+            // many types of objects here from uncontrolled files as in this
+            // example to controlled files (both local and server-side-only)
+            // to SCM-specific atomic changelists (e.g. with Perforce and Subversion).
+            logger.debug("Creating SCM Changeset...");
+            ScmChangeset changeset = new ScmChangeset();
 
 
-			if (files.length == 0) {
-				success = true;
-				return;
-			}
-
-			int fileCounter = 0;
-			for (File file : files) {
-				
-				progressIndicator.checkCanceled();
-				
-				progressIndicator.setText2(MessageResources.message("progressIndicator.addToReview.fileUploadProgress", file.getName(),
-						++fileCounter, files.length));
-				logger.debug("Working with file: " + file.getPath());
+            IScmClientConfiguration clientConfig;
+            IScmLocalCheckout scmFile = null;
 
 
-				if (file.isDirectory()) {
-					logger.warn("error: path points to a directory instead of to a file: " + file.getPath());
-					throw new IntelliCcollabException("error: path points to a directory instead of to a file: " 
-							+ file.getPath());
-				}
+            if (files.length == 0) {
+                success = true;
+                return;
+            }
 
-				// Create the SCM object representing a local file under version control.
-				// We assume the local SCM is already configured properly.
-				logger.debug("Loading SCM File object...");
-				clientConfig = ScmUtils.requireScm(file, AddControlledFileAction.scmOptions, new NullProgressMonitor(), ScmUtils.SCMS);
-				scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
-				changeset.addLocalCheckout(scmFile, true, new NullProgressMonitor());
-			}
+            int fileCounter = 0;
+            for (File file : files) {
 
-			progressIndicator.checkCanceled();
+                progressIndicator.checkCanceled();
 
-			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.uploading"));
-			progressIndicator.setText2("");
-			
-			// Upload this changeset to Collaborator.  Another form of this
-			// uploader lets us specify even more information; this form extracts it
-			// automatically from the files in the changeset.
-			logger.debug("Uploading SCM Changeset...");
-			Engine engine = AddControlledFileAction.engine;
-			Scm scm = engine.scmByLocalCheckout(scmFile);			// select the SCM system that matches the client configuration
+                progressIndicator.setText2(MessageResources.message("progressIndicator.addToReview.fileUploadProgress", file.getName(),
+                        ++fileCounter, files.length));
+                logger.debug("Working with file: " + file.getPath());
 
-			Changelist changelist = scm.uploadChangeset(changeset, null, null, null, user.getLogin(), 
-					"Local changes uploaded from IntelliJ IDEA", new NullProgressMonitor());
 
-			progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.attaching", review.getId()));
-			
-			progressIndicator.checkCanceled();
+                if (file.isDirectory()) {
+                    logger.warn("error: path points to a directory instead of to a file: " + file.getPath());
+                    throw new IntelliCcollabException("error: path points to a directory instead of to a file: "
+                            + file.getPath());
+                }
 
-			// The changelist has been uploaded but it hasn't been attached
-			// to any particular review!  This two-step process not only allows for
-			// a changelist to be part of more than one review, but also means that
-			// if there's any error in uploading the changelist the review hasn't
-			// changed at all so no one will be affected.
-			review.addChangelist(changelist, user);
+                // Create the SCM object representing a local file under version control.
+                // We assume the local SCM is already configured properly.
+                logger.debug("Loading SCM File object...");
+                clientConfig = ScmUtils.requireScm(file, AddControlledFileAction.scmOptions, new NullProgressMonitor(), ScmUtils.SCMS);
+                scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
+                changeset.addLocalCheckout(scmFile, true, new NullProgressMonitor());
+            }
 
-			success = true;
-		} catch (ScmConfigurationException e) {
-			logger.warn(e);
-			errorMessage = MessageResources.message("errorDialog.cannotDetermineSCMSystem.text");
-		} catch (CollabClientException e) {
-			logger.warn(e);
-			errorMessage = MessageResources.message("errorDialog.errorOccured.text");
-		} catch (IntelliCcollabException e) {
-			logger.warn(e);
-			errorMessage = MessageResources.message("errorDialog.errorOccured.error.text", e.getMessage());
-		} catch (IOException e) {
-			logger.warn(e);
-			errorMessage = MessageResources.message("errorDialog.ioErrorOccured.text");
-		}
-		
-	}
+            progressIndicator.checkCanceled();
 
-	@Override
-	public void onSuccess() {
-		if (success) {
-			showConfirmDialog(review, files);
-		} else {
-			Messages.showErrorDialog(errorMessage, MessageResources.message("errorDialog.errorOccured.title"));
-		}
-	}
+            progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.uploading"));
+            progressIndicator.setText2("");
 
-	@Override
-	public void onCancel() {
-		if (success) {
-			showConfirmDialog(review, files);
-		} else {
-			Messages.showErrorDialog(MessageResources.message("errorDialog.cancelledAddToReview.text"), 
-					MessageResources.message("errorDialog.errorOccured.title"));
-		}
-	}
-	
-	private void showConfirmDialog(Review review, File... files) {
-		Messages.showInfoMessage(MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-				files.length, review.getId(), review.getTitle()), 
-				MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.title"));
-	}
+            // Upload this changeset to Collaborator.  Another form of this
+            // uploader lets us specify even more information; this form extracts it
+            // automatically from the files in the changeset.
+            logger.debug("Uploading SCM Changeset...");
+            Engine engine = AddControlledFileAction.engine;
+            Scm scm = engine.scmByLocalCheckout(scmFile);            // select the SCM system that matches the client configuration
 
-	@Override
-	public boolean shouldStartInBackground() {
-		return false;
-	}
+            Changelist changelist = scm.uploadChangeset(changeset, null, null, null, user.getLogin(),
+                    "Local changes uploaded from IntelliJ IDEA", new NullProgressMonitor());
+
+            progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.attaching", review.getId()));
+
+            progressIndicator.checkCanceled();
+
+            // The changelist has been uploaded but it hasn't been attached
+            // to any particular review!  This two-step process not only allows for
+            // a changelist to be part of more than one review, but also means that
+            // if there's any error in uploading the changelist the review hasn't
+            // changed at all so no one will be affected.
+            review.addChangelist(changelist, user);
+
+            success = true;
+        } catch (ScmConfigurationException e) {
+            logger.warn(e);
+            errorMessage = MessageResources.message("errorDialog.cannotDetermineSCMSystem.text");
+        } catch (CollabClientException e) {
+            logger.warn(e);
+            errorMessage = MessageResources.message("errorDialog.errorOccured.text");
+        } catch (IntelliCcollabException e) {
+            logger.warn(e);
+            errorMessage = MessageResources.message("errorDialog.errorOccured.error.text", e.getMessage());
+        } catch (IOException e) {
+            logger.warn(e);
+            errorMessage = MessageResources.message("errorDialog.ioErrorOccured.text");
+        }
+
+    }
+
+    @Override
+    public void onSuccess() {
+        if (success) {
+            showConfirmDialog(review, files);
+        } else {
+            Messages.showErrorDialog(errorMessage, MessageResources.message("errorDialog.errorOccured.title"));
+        }
+    }
+
+    @Override
+    public void onCancel() {
+        if (success) {
+            showConfirmDialog(review, files);
+        } else {
+            Messages.showErrorDialog(MessageResources.message("errorDialog.cancelledAddToReview.text"),
+                    MessageResources.message("errorDialog.errorOccured.title"));
+        }
+    }
+
+    private void showConfirmDialog(Review review, File... files) {
+        Messages.showInfoMessage(MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
+                files.length, review.getId(), review.getTitle()),
+                MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.title"));
+    }
+
+    @Override
+    public boolean shouldStartInBackground() {
+        return false;
+    }
 }

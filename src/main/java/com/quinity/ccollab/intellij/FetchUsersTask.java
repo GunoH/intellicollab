@@ -11,44 +11,44 @@ import org.jetbrains.annotations.NotNull;
 
 public class FetchUsersTask extends Task.Modal {
 
-	private static Logger logger = Logger.getInstance(FetchUsersTask.class.getName());
+    private static Logger logger = Logger.getInstance(FetchUsersTask.class.getName());
 
-	private boolean success;
-	
-	private User user;
-	
-	private User[] users;
+    private boolean success;
 
-	public FetchUsersTask(Project project, User user) {
-		super(project, MessageResources.message("task.createReview.title"), false);
-		
-		this.user = user;
-	}
+    private User user;
 
-	@Override
-	public void run(@NotNull ProgressIndicator progressIndicator) {
+    private User[] users;
 
-		progressIndicator.setText(MessageResources.message("progressIndicator.createReview.retrievingUsers"));
+    public FetchUsersTask(Project project, User user) {
+        super(project, MessageResources.message("task.createReview.title"), false);
 
-		try {
-			// Retrieve all users from the code collaborator server
-			users = user.getEngine().usersPossibleReviewParticipants(null);
-		} catch (DataModelException e) {
-			logger.warn("Error when retrieving users.", e);
-			return;
-		}
-		success = true;
-	}
+        this.user = user;
+    }
 
-	@Override
-	public void onSuccess() {
-		if (!success) {
-			Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"), 
-					MessageResources.message("errorDialog.errorOccured.title"));
-		}
-	}
+    @Override
+    public void run(@NotNull ProgressIndicator progressIndicator) {
 
-	public User[] getUsers() {
-		return users;
-	}
+        progressIndicator.setText(MessageResources.message("progressIndicator.createReview.retrievingUsers"));
+
+        try {
+            // Retrieve all users from the code collaborator server
+            users = user.getEngine().usersPossibleReviewParticipants(null);
+        } catch (DataModelException e) {
+            logger.warn("Error when retrieving users.", e);
+            return;
+        }
+        success = true;
+    }
+
+    @Override
+    public void onSuccess() {
+        if (!success) {
+            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"),
+                    MessageResources.message("errorDialog.errorOccured.title"));
+        }
+    }
+
+    public User[] getUsers() {
+        return users;
+    }
 }
