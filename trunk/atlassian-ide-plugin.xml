@@ -7,6 +7,13 @@
         <url>https://guno.nl/jira</url>
         <shared>false</shared>
       </jira>
+      <crucible>
+        <server-id>6e4ac571-332d-481d-922e-687ae7337df2</server-id>
+        <name>guno.nl</name>
+        <url>https://guno.nl/fisheye</url>
+        <shared>false</shared>
+        <isFisheyeInstance>true</isFisheyeInstance>
+      </crucible>
     </servers>
     <default-jira-server>2701ff68-a5b4-4f03-b49b-d4c3afb62bf4</default-jira-server>
   </project-configuration>
