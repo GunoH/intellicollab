@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -35,7 +34,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
-import javax.swing.border.Border;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 public class CreateReviewDialog extends JDialog {
     private JButton buttonOK;
@@ -69,16 +69,22 @@ public class CreateReviewDialog extends JDialog {
     private JPanel TOPane;
 
     /**
-     * De default border voor invoervelden; deze bewaren we zodat we na het tonen van een eventuele foutmelding de
-     * border kunnen restoren.
+     * De default achtergrondkleur van een combobox; deze bewaren we zodat we na het tonen van een eventuele foutmelding de
+     * achtergrondkleur kunnen restoren.
      */
-    private Border defaultBorder;
+    private Color defaultComboboxBackground;
 
     /**
-     * De border voor niet-validerende velden.
+     * De default achtergrondkleur van een textfield; deze bewaren we zodat we na het tonen van een eventuele foutmelding de
+     * achtergrondkleur kunnen restoren.
      */
-    private Border highlightBorder;
+    private Color defaultTextFieldBackground;
 
+    /**
+     * De achtergrondkleur voor niet-validerende velden.
+     */
+    private Color highlightBackground = Color.yellow;
+    
     private DefaultComboBoxModel reviewerComboBoxModel;
     private DefaultComboBoxModel authorComboBoxModel;
     private DefaultComboBoxModel observerComboBoxModel;
@@ -172,10 +178,9 @@ public class CreateReviewDialog extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        // Bewaar de default border.
-        defaultBorder = titleTextField.getBorder();
-
-        highlightBorder = BorderFactory.createLineBorder(Color.red);
+        UIDefaults defaults = UIManager.getDefaults();
+        defaultComboboxBackground = defaults.getColor("Combobox.background");
+        defaultTextFieldBackground = defaults.getColor("TextField.background");
 
         titleTextField.setDocument(new InputLimiterDocument(TITLE_MAXLENGTH));
         overviewTextArea.setDocument(new InputLimiterDocument(OVERVIEW_MAXLENGTH));
@@ -288,47 +293,49 @@ public class CreateReviewDialog extends JDialog {
     private boolean validateUserInput() {
         boolean result = true;
         if (groupComboBoxModel.getSelectedItem() == null) {
-            groupComboBox.setBorder(highlightBorder);
+            
+            groupComboBox.setBackground(highlightBackground);
+
             if (result) {
                 // This is the first error, so set focus to this field.
                 groupComboBox.grabFocus();
             }
             result = false;
         } else {
-            groupComboBox.setBorder(defaultBorder);
+            groupComboBox.setBackground(defaultComboboxBackground);
         }
 
         if (StringUtils.isEmpty(titleTextField.getText())) {
-            titleTextField.setBorder(highlightBorder);
+            titleTextField.setBackground(highlightBackground);
             if (result) {
                 // This is the first error, so set focus to this field.
                 titleTextField.grabFocus();
             }
             result = false;
         } else {
-            titleTextField.setBorder(defaultBorder);
+            titleTextField.setBackground(defaultTextFieldBackground);
         }
 
         if (authorComboBoxModel.getSelectedItem() == null) {
-            authorComboBox.setBorder(highlightBorder);
+            authorComboBox.setBackground(highlightBackground);
             if (result) {
                 // This is the first error, so set focus to this field.
                 authorComboBox.grabFocus();
             }
             result = false;
         } else {
-            authorComboBox.setBorder(defaultBorder);
+            authorComboBox.setBackground(defaultComboboxBackground);
         }
 
         if (reviewerComboBoxModel.getSelectedItem() == null) {
-            reviewerComboBox.setBorder(highlightBorder);
+            reviewerComboBox.setBackground(highlightBackground);
             if (result) {
                 // This is the first error, so set focus to this field.
                 reviewerComboBox.grabFocus();
             }
             result = false;
         } else {
-            reviewerComboBox.setBorder(defaultBorder);
+            reviewerComboBox.setBackground(defaultComboboxBackground);
         }
 
         return result;
