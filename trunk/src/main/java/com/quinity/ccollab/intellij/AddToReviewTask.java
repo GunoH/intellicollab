@@ -123,13 +123,13 @@ public class AddToReviewTask extends Task.Backgroundable {
             errorMessage = MessageResources.message("errorDialog.cannotDetermineSCMSystem.text");
         } catch (CollabClientException e) {
             logger.warn(e);
-            errorMessage = MessageResources.message("errorDialog.errorOccured.text");
+            errorMessage = MessageResources.message("errorDialog.errorOccurred.text");
         } catch (IntelliCcollabException e) {
             logger.warn(e);
-            errorMessage = MessageResources.message("errorDialog.errorOccured.error.text", e.getMessage());
+            errorMessage = MessageResources.message("errorDialog.errorOccurred.error.text", e.getMessage());
         } catch (IOException e) {
             logger.warn(e);
-            errorMessage = MessageResources.message("errorDialog.ioErrorOccured.text");
+            errorMessage = MessageResources.message("errorDialog.ioErrorOccurred.text");
         }
 
     }
@@ -139,7 +139,7 @@ public class AddToReviewTask extends Task.Backgroundable {
         if (success) {
             showConfirmDialog(review, files);
         } else {
-            Messages.showErrorDialog(errorMessage, MessageResources.message("errorDialog.errorOccured.title"));
+            Messages.showErrorDialog(errorMessage, MessageResources.message("errorDialog.errorOccurred.title"));
         }
     }
 
@@ -149,7 +149,7 @@ public class AddToReviewTask extends Task.Backgroundable {
             showConfirmDialog(review, files);
         } else {
             Messages.showErrorDialog(MessageResources.message("errorDialog.cancelledAddToReview.text"),
-                    MessageResources.message("errorDialog.errorOccured.title"));
+                    MessageResources.message("errorDialog.errorOccurred.title"));
         }
     }
 

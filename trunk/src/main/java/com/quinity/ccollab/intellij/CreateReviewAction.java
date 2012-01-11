@@ -36,19 +36,19 @@ public class CreateReviewAction extends IntelliCcollabAction {
                 return;
             }
 
-            // Retrieve the avaliable users
+            // Retrieve the available users
             FetchUsersTask fetchUsersTask = new FetchUsersTask(project, user);
             fetchUsersTask.queue();
 
             User[] users = fetchUsersTask.getUsers();
 
-            // Retrieve the avaliable groups
+            // Retrieve the available groups
             FetchGroupsTask fetchGroupsTask = new FetchGroupsTask(project, user);
             fetchGroupsTask.queue();
 
             List<GroupDescription> groups = fetchGroupsTask.getGroups();
 
-            // Retrieve the avaliable metadata
+            // Retrieve the available metadata
             FetchMetadataTask fetchMetadataTask = new FetchMetadataTask(project, user);
             fetchMetadataTask.queue();
             MetaDataDescription overview = fetchMetadataTask.getOverview();
@@ -97,12 +97,12 @@ public class CreateReviewAction extends IntelliCcollabAction {
             MessageResources.message("errorDialog.scmException.title"));
         } catch (CollabClientException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"),
-                    MessageResources.message("errorDialog.errorOccured.title"));
+            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccurred.text"),
+                    MessageResources.message("errorDialog.errorOccurred.title"));
         } catch (IOException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("errorDialog.ioErrorOccured.text"),
-                    MessageResources.message("errorDialog.ioErrorOccured.title"));
+            Messages.showErrorDialog(MessageResources.message("errorDialog.ioErrorOccurred.text"),
+                    MessageResources.message("errorDialog.ioErrorOccurred.title"));
         } finally {
             finished();
         }

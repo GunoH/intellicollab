@@ -45,7 +45,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             for (File file : files) {
                 fileList.add(Pair.create(file, Boolean.TRUE));
             }
-            
+
 
             // Retrieve the reviews the user can upload to
             FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, user);
@@ -66,9 +66,9 @@ public class AddControlledFileAction extends IntelliCcollabAction {
                 logger.debug("User pressed cancel.");
                 return;
             }
-            
-            files = fileAndReviewSelector.retrieveSelectedFiles(); 
-            
+
+            files = fileAndReviewSelector.retrieveSelectedFiles();
+
             if (files.length == 0) {
                 logger.debug("No files selected.");
                 Messages.showErrorDialog(MessageResources.message("task.addFilesToReview.noFilesSelected.text"),
@@ -95,12 +95,12 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             MessageResources.message("errorDialog.scmException.title"));
         } catch (CollabClientException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"),
-                    MessageResources.message("errorDialog.errorOccured.title"));
+            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccurred.text"),
+                    MessageResources.message("errorDialog.errorOccurred.title"));
         } catch (IOException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("errorDialog.ioErrorOccured.text"),
-                    MessageResources.message("errorDialog.ioErrorOccured.title"));
+            Messages.showErrorDialog(MessageResources.message("errorDialog.ioErrorOccurred.text"),
+                    MessageResources.message("errorDialog.ioErrorOccurred.title"));
         } catch (InterruptedException e) {
             logger.warn(e);
             Messages.showErrorDialog(MessageResources.message("errorDialog.uploadInterrupted.text"),
