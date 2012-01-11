@@ -1,4 +1,4 @@
-package com.quinity.ccollab.intellij;
+package nl.guno.ccollab.intellij;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;

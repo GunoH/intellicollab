@@ -1,4 +1,4 @@
-package com.quinity.ccollab.intellij.ui;
+package nl.guno.ccollab.intellij.ui;
 
 import java.awt.Color;
 import java.awt.Component;

@@ -1,9 +1,9 @@
-package com.quinity.ccollab.intellij.ui;
+package nl.guno.ccollab.intellij.ui;
 
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
-import com.quinity.ccollab.intellij.MessageResources;
+import nl.guno.ccollab.intellij.MessageResources;
 import com.smartbear.ccollab.datamodel.Review;
 import org.jetbrains.annotations.NotNull;
 

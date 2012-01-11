@@ -1,4 +1,4 @@
-package com.quinity.ccollab.intellij;
+package nl.guno.ccollab.intellij;
 
 import com.intellij.cvsSupport2.actions.cvsContext.CvsContextWrapper;
 import com.intellij.openapi.actionSystem.AnActionEvent;
