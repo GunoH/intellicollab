@@ -12,44 +12,44 @@ import org.jetbrains.annotations.NotNull;
 
 public class FetchReviewsTask extends Task.Modal {
 
-	private static Logger logger = Logger.getInstance(FetchReviewsTask.class.getName());
+    private static Logger logger = Logger.getInstance(FetchReviewsTask.class.getName());
 
-	private boolean success;
-	
-	private User user;
-	
-	private Review[] reviews;
+    private boolean success;
 
-	public FetchReviewsTask(Project project, User user) {
-		super(project, MessageResources.message("task.selectReview.title"), false);
-		
-		this.user = user;
-	}
+    private User user;
 
-	@Override
-	public void run(@NotNull ProgressIndicator progressIndicator) {
+    private Review[] reviews;
 
-		progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.retrievingReviews"));
+    public FetchReviewsTask(Project project, User user) {
+        super(project, MessageResources.message("task.selectReview.title"), false);
 
-		try {
-			// Retrieve all reviews the user can upload to.
-			reviews = user.getReviewsCanUploadChangelists(null);
-		} catch (DataModelException e) {
-			logger.warn("Error when retrieving reviews.", e);
-			return;
-		}
-		success = true;
-	}
+        this.user = user;
+    }
 
-	@Override
-	public void onSuccess() {
-		if (!success) {
-			Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"), 
-					MessageResources.message("errorDialog.errorOccured.title"));
-		}
-	}
+    @Override
+    public void run(@NotNull ProgressIndicator progressIndicator) {
 
-	public Review[] getReviews() {
-		return reviews;
-	}
+        progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.retrievingReviews"));
+
+        try {
+            // Retrieve all reviews the user can upload to.
+            reviews = user.getReviewsCanUploadChangelists(null);
+        } catch (DataModelException e) {
+            logger.warn("Error when retrieving reviews.", e);
+            return;
+        }
+        success = true;
+    }
+
+    @Override
+    public void onSuccess() {
+        if (!success) {
+            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"),
+                    MessageResources.message("errorDialog.errorOccured.title"));
+        }
+    }
+
+    public Review[] getReviews() {
+        return reviews;
+    }
 }
