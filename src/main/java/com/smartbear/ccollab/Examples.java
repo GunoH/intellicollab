@@ -468,7 +468,7 @@ public class Examples {
         finally {
             // This is critical -- you must close out your Client Connection api object or else
             // things you think you've "saved" might not actually be flushed to the server.
-			finished();
-		}
-	}
+            finished();
+        }
+    }
 }
