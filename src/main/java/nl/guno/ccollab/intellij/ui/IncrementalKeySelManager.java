@@ -1,6 +1,4 @@
-package com.quinity.ccollab.intellij.ui;
-
-import com.smartbear.ccollab.datamodel.User;
+package nl.guno.ccollab.intellij.ui;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;

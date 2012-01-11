@@ -1,7 +1,7 @@
-package com.quinity.ccollab.intellij.ui;
+package nl.guno.ccollab.intellij.ui;
 
 import com.intellij.openapi.ui.ComboBox;
-import com.quinity.ccollab.intellij.MessageResources;
+import nl.guno.ccollab.intellij.MessageResources;
 import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.IDropDownItem;
 import com.smartbear.ccollab.datamodel.MetaDataSelectItem;

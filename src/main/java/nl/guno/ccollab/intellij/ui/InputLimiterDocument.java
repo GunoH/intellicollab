@@ -1,4 +1,4 @@
-package com.quinity.ccollab.intellij.ui;
+package nl.guno.ccollab.intellij.ui;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;

@@ -1,4 +1,4 @@
-package com.quinity.ccollab.intellij;
+package nl.guno.ccollab.intellij;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -6,21 +6,22 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.smartbear.ccollab.datamodel.DataModelException;
+import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.User;
 import org.jetbrains.annotations.NotNull;
 
-public class FetchUsersTask extends Task.Modal {
+public class FetchReviewsTask extends Task.Modal {
 
-    private static Logger logger = Logger.getInstance(FetchUsersTask.class.getName());
+    private static Logger logger = Logger.getInstance(FetchReviewsTask.class.getName());
 
     private boolean success;
 
     private User user;
 
-    private User[] users;
+    private Review[] reviews;
 
-    public FetchUsersTask(Project project, User user) {
-        super(project, MessageResources.message("task.createReview.title"), false);
+    public FetchReviewsTask(Project project, User user) {
+        super(project, MessageResources.message("task.selectReview.title"), false);
 
         this.user = user;
     }
@@ -28,13 +29,13 @@ public class FetchUsersTask extends Task.Modal {
     @Override
     public void run(@NotNull ProgressIndicator progressIndicator) {
 
-        progressIndicator.setText(MessageResources.message("progressIndicator.createReview.retrievingUsers"));
+        progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.retrievingReviews"));
 
         try {
-            // Retrieve all users from the code collaborator server
-            users = user.getEngine().usersPossibleReviewParticipants(null);
+            // Retrieve all reviews the user can upload to.
+            reviews = user.getReviewsCanUploadChangelists(null);
         } catch (DataModelException e) {
-            logger.warn("Error when retrieving users.", e);
+            logger.warn("Error when retrieving reviews.", e);
             return;
         }
         success = true;
@@ -48,7 +49,7 @@ public class FetchUsersTask extends Task.Modal {
         }
     }
 
-    public User[] getUsers() {
-        return users;
+    public Review[] getReviews() {
+        return reviews;
     }
 }
