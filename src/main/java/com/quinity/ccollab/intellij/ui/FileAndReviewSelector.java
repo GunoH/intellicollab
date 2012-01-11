@@ -41,32 +41,32 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     private JPanel headerPane;
     private JPanel checkboxListPane;
     private CheckBoxList fileCheckBoxList;
-	private JPanel reviewPane;
-	private JComboBox reviewComboBox;
+    private JPanel reviewPane;
+    private JComboBox reviewComboBox;
 
-	private List<Pair<File, Boolean>> initialFileList;
-	private List<Pair<File, Boolean>> workingFileList;
-	private DefaultListModel fileListModel;
+    private List<Pair<File, Boolean>> initialFileList;
+    private List<Pair<File, Boolean>> workingFileList;
+    private DefaultListModel fileListModel;
 
-	private List<Review> reviewList;
-	private DefaultComboBoxModel reviewComboBoxModel;
+    private List<Review> reviewList;
+    private DefaultComboBoxModel reviewComboBoxModel;
 
-	private boolean okPressed;
+    private boolean okPressed;
     
     public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, @NotNull Review[] reviewList) {
         initialFileList = fileList;
-		
-		this.reviewList = new ArrayList<Review>();
-		this.reviewList.addAll(Arrays.asList(reviewList));
-		
-		// Sort the list of reviews in descending order of last activity date.
-		Collections.sort(this.reviewList, new Comparator<Review>() {
-			public int compare(Review r1, Review r2) {
-				return r2.getCreationDate().compareTo(r1.getCreationDate());
-			}
-		});
-		
-		reset();
+
+        this.reviewList = new ArrayList<Review>();
+        this.reviewList.addAll(Arrays.asList(reviewList));
+
+        // Sort the list of reviews in descending order of last activity date.
+        Collections.sort(this.reviewList, new Comparator<Review>() {
+            public int compare(Review r1, Review r2) {
+                return r2.getCreationDate().compareTo(r1.getCreationDate());
+            }
+        });
+
+        reset();
 
         prepareUI();
     }
@@ -77,9 +77,9 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-		
-		
-		buttonOK.addActionListener(new ActionListener() {
+
+
+        buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
             }
@@ -120,11 +120,11 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     private void createUIComponents() {
         fileListModel = new DefaultListModel();
         fileCheckBoxList = new CheckBoxList(fileListModel, this);
-		
-		reviewComboBoxModel = new DefaultComboBoxModel();
-		reviewComboBox = new ComboBox(reviewComboBoxModel, -1);
-		reviewComboBox.setRenderer(new ReviewComboboxRenderer());
-	}
+
+        reviewComboBoxModel = new DefaultComboBoxModel();
+        reviewComboBox = new ComboBox(reviewComboBoxModel, -1);
+        reviewComboBox.setRenderer(new ReviewComboboxRenderer());
+    }
 
     public void reset() {
         workingFileList = new ArrayList<Pair<File, Boolean>>(initialFileList);
@@ -137,11 +137,11 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
             fileListModel.addElement(createCheckBox(pair.first, pair.second));
         }
 
-		reviewComboBoxModel.removeAllElements();
-		for (Review review : reviewList) {
-			reviewComboBoxModel.addElement(review);
-		}
-	}
+        reviewComboBoxModel.removeAllElements();
+        for (Review review : reviewList) {
+            reviewComboBoxModel.addElement(review);
+        }
+    }
 
     public JCheckBox createCheckBox(File file, boolean checked) {
         return new JCheckBox(FileUtil.toSystemDependentName(file.getPath()), checked);
@@ -151,8 +151,8 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
 
         List<Pair<File, Boolean>> fileList = new ArrayList<Pair<File, Boolean>>();
         Review[] reviews = new Review[0];
-		
-		FileAndReviewSelector dialog = new FileAndReviewSelector(fileList, reviews);
+
+        FileAndReviewSelector dialog = new FileAndReviewSelector(fileList, reviews);
 
         dialog.pack();
         dialog.setVisible(true);
@@ -178,29 +178,29 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     public boolean isOkPressed() {
         return okPressed;
     }
-	
-	public Integer getSelectedReviewId() {
-		return ((Review)reviewComboBox.getSelectedItem()).getId();
-	}
+
+    public Integer getSelectedReviewId() {
+        return ((Review)reviewComboBox.getSelectedItem()).getId();
+    }
 }
 
 class ReviewComboboxRenderer extends JLabel implements ListCellRenderer {
 
-	public ReviewComboboxRenderer() {
-		setOpaque(true);
-	}
+    public ReviewComboboxRenderer() {
+        setOpaque(true);
+    }
 
-	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		Review review = (Review) value;
-		
-		if (isSelected) {
-			setBackground(Color.BLUE);
-		} else {
-			setBackground(list.getBackground());
-		}
-		
-		setText(review.getId() + " " + review.getTitle());
-		
-		return this;
-	}
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        Review review = (Review) value;
+
+        if (isSelected) {
+            setBackground(Color.BLUE);
+        } else {
+            setBackground(list.getBackground());
+        }
+
+        setText(review.getId() + " " + review.getTitle());
+
+        return this;
+    }
 }

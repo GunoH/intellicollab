@@ -19,60 +19,60 @@ import org.jetbrains.annotations.NotNull;
 
 public class LoginTask extends Task.Modal {
 
-	private static Logger logger = Logger.getInstance(LoginTask.class.getName());
+    private static Logger logger = Logger.getInstance(LoginTask.class.getName());
 
-	private boolean success;
-	
-	private User user;
-	
-	private IGlobalOptions globalOptions;
-	private ICollabClientInterface clientInterface;
-	
-	public LoginTask(Project project, IGlobalOptions globalOptions, ICollabClientInterface clientInterface) {
-		super(project, MessageResources.message("task.login.title"), false);
-		
-		this.globalOptions = globalOptions;
-		this.clientInterface = clientInterface;
-	}
+    private boolean success;
 
-	@Override
-	public void run(@NotNull ProgressIndicator progressIndicator) {
+    private User user;
 
-		progressIndicator.setText(MessageResources.message("progressIndicator.login"));
+    private IGlobalOptions globalOptions;
+    private ICollabClientInterface clientInterface;
 
-		try {
-			user = LoginUtils.login(globalOptions, clientInterface);
-		} catch (DataModelException e) {
-			logger.info("Error when logging on to code collaborator server.", e);
-			return;
-		} catch (CollabClientServerUrlConnectionException e) {
-			logger.info("Error when logging on to code collaborator server.", e);
-			return;
-		} catch (CollabClientLoginCredentialsInvalidException e) {
-			logger.info("Error when logging on to code collaborator server.", e);
-			return;
-		} catch (CollabClientIncompatibleVersionException e) {
-			logger.info("Error when logging on to code collaborator server.", e);
-			return;
-		} catch (CollabClientUserDoesNotExistException e) {
-			logger.info("Error when logging on to code collaborator server.", e);
-			return;
-		} catch (CollabClientServerConnectivityException e) {
-			logger.info("Error when logging on to code collaborator server.", e);
-			return;
-		}
-		success = true;
-	}
+    public LoginTask(Project project, IGlobalOptions globalOptions, ICollabClientInterface clientInterface) {
+        super(project, MessageResources.message("task.login.title"), false);
 
-	@Override
-	public void onSuccess() {
-		if (!success) {
-			Messages.showErrorDialog(MessageResources.message("errorDialog.connectionException.text"), 
-					MessageResources.message("errorDialog.connectionException.title"));
-		}
-	}
+        this.globalOptions = globalOptions;
+        this.clientInterface = clientInterface;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    @Override
+    public void run(@NotNull ProgressIndicator progressIndicator) {
+
+        progressIndicator.setText(MessageResources.message("progressIndicator.login"));
+
+        try {
+            user = LoginUtils.login(globalOptions, clientInterface);
+        } catch (DataModelException e) {
+            logger.info("Error when logging on to code collaborator server.", e);
+            return;
+        } catch (CollabClientServerUrlConnectionException e) {
+            logger.info("Error when logging on to code collaborator server.", e);
+            return;
+        } catch (CollabClientLoginCredentialsInvalidException e) {
+            logger.info("Error when logging on to code collaborator server.", e);
+            return;
+        } catch (CollabClientIncompatibleVersionException e) {
+            logger.info("Error when logging on to code collaborator server.", e);
+            return;
+        } catch (CollabClientUserDoesNotExistException e) {
+            logger.info("Error when logging on to code collaborator server.", e);
+            return;
+        } catch (CollabClientServerConnectivityException e) {
+            logger.info("Error when logging on to code collaborator server.", e);
+            return;
+        }
+        success = true;
+    }
+
+    @Override
+    public void onSuccess() {
+        if (!success) {
+            Messages.showErrorDialog(MessageResources.message("errorDialog.connectionException.text"),
+                    MessageResources.message("errorDialog.connectionException.title"));
+        }
+    }
+
+    public User getUser() {
+        return user;
+    }
 }
