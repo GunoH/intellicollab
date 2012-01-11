@@ -1,4 +1,4 @@
-package com.quinity.ccollab.intellij;
+package nl.guno.ccollab.intellij;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.smartbear.beans.IGlobalOptions;

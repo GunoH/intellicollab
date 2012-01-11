@@ -1,4 +1,4 @@
-package com.quinity.ccollab.intellij;
+package nl.guno.ccollab.intellij;
 
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.options.Configurable;
@@ -8,7 +8,7 @@ import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizable;
 import com.intellij.openapi.util.WriteExternalException;
-import com.quinity.ccollab.intellij.ui.IntelliCcollabConfigurationForm;
+import nl.guno.ccollab.intellij.ui.IntelliCcollabConfigurationForm;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 

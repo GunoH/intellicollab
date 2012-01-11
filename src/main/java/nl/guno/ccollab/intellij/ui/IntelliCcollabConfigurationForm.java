@@ -1,9 +1,9 @@
-package com.quinity.ccollab.intellij.ui;
+package nl.guno.ccollab.intellij.ui;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
-import com.quinity.ccollab.intellij.IntelliCcollabApplicationComponent;
-import com.quinity.ccollab.intellij.MessageResources;
+import nl.guno.ccollab.intellij.IntelliCcollabApplicationComponent;
+import nl.guno.ccollab.intellij.MessageResources;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
 import com.smartbear.beans.IGlobalOptions;
@@ -13,7 +13,6 @@ import org.apache.commons.lang.StringUtils;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
