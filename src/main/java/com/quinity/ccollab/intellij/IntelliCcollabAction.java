@@ -57,7 +57,7 @@ public abstract class IntelliCcollabAction extends AnAction {
 
         if (globalOptions.settingsIncomplete()) {
             Messages.showInfoMessage(MessageResources.message("error.mandatorySettingsMissing"),
-                    MessageResources.message("errorDialog.errorOccured.title"));
+                    MessageResources.message("errorDialog.errorOccurred.title"));
             return;
         }
 
