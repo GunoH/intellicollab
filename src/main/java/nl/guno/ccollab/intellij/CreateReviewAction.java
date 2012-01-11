@@ -61,6 +61,7 @@ public class CreateReviewAction extends IntelliCcollabAction {
 
             CreateReviewDialog createReviewDialog = new CreateReviewDialog(users, groups, bugzillaInstanties, user);
             createReviewDialog.pack();
+            createReviewDialog.setMinimumSize(createReviewDialog.getSize());
             createReviewDialog.setVisible(true);
 
             if (!createReviewDialog.isOkPressed()) {
