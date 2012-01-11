@@ -21,91 +21,91 @@ import java.util.Map;
 
 public class CreateReviewAction extends IntelliCcollabAction {
 
-	private static Logger logger = Logger.getInstance(CreateReviewAction.class.getName());
+    private static Logger logger = Logger.getInstance(CreateReviewAction.class.getName());
 
 
-	@Override
-	public void actionPerformed(AnActionEvent event) {
+    @Override
+    public void actionPerformed(AnActionEvent event) {
 
-		try {
-			Project project = PluginUtil.getProject(event.getDataContext());
+        try {
+            Project project = PluginUtil.getProject(event.getDataContext());
 
-			init(project);
+            init(project);
 
-			if (engine == null) {
-				return;
-			}
+            if (engine == null) {
+                return;
+            }
 
-			// Retrieve the avaliable users
-			FetchUsersTask fetchUsersTask = new FetchUsersTask(project, user);
-			fetchUsersTask.queue();
+            // Retrieve the avaliable users
+            FetchUsersTask fetchUsersTask = new FetchUsersTask(project, user);
+            fetchUsersTask.queue();
 
-			User[] users = fetchUsersTask.getUsers();
+            User[] users = fetchUsersTask.getUsers();
 
-			// Retrieve the avaliable groups
-			FetchGroupsTask fetchGroupsTask = new FetchGroupsTask(project, user);
-			fetchGroupsTask.queue();
+            // Retrieve the avaliable groups
+            FetchGroupsTask fetchGroupsTask = new FetchGroupsTask(project, user);
+            fetchGroupsTask.queue();
 
-			List<GroupDescription> groups = fetchGroupsTask.getGroups();
+            List<GroupDescription> groups = fetchGroupsTask.getGroups();
 
-			// Retrieve the avaliable metadata
-			FetchMetadataTask fetchMetadataTask = new FetchMetadataTask(project, user);
-			fetchMetadataTask.queue();
-			MetaDataDescription overview = fetchMetadataTask.getOverview();
-			MetaDataDescription bugzillaInstantie = fetchMetadataTask.getBugzillaInstantie();
-			MetaDataDescription bugzillanummer = fetchMetadataTask.getBugzillanummer();
-			MetaDataDescription fo = fetchMetadataTask.getFO();
-			MetaDataDescription to = fetchMetadataTask.getTO();
-			
-			IDropDownItem[] bugzillaInstanties = bugzillaInstantie.getDropDownItems(true);
+            // Retrieve the avaliable metadata
+            FetchMetadataTask fetchMetadataTask = new FetchMetadataTask(project, user);
+            fetchMetadataTask.queue();
+            MetaDataDescription overview = fetchMetadataTask.getOverview();
+            MetaDataDescription bugzillaInstantie = fetchMetadataTask.getBugzillaInstantie();
+            MetaDataDescription bugzillanummer = fetchMetadataTask.getBugzillanummer();
+            MetaDataDescription fo = fetchMetadataTask.getFO();
+            MetaDataDescription to = fetchMetadataTask.getTO();
 
-			CreateReviewDialog createReviewDialog = new CreateReviewDialog(users, groups, bugzillaInstanties, user);
-			createReviewDialog.pack();
-			createReviewDialog.setVisible(true);
+            IDropDownItem[] bugzillaInstanties = bugzillaInstantie.getDropDownItems(true);
 
-			if (!createReviewDialog.isOkPressed()) {
-				logger.debug("User pressed cancel.");
-				return;
-			}
+            CreateReviewDialog createReviewDialog = new CreateReviewDialog(users, groups, bugzillaInstanties, user);
+            createReviewDialog.pack();
+            createReviewDialog.setVisible(true);
 
-			GroupDescription selectedGroup = createReviewDialog.getSelectedGroup();
-			String enteredTitle = createReviewDialog.getEnteredTitle();
-			boolean uploadRestricted = createReviewDialog.isUploadRestricted();
-			ReviewAccess reviewAccess = createReviewDialog.getReviewAccess();
-			User selectedAuthor = createReviewDialog.getSelectedAuthor();
-			User selectedReviewer = createReviewDialog.getSelectedReviewer();
-			User selectedObserver = createReviewDialog.getSelectedObserver();
+            if (!createReviewDialog.isOkPressed()) {
+                logger.debug("User pressed cancel.");
+                return;
+            }
 
-			Map<MetaDataDescription, Object> metadata = new HashMap<MetaDataDescription, Object>(); 
-			metadata.put(overview, createReviewDialog.getEnteredOverview());
-			metadata.put(bugzillaInstantie, createReviewDialog.getSelectedBugzillaInstantie());
-			metadata.put(bugzillanummer, createReviewDialog.getEnteredBugzillanummer());
-			metadata.put(fo, createReviewDialog.getEnteredFO());
-			metadata.put(to, createReviewDialog.getEnteredTO());
+            GroupDescription selectedGroup = createReviewDialog.getSelectedGroup();
+            String enteredTitle = createReviewDialog.getEnteredTitle();
+            boolean uploadRestricted = createReviewDialog.isUploadRestricted();
+            ReviewAccess reviewAccess = createReviewDialog.getReviewAccess();
+            User selectedAuthor = createReviewDialog.getSelectedAuthor();
+            User selectedReviewer = createReviewDialog.getSelectedReviewer();
+            User selectedObserver = createReviewDialog.getSelectedObserver();
 
-			CreateReviewTask createReviewTask = new CreateReviewTask(project, user, selectedGroup, enteredTitle, 
-					uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadata);
-			createReviewTask.queue();
+            Map<MetaDataDescription, Object> metadata = new HashMap<MetaDataDescription, Object>();
+            metadata.put(overview, createReviewDialog.getEnteredOverview());
+            metadata.put(bugzillaInstantie, createReviewDialog.getSelectedBugzillaInstantie());
+            metadata.put(bugzillanummer, createReviewDialog.getEnteredBugzillanummer());
+            metadata.put(fo, createReviewDialog.getEnteredFO());
+            metadata.put(to, createReviewDialog.getEnteredTO());
 
-		} catch (CollabClientServerConnectivityException e) {
-			logger.warn(e);
-			Messages.showErrorDialog(MessageResources.message("errorDialog.connectionException.text"),
-					MessageResources.message("errorDialog.connectionException.title"));
-		} catch (ScmConfigurationException e) {
-			logger.warn(e);
-			Messages.showErrorDialog(MessageResources.message("errorDialog.scmException.text"),
-			MessageResources.message("errorDialog.scmException.title"));
-		} catch (CollabClientException e) {
-			logger.warn(e);
-			Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"), 
-					MessageResources.message("errorDialog.errorOccured.title"));
-		} catch (IOException e) {
-			logger.warn(e);
-			Messages.showErrorDialog(MessageResources.message("errorDialog.ioErrorOccured.text"), 
-					MessageResources.message("errorDialog.ioErrorOccured.title"));
-		} finally {
-			finished();
-		}
+            CreateReviewTask createReviewTask = new CreateReviewTask(project, user, selectedGroup, enteredTitle,
+                    uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadata);
+            createReviewTask.queue();
 
-	}
+        } catch (CollabClientServerConnectivityException e) {
+            logger.warn(e);
+            Messages.showErrorDialog(MessageResources.message("errorDialog.connectionException.text"),
+                    MessageResources.message("errorDialog.connectionException.title"));
+        } catch (ScmConfigurationException e) {
+            logger.warn(e);
+            Messages.showErrorDialog(MessageResources.message("errorDialog.scmException.text"),
+            MessageResources.message("errorDialog.scmException.title"));
+        } catch (CollabClientException e) {
+            logger.warn(e);
+            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"),
+                    MessageResources.message("errorDialog.errorOccured.title"));
+        } catch (IOException e) {
+            logger.warn(e);
+            Messages.showErrorDialog(MessageResources.message("errorDialog.ioErrorOccured.text"),
+                    MessageResources.message("errorDialog.ioErrorOccured.title"));
+        } finally {
+            finished();
+        }
+
+    }
 }

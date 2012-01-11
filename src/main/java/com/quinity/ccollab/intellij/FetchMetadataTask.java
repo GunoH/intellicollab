@@ -12,62 +12,62 @@ import org.jetbrains.annotations.NotNull;
 
 public class FetchMetadataTask extends Task.Modal {
 
-	private static Logger logger = Logger.getInstance(FetchMetadataTask.class.getName());
+    private static Logger logger = Logger.getInstance(FetchMetadataTask.class.getName());
 
-	private boolean success;
-	
-	private User user;
-	
-	private MetaDataDescription overview;
-	private MetaDataDescription bugzillaInstantie;
-	private MetaDataDescription bugzillanummer;
-	private MetaDataDescription fo;
-	private MetaDataDescription to;
-		
-	public FetchMetadataTask(Project project, User user) {
-		super(project, MessageResources.message("task.createReview.title"), false);
-		
-		this.user = user;
-	}
+    private boolean success;
 
-	@Override
-	public void run(@NotNull ProgressIndicator progressIndicator) {
+    private User user;
 
-		progressIndicator.setText(MessageResources.message("progressIndicator.createReview.retrievingMetadata"));
+    private MetaDataDescription overview;
+    private MetaDataDescription bugzillaInstantie;
+    private MetaDataDescription bugzillanummer;
+    private MetaDataDescription fo;
+    private MetaDataDescription to;
 
-		try {
-			// Retrieve all metadata from the code collaborator server
-			overview = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Overview")[0];
-			bugzillaInstantie = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzilla-instantie")[0];
-			bugzillanummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer")[0];
-			fo = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "FO")[0];
-			to = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "TO / Werkplan")[0];
-		} catch (DataModelException e) {
-			logger.warn("Error when retrieving metadata.", e);
-			return;
-		}
-		success = true;
-	}
+    public FetchMetadataTask(Project project, User user) {
+        super(project, MessageResources.message("task.createReview.title"), false);
 
-	@Override
-	public void onSuccess() {
-		if (!success) {
-			Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"), 
-					MessageResources.message("errorDialog.errorOccured.title"));
-		}
-	}
+        this.user = user;
+    }
 
-	public MetaDataDescription getOverview() {
-		return overview;
-	}
+    @Override
+    public void run(@NotNull ProgressIndicator progressIndicator) {
 
-	public MetaDataDescription getBugzillaInstantie() {
-		return bugzillaInstantie;
-	}
+        progressIndicator.setText(MessageResources.message("progressIndicator.createReview.retrievingMetadata"));
 
-	public MetaDataDescription getBugzillanummer() {
-		return bugzillanummer;
-	}
+        try {
+            // Retrieve all metadata from the code collaborator server
+            overview = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Overview")[0];
+            bugzillaInstantie = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzilla-instantie")[0];
+            bugzillanummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer")[0];
+            fo = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "FO")[0];
+            to = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "TO / Werkplan")[0];
+        } catch (DataModelException e) {
+            logger.warn("Error when retrieving metadata.", e);
+            return;
+        }
+        success = true;
+    }
+
+    @Override
+    public void onSuccess() {
+        if (!success) {
+            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"),
+                    MessageResources.message("errorDialog.errorOccured.title"));
+        }
+    }
+
+    public MetaDataDescription getOverview() {
+        return overview;
+    }
+
+    public MetaDataDescription getBugzillaInstantie() {
+        return bugzillaInstantie;
+    }
+
+    public MetaDataDescription getBugzillanummer() {
+        return bugzillanummer;
+    }
 
     public MetaDataDescription getFO() {
         return fo;
