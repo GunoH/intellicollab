@@ -1,4 +1,4 @@
-package com.quinity.ccollab.intellij;
+package nl.guno.ccollab.intellij;
 
 import java.io.IOException;
 import java.util.Collection;

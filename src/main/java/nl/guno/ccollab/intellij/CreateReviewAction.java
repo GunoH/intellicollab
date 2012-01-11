@@ -1,10 +1,10 @@
-package com.quinity.ccollab.intellij;
+package nl.guno.ccollab.intellij;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.quinity.ccollab.intellij.ui.CreateReviewDialog;
+import nl.guno.ccollab.intellij.ui.CreateReviewDialog;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.GroupDescription;

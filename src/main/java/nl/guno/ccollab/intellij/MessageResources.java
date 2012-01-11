@@ -1,4 +1,4 @@
-package com.quinity.ccollab.intellij;
+package nl.guno.ccollab.intellij;
 
 import com.intellij.CommonBundle;
 import org.jetbrains.annotations.NonNls;
@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 
 public final class MessageResources {
     @NonNls
-    private static final String BUNDLE_NAME = "com.quinity.ccollab.intellij.MessageResources";
+    private static final String BUNDLE_NAME = "nl.guno.ccollab.intellij.MessageResources";
     private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
     private MessageResources() {
