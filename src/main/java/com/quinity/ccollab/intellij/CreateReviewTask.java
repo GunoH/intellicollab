@@ -131,8 +131,8 @@ public class CreateReviewTask extends Task.Modal {
         if (success) {
             showConfirmDialog(review);
         } else {
-            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccured.text"),
-                    MessageResources.message("errorDialog.errorOccured.title"));
+            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccurred.text"),
+                    MessageResources.message("errorDialog.errorOccurred.title"));
         }
     }
 
