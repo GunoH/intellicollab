@@ -67,6 +67,12 @@ public class CreateReviewDialog extends JDialog {
     private JPanel restrictionPane;
     private JPanel FOPane;
     private JPanel TOPane;
+    private JPanel rnFOPane;
+    private JTextField rnFOTextField;
+    private JTextField rnTOTextField;
+    private JPanel rnTOPane;
+    private JPanel rnMigratiePadPane;
+    private JTextField rnMigratiePadTextField;
 
     /**
      * De default achtergrondkleur van een combobox; deze bewaren we zodat we na het tonen van een eventuele foutmelding de
@@ -392,6 +398,18 @@ public class CreateReviewDialog extends JDialog {
 
     public String getEnteredTO() {
         return toTextField.getText();
+    }
+
+    public String getEnteredRNFO() {
+        return rnFOTextField.getText();
+    }
+
+    public String getEnteredRNTO() {
+        return rnTOTextField.getText();
+    }
+
+    public String getEnteredRNMigratiePad() {
+        return rnMigratiePadTextField.getText();
     }
 
     public boolean isUploadRestricted() {
