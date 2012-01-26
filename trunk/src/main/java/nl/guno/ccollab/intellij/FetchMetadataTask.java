@@ -23,6 +23,9 @@ public class FetchMetadataTask extends Task.Modal {
     private MetaDataDescription bugzillanummer;
     private MetaDataDescription fo;
     private MetaDataDescription to;
+    private MetaDataDescription rnFO;
+    private MetaDataDescription rnTO;
+    private MetaDataDescription rnMigratiePad;
 
     public FetchMetadataTask(Project project, User user) {
         super(project, MessageResources.message("task.createReview.title"), false);
@@ -42,6 +45,9 @@ public class FetchMetadataTask extends Task.Modal {
             bugzillanummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer")[0];
             fo = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "FO")[0];
             to = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "TO / Werkplan")[0];
+            rnFO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes: Functionele omschrijving")[0];
+            rnTO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes: Technische omschrijving")[0];
+            rnMigratiePad = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes: Migratiepad")[0];
         } catch (DataModelException e) {
             logger.warn("Error when retrieving metadata.", e);
             return;
@@ -75,5 +81,17 @@ public class FetchMetadataTask extends Task.Modal {
 
     public MetaDataDescription getTO() {
         return to;
+    }
+
+    public MetaDataDescription getRNFO() {
+        return rnFO;
+    }
+
+    public MetaDataDescription getRNTO() {
+        return rnTO;
+    }
+
+    public MetaDataDescription getRNMigratiePad() {
+        return rnMigratiePad;
     }
 }
