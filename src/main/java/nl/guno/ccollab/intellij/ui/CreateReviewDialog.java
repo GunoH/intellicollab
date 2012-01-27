@@ -68,11 +68,11 @@ public class CreateReviewDialog extends JDialog {
     private JPanel FOPane;
     private JPanel TOPane;
     private JPanel rnFOPane;
-    private JPanel rnTOPane;
     private JPanel rnMigratiePadPane;
-    private JTextField rnFOTextField;
-    private JTextField rnTOTextField;
-    private JTextField rnMigratiePadTextField;
+    private JPanel rnTOPane;
+    private JTextArea rnFOTextArea;
+    private JTextArea rnTOTextArea;
+    private JTextArea rnMigratiePadTextArea;
 
     /**
      * De default achtergrondkleur van een combobox; deze bewaren we zodat we na het tonen van een eventuele foutmelding de
@@ -134,13 +134,13 @@ public class CreateReviewDialog extends JDialog {
     private static final int MAXLENGTH_TO = 255;
 
     /** Maximale lengte van het 'Relese notes: FO' veld. */
-    private static final int MAXLENGTH_RNFO = 255;
+    private static final int MAXLENGTH_RNFO = 4000;
 
     /** Maximale lengte van het 'Release notes: TO' veld. */
-    private static final int MAXLENGTH_RNTO = 255;
+    private static final int MAXLENGTH_RNTO = 4000;
 
     /** Maximale lengte van het 'Release notes: Migratiepad' veld. */
-    private static final int MAXLENGTH_RNMIGRATIEPAD = 255;
+    private static final int MAXLENGTH_RNMIGRATIEPAD = 4000;
 
     public CreateReviewDialog(User[] userList, List<GroupDescription> groupList, IDropDownItem[] bugzillaInstantieList,
                               User currentUser) {
@@ -197,14 +197,34 @@ public class CreateReviewDialog extends JDialog {
         defaultComboboxBackground = defaults.getColor("Combobox.background");
         defaultTextFieldBackground = defaults.getColor("TextField.background");
 
+        // Set max length on JTextComponents.
         titleTextField.setDocument(new InputLimiterDocument(MAXLENGTH_TITLE));
         overviewTextArea.setDocument(new InputLimiterDocument(MAXLENGTH_OVERVIEW));
         bugzillaNummerTextField.setDocument(new InputLimiterDocument(MAXLENGTH_BUGZILLANUMMER));
         foTextField.setDocument(new InputLimiterDocument(MAXLENGTH_FO));
         toTextField.setDocument(new InputLimiterDocument(MAXLENGTH_TO));
-        rnFOTextField.setDocument(new InputLimiterDocument(MAXLENGTH_RNFO));
-        rnTOTextField.setDocument(new InputLimiterDocument(MAXLENGTH_RNTO));
-        rnMigratiePadTextField.setDocument(new InputLimiterDocument(MAXLENGTH_RNMIGRATIEPAD));
+        rnFOTextArea.setDocument(new InputLimiterDocument(MAXLENGTH_RNFO));
+        rnTOTextArea.setDocument(new InputLimiterDocument(MAXLENGTH_RNTO));
+        rnMigratiePadTextArea.setDocument(new InputLimiterDocument(MAXLENGTH_RNMIGRATIEPAD));
+
+        // Make sure tab and shift-tab move the focus instead of inserting tab characters.
+        overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+        overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+        rnFOTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+        rnFOTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+        rnTOTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+        rnTOTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+        rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+        rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+
     }
 
     @SuppressWarnings({"BoundFieldAssignment"})
@@ -270,12 +290,10 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        overviewTextArea = new JTextArea();
-        // Make sure tab and shift-tab move the focus instead of inserting tab characters.
-        overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
-        overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+//        overviewTextArea = new JTextArea();
+//        rnFOTextArea = new JTextArea();
+//        rnTOTextArea = new JTextArea();
+//        rnMigratiePadTextArea = new JTextArea();
     }
 
     public void update() {
@@ -415,15 +433,15 @@ public class CreateReviewDialog extends JDialog {
     }
 
     public String getEnteredRNFO() {
-        return rnFOTextField.getText();
+        return rnFOTextArea.getText();
     }
 
     public String getEnteredRNTO() {
-        return rnTOTextField.getText();
+        return rnTOTextArea.getText();
     }
 
     public String getEnteredRNMigratiePad() {
-        return rnMigratiePadTextField.getText();
+        return rnMigratiePadTextArea.getText();
     }
 
     public boolean isUploadRestricted() {

@@ -3,7 +3,7 @@
   <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="48" y="54" width="676" height="523"/>
+      <xy x="48" y="54" width="676" height="613"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -125,7 +125,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="ab375" class="javax.swing.JTextArea" binding="overviewTextArea" custom-create="true">
+                  <component id="ab375" class="javax.swing.JTextArea" binding="overviewTextArea">
                     <constraints/>
                     <properties>
                       <lineWrap value="true"/>
@@ -216,7 +216,9 @@
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value=""/>
+                </properties>
               </component>
             </children>
           </grid>
@@ -264,20 +266,27 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <labelFor value="4c7d1"/>
+                  <labelFor value="e796b"/>
                   <text resource-bundle="nl/guno/ccollab/intellij/MessageResources" key="dialog.createReview.label.rnFO"/>
                 </properties>
               </component>
-              <component id="4c7d1" class="javax.swing.JTextField" binding="rnFOTextField">
+              <scrollpane id="e796b">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="40"/>
                   </grid>
                 </constraints>
-                <properties>
-                  <text value=""/>
-                </properties>
-              </component>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="ef232" class="javax.swing.JTextArea" binding="rnFOTextArea" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <lineWrap value="true"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <grid id="72c0a" binding="rnTOPane" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -295,20 +304,27 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <labelFor value="238dc"/>
+                  <labelFor value="25ccc"/>
                   <text resource-bundle="nl/guno/ccollab/intellij/MessageResources" key="dialog.createReview.label.rnTO"/>
                 </properties>
               </component>
-              <component id="238dc" class="javax.swing.JTextField" binding="rnTOTextField">
+              <scrollpane id="25ccc">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="40"/>
                   </grid>
                 </constraints>
-                <properties>
-                  <text value=""/>
-                </properties>
-              </component>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="3455c" class="javax.swing.JTextArea" binding="rnTOTextArea" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <lineWrap value="true"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <grid id="316c" binding="rnMigratiePadPane" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -326,20 +342,27 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <labelFor value="ea2a1"/>
+                  <labelFor value="79298"/>
                   <text resource-bundle="nl/guno/ccollab/intellij/MessageResources" key="dialog.createReview.label.rnMigratiePad"/>
                 </properties>
               </component>
-              <component id="ea2a1" class="javax.swing.JTextField" binding="rnMigratiePadTextField">
+              <scrollpane id="79298">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="40"/>
                   </grid>
                 </constraints>
-                <properties>
-                  <text value=""/>
-                </properties>
-              </component>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="86fd8" class="javax.swing.JTextArea" binding="rnMigratiePadTextArea" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <lineWrap value="true"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <grid id="bc0ac" binding="restrictionPane" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -527,5 +550,8 @@
   </grid>
   <inspectionSuppressions>
     <suppress inspection="NoLabelFor" id="ccf6e"/>
+    <suppress inspection="NoLabelFor" id="ef232"/>
+    <suppress inspection="NoLabelFor" id="3455c"/>
+    <suppress inspection="NoLabelFor" id="86fd8"/>
   </inspectionSuppressions>
 </form>
