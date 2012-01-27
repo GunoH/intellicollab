@@ -45,9 +45,9 @@ public class FetchMetadataTask extends Task.Modal {
             bugzillanummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer")[0];
             fo = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "FO")[0];
             to = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "TO / Werkplan")[0];
-            rnFO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes: Functionele omschrijving")[0];
-            rnTO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes: Technische omschrijving")[0];
-            rnMigratiePad = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes: Migratiepad")[0];
+            rnFO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Functionele omschrijving")[0];
+            rnTO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Technische omschrijving")[0];
+            rnMigratiePad = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Migratiepad")[0];
         } catch (DataModelException e) {
             logger.warn("Error when retrieving metadata.", e);
             return;
