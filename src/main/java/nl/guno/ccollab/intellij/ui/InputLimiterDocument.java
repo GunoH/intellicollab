@@ -5,17 +5,12 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 /**
- * Met deze klasse kan de lengte van de gebruikersinvoer in UI-components gelimiteerd worden.
+ * Use this class to limit the length of a JTextComponent.
  */
 public class InputLimiterDocument extends PlainDocument {
     private int limit;
 
     InputLimiterDocument(int limit) {
-        super();
-        this.limit = limit;
-    }
-
-    InputLimiterDocument(int limit, boolean upper) {
         super();
         this.limit = limit;
     }
