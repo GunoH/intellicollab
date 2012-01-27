@@ -68,10 +68,10 @@ public class CreateReviewDialog extends JDialog {
     private JPanel FOPane;
     private JPanel TOPane;
     private JPanel rnFOPane;
-    private JTextField rnFOTextField;
-    private JTextField rnTOTextField;
     private JPanel rnTOPane;
     private JPanel rnMigratiePadPane;
+    private JTextField rnFOTextField;
+    private JTextField rnTOTextField;
     private JTextField rnMigratiePadTextField;
 
     /**
@@ -118,20 +118,29 @@ public class CreateReviewDialog extends JDialog {
      */
     private boolean okPressed;
 
-    /**
-     * Maximale lengte van het 'title' veld.
-     */
-    private static final int OVERVIEW_MAXLENGTH = 2000000000;
+    /** Maximale lengte van het 'Overview' veld. */
+    private static final int MAXLENGTH_OVERVIEW = 4000;
 
-    /**
-     * Maximale lengte van het 'overview' veld.
-     */
-    private static final int TITLE_MAXLENGTH = 255;
+    /** Maximale lengte van het 'Title' veld. */
+    private static final int MAXLENGTH_TITLE = 255;
 
-    /**
-     * Maximale lengte van het 'Bugzillanummer' veld.
-     */
-    private static final int BUGZILLANUMMER_MAXLENGTH = 255;
+    /** Maximale lengte van het 'Bugzillanummer' veld. */
+    private static final int MAXLENGTH_BUGZILLANUMMER = 255;
+
+    /** Maximale lengte van het 'FO' veld. */
+    private static final int MAXLENGTH_FO = 255;
+
+    /** Maximale lengte van het 'TO' veld. */
+    private static final int MAXLENGTH_TO = 255;
+
+    /** Maximale lengte van het 'Relese notes: FO' veld. */
+    private static final int MAXLENGTH_RNFO = 255;
+
+    /** Maximale lengte van het 'Release notes: TO' veld. */
+    private static final int MAXLENGTH_RNTO = 255;
+
+    /** Maximale lengte van het 'Release notes: Migratiepad' veld. */
+    private static final int MAXLENGTH_RNMIGRATIEPAD = 255;
 
     public CreateReviewDialog(User[] userList, List<GroupDescription> groupList, IDropDownItem[] bugzillaInstantieList,
                               User currentUser) {
@@ -188,9 +197,14 @@ public class CreateReviewDialog extends JDialog {
         defaultComboboxBackground = defaults.getColor("Combobox.background");
         defaultTextFieldBackground = defaults.getColor("TextField.background");
 
-        titleTextField.setDocument(new InputLimiterDocument(TITLE_MAXLENGTH));
-        overviewTextArea.setDocument(new InputLimiterDocument(OVERVIEW_MAXLENGTH));
-        bugzillaNummerTextField.setDocument(new InputLimiterDocument(BUGZILLANUMMER_MAXLENGTH));
+        titleTextField.setDocument(new InputLimiterDocument(MAXLENGTH_TITLE));
+        overviewTextArea.setDocument(new InputLimiterDocument(MAXLENGTH_OVERVIEW));
+        bugzillaNummerTextField.setDocument(new InputLimiterDocument(MAXLENGTH_BUGZILLANUMMER));
+        foTextField.setDocument(new InputLimiterDocument(MAXLENGTH_FO));
+        toTextField.setDocument(new InputLimiterDocument(MAXLENGTH_TO));
+        rnFOTextField.setDocument(new InputLimiterDocument(MAXLENGTH_RNFO));
+        rnTOTextField.setDocument(new InputLimiterDocument(MAXLENGTH_RNTO));
+        rnMigratiePadTextField.setDocument(new InputLimiterDocument(MAXLENGTH_RNMIGRATIEPAD));
     }
 
     @SuppressWarnings({"BoundFieldAssignment"})
