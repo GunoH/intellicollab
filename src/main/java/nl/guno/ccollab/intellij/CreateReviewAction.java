@@ -8,7 +8,6 @@ import nl.guno.ccollab.intellij.ui.CreateReviewDialog;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.GroupDescription;
-import com.smartbear.ccollab.datamodel.IDropDownItem;
 import com.smartbear.ccollab.datamodel.MetaDataDescription;
 import com.smartbear.ccollab.datamodel.ReviewAccess;
 import com.smartbear.ccollab.datamodel.User;
@@ -51,18 +50,8 @@ public class CreateReviewAction extends IntelliCcollabAction {
             // Retrieve the available metadata
             FetchMetadataTask fetchMetadataTask = new FetchMetadataTask(project, user);
             fetchMetadataTask.queue();
-            MetaDataDescription overview = fetchMetadataTask.getOverview();
-            MetaDataDescription bugzillaInstantie = fetchMetadataTask.getBugzillaInstantie();
-            MetaDataDescription bugzillanummer = fetchMetadataTask.getBugzillanummer();
-            MetaDataDescription fo = fetchMetadataTask.getFO();
-            MetaDataDescription to = fetchMetadataTask.getTO();
-            MetaDataDescription rnFO = fetchMetadataTask.getRNFO();
-            MetaDataDescription rnTO = fetchMetadataTask.getRNTO();
-            MetaDataDescription rnMigratiePad = fetchMetadataTask.getRNMigratiePad();
 
-            IDropDownItem[] bugzillaInstanties = bugzillaInstantie.getDropDownItems(true);
-
-            CreateReviewDialog createReviewDialog = new CreateReviewDialog(users, groups, bugzillaInstanties, user);
+            CreateReviewDialog createReviewDialog = new CreateReviewDialog(fetchMetadataTask, users, groups, user);
             createReviewDialog.pack();
             createReviewDialog.setMinimumSize(createReviewDialog.getSize());
             createReviewDialog.setVisible(true);
@@ -81,14 +70,14 @@ public class CreateReviewAction extends IntelliCcollabAction {
             User selectedObserver = createReviewDialog.getSelectedObserver();
 
             Map<MetaDataDescription, Object> metadata = new HashMap<MetaDataDescription, Object>();
-            metadata.put(overview, createReviewDialog.getEnteredOverview());
-            metadata.put(bugzillaInstantie, createReviewDialog.getSelectedBugzillaInstantie());
-            metadata.put(bugzillanummer, createReviewDialog.getEnteredBugzillanummer());
-            metadata.put(fo, createReviewDialog.getEnteredFO());
-            metadata.put(to, createReviewDialog.getEnteredTO());
-            metadata.put(rnFO, createReviewDialog.getEnteredRNFO());
-            metadata.put(rnTO, createReviewDialog.getEnteredRNTO());
-            metadata.put(rnMigratiePad, createReviewDialog.getEnteredRNMigratiePad());
+            metadata.put(fetchMetadataTask.getOverview(), createReviewDialog.getEnteredOverview());
+            metadata.put(fetchMetadataTask.getBugzillaInstantie(), createReviewDialog.getSelectedBugzillaInstantie());
+            metadata.put(fetchMetadataTask.getBugzillanummer(), createReviewDialog.getEnteredBugzillanummer());
+            metadata.put(fetchMetadataTask.getFO(), createReviewDialog.getEnteredFO());
+            metadata.put(fetchMetadataTask.getTO(), createReviewDialog.getEnteredTO());
+            metadata.put(fetchMetadataTask.getRNFO(), createReviewDialog.getEnteredRNFO());
+            metadata.put(fetchMetadataTask.getRNTO(), createReviewDialog.getEnteredRNTO());
+            metadata.put(fetchMetadataTask.getRNMigratiePad(), createReviewDialog.getEnteredRNMigratiePad());
 
             CreateReviewTask createReviewTask = new CreateReviewTask(project, user, selectedGroup, enteredTitle,
                     uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadata);
