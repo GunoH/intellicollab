@@ -289,11 +289,6 @@ public class CreateReviewDialog extends JDialog {
                 return ((ReviewAccess)object).getDisplayName().toUpperCase();
             }
         });
-
-//        overviewTextArea = new JTextArea();
-//        rnFOTextArea = new JTextArea();
-//        rnTOTextArea = new JTextArea();
-//        rnMigratiePadTextArea = new JTextArea();
     }
 
     public void update() {
