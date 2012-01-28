@@ -1,6 +1,7 @@
 package nl.guno.ccollab.intellij.ui;
 
 import com.intellij.openapi.ui.ComboBox;
+import nl.guno.ccollab.intellij.FetchMetadataTask;
 import nl.guno.ccollab.intellij.MessageResources;
 import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.IDropDownItem;
@@ -142,9 +143,10 @@ public class CreateReviewDialog extends JDialog {
     /** Maximale lengte van het 'Release notes: Migratiepad' veld. */
     private static final int MAXLENGTH_RNMIGRATIEPAD = 4000;
 
-    public CreateReviewDialog(User[] userList, List<GroupDescription> groupList, IDropDownItem[] bugzillaInstantieList,
-                              User currentUser) {
+    public CreateReviewDialog(FetchMetadataTask fetchMetadataTask, User[] userList, List<GroupDescription> groupList, User currentUser) {
 
+        IDropDownItem[] bugzillaInstantieList = fetchMetadataTask.getBugzillaInstantie().getDropDownItems(true);
+        
         this.userList = new ArrayList<User>();
         this.userList.addAll(Arrays.asList(userList));
 
@@ -157,10 +159,10 @@ public class CreateReviewDialog extends JDialog {
 
         authorComboBoxModel.setSelectedItem(currentUser);
 
-        prepareUI();
+        prepareUI(fetchMetadataTask);
     }
 
-    private void prepareUI() {
+    private void prepareUI(FetchMetadataTask fetchMetadataTask) {
         setTitle(MessageResources.message("dialog.createReview.title"));
         setContentPane(contentPane);
         setModal(true);
@@ -197,6 +199,16 @@ public class CreateReviewDialog extends JDialog {
         defaultComboboxBackground = defaults.getColor("Combobox.background");
         defaultTextFieldBackground = defaults.getColor("TextField.background");
 
+        // Set tooltip texts
+        setToolTipText(overviewTextArea, fetchMetadataTask.getOverview().getDescription());
+        setToolTipText(bugzillaInstantieComboBox, fetchMetadataTask.getBugzillaInstantie().getDescription());
+        setToolTipText(bugzillaNummerTextField, fetchMetadataTask.getBugzillanummer().getDescription());
+        setToolTipText(foTextField, fetchMetadataTask.getFO().getDescription());
+        setToolTipText(toTextField, fetchMetadataTask.getTO().getDescription());
+        setToolTipText(rnFOTextArea, fetchMetadataTask.getRNFO().getDescription());
+        setToolTipText(rnTOTextArea, fetchMetadataTask.getRNTO().getDescription());
+        setToolTipText(rnMigratiePadTextArea, fetchMetadataTask.getRNMigratiePad().getDescription());
+        
         // Set max length on JTextComponents.
         titleTextField.setDocument(new InputLimiterDocument(MAXLENGTH_TITLE));
         overviewTextArea.setDocument(new InputLimiterDocument(MAXLENGTH_OVERVIEW));
@@ -225,6 +237,11 @@ public class CreateReviewDialog extends JDialog {
         rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
                 new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
 
+    }
+
+    private void setToolTipText(JComponent component, String text) {
+        if (text != null && text.length() > 0)
+        component.setToolTipText(text);
     }
 
     @SuppressWarnings({"BoundFieldAssignment"})
