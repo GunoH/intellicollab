@@ -87,24 +87,24 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             }
         } catch (CollabClientServerConnectivityException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("errorDialog.connectionException.text"),
-                    MessageResources.message("errorDialog.connectionException.title"));
+            Messages.showErrorDialog(MessageResources.message("action.addControlledFile.connectionException.text"),
+                    MessageResources.message("action.addControlledFile.connectionException.title"));
         } catch (ScmConfigurationException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("errorDialog.scmException.text"),
-            MessageResources.message("errorDialog.scmException.title"));
+            Messages.showErrorDialog(MessageResources.message("action.addControlledFile.scmException.text"),
+            MessageResources.message("action.addControlledFile.scmException.title"));
         } catch (CollabClientException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccurred.text"),
-                    MessageResources.message("errorDialog.errorOccurred.title"));
+            Messages.showErrorDialog(MessageResources.message("action.addControlledFile.errorOccurred.text"),
+                    MessageResources.message("action.addControlledFile.errorOccurred.title"));
         } catch (IOException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("errorDialog.ioErrorOccurred.text"),
-                    MessageResources.message("errorDialog.ioErrorOccurred.title"));
+            Messages.showErrorDialog(MessageResources.message("action.addControlledFile.ioErrorOccurred.text"),
+                    MessageResources.message("action.addControlledFile.ioErrorOccurred.title"));
         } catch (InterruptedException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("errorDialog.uploadInterrupted.text"),
-                    MessageResources.message("errorDialog.uploadInterrupted.title"));
+            Messages.showErrorDialog(MessageResources.message("action.addControlledFile.uploadInterrupted.text"),
+                    MessageResources.message("action.addControlledFile.uploadInterrupted.title"));
         } finally {
             finished();
         }
