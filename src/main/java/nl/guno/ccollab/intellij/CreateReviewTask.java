@@ -131,14 +131,14 @@ public class CreateReviewTask extends Task.Modal {
         if (success) {
             showConfirmDialog(review);
         } else {
-            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccurred.text"),
-                    MessageResources.message("errorDialog.errorOccurred.title"));
+            Messages.showErrorDialog(MessageResources.message("task.createReview.errorOccurred.text"),
+                    MessageResources.message("task.createReview.errorOccurred.title"));
         }
     }
 
     private void showConfirmDialog(Review review) {
         Messages.showInfoMessage(MessageResources.message("task.createReview.reviewCreated.text",
                 review.getId(), review.getTitle()),
-                MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.title"));
+                MessageResources.message("task.createReview.reviewCreated.title"));
     }
 }

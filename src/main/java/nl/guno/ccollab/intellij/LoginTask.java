@@ -67,8 +67,8 @@ public class LoginTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            Messages.showErrorDialog(MessageResources.message("errorDialog.connectionException.text"),
-                    MessageResources.message("errorDialog.connectionException.title"));
+            Messages.showErrorDialog(MessageResources.message("task.login.connectionException.text"),
+                    MessageResources.message("task.login.connectionException.title"));
         }
     }
 
