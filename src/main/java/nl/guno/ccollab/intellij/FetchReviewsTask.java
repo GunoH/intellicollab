@@ -44,8 +44,8 @@ public class FetchReviewsTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccurred.text"),
-                    MessageResources.message("errorDialog.errorOccurred.title"));
+            Messages.showErrorDialog(MessageResources.message("task.fetchReviews.errorOccurred.text"),
+                    MessageResources.message("task.fetchReviews.errorOccurred.title"));
         }
     }
 

@@ -120,16 +120,16 @@ public class AddToReviewTask extends Task.Backgroundable {
             success = true;
         } catch (ScmConfigurationException e) {
             logger.warn(e);
-            errorMessage = MessageResources.message("errorDialog.cannotDetermineSCMSystem.text");
+            errorMessage = MessageResources.message("task.addFilesToReview.cannotDetermineSCMSystem.text");
         } catch (CollabClientException e) {
             logger.warn(e);
-            errorMessage = MessageResources.message("errorDialog.errorOccurred.text");
+            errorMessage = MessageResources.message("task.addFilesToReview.errorOccurred.text");
         } catch (IntelliCcollabException e) {
             logger.warn(e);
-            errorMessage = MessageResources.message("errorDialog.errorOccurred.error.text", e.getMessage());
+            errorMessage = MessageResources.message("task.addFilesToReview.errorOccurred.error.text", e.getMessage());
         } catch (IOException e) {
             logger.warn(e);
-            errorMessage = MessageResources.message("errorDialog.ioErrorOccurred.text");
+            errorMessage = MessageResources.message("task.addFilesToReview.ioErrorOccurred.text");
         }
 
     }
@@ -139,7 +139,7 @@ public class AddToReviewTask extends Task.Backgroundable {
         if (success) {
             showConfirmDialog(review, files);
         } else {
-            Messages.showErrorDialog(errorMessage, MessageResources.message("errorDialog.errorOccurred.title"));
+            Messages.showErrorDialog(errorMessage, MessageResources.message("task.addFilesToReview.errorOccurred.title"));
         }
     }
 
@@ -148,8 +148,8 @@ public class AddToReviewTask extends Task.Backgroundable {
         if (success) {
             showConfirmDialog(review, files);
         } else {
-            Messages.showErrorDialog(MessageResources.message("errorDialog.cancelledAddToReview.text"),
-                    MessageResources.message("errorDialog.errorOccurred.title"));
+            Messages.showErrorDialog(MessageResources.message("task.addFilesToReview.cancelled.text"),
+                    MessageResources.message("task.addFilesToReview.cancelled.title"));
         }
     }
 

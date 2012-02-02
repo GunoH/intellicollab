@@ -41,8 +41,8 @@ public class IntelliCcollabConfigurationForm {
                     autofill();
                 } catch (Exception ex) {
                     logger.error("Exception when reading metadata from filesystem. ", ex);
-                    Messages.showErrorDialog(MessageResources.message("errorDialog.couldNotReadMetadata.text"),
-                            MessageResources.message("errorDialog.couldNotReadMetadata.title"));
+                    Messages.showErrorDialog(MessageResources.message("configuration.error.couldNotReadMetadata.text"),
+                            MessageResources.message("configuration.error.couldNotReadMetadata.title"));
                 }
             }
         });

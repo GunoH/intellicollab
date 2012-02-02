@@ -58,8 +58,8 @@ public class FetchMetadataTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccurred.text"),
-                    MessageResources.message("errorDialog.errorOccurred.title"));
+            Messages.showErrorDialog(MessageResources.message("task.fetchMetaData.errorOccurred.text"),
+                    MessageResources.message("task.fetchMetaData.errorOccurred.title"));
         }
     }
 
