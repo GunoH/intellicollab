@@ -62,8 +62,8 @@ public class FetchGroupsTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            Messages.showErrorDialog(MessageResources.message("errorDialog.errorOccurred.text"),
-                    MessageResources.message("errorDialog.errorOccurred.title"));
+            Messages.showErrorDialog(MessageResources.message("task.fetchGroups.errorOccurred.text"),
+                    MessageResources.message("task.fetchGroups.errorOccurred.title"));
         }
     }
 
