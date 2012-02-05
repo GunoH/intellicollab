@@ -4,7 +4,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.MessageType;
 import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.MetaDataDescription;
 import com.smartbear.ccollab.datamodel.User;
@@ -16,6 +16,7 @@ public class FetchMetadataTask extends Task.Modal {
 
     private boolean success;
 
+    private Project project;
     private User user;
 
     private MetaDataDescription overview;
@@ -30,6 +31,7 @@ public class FetchMetadataTask extends Task.Modal {
     public FetchMetadataTask(Project project, User user) {
         super(project, MessageResources.message("task.createReview.title"), false);
 
+        this.project = project;
         this.user = user;
     }
 
@@ -58,8 +60,8 @@ public class FetchMetadataTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            Messages.showErrorDialog(MessageResources.message("task.fetchMetaData.errorOccurred.text"),
-                    MessageResources.message("task.fetchMetaData.errorOccurred.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("task.fetchMetaData.errorOccurred.text"), 
+                    MessageType.ERROR);
         }
     }
 

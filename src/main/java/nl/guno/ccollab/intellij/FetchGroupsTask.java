@@ -4,7 +4,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.MessageType;
 import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.User;
@@ -21,6 +21,7 @@ public class FetchGroupsTask extends Task.Modal {
 
     private boolean success;
 
+    private Project project;
     private User user;
 
     private List<GroupDescription> groups;
@@ -28,6 +29,7 @@ public class FetchGroupsTask extends Task.Modal {
     public FetchGroupsTask(Project project, User user) {
         super(project, MessageResources.message("task.createReview.title"), false);
 
+        this.project = project;
         this.user = user;
     }
 
@@ -62,8 +64,8 @@ public class FetchGroupsTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            Messages.showErrorDialog(MessageResources.message("task.fetchGroups.errorOccurred.text"),
-                    MessageResources.message("task.fetchGroups.errorOccurred.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("task.fetchGroups.errorOccurred.text"), 
+                    MessageType.ERROR);
         }
     }
 

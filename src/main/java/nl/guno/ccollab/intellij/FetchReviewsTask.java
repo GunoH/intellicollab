@@ -4,7 +4,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.MessageType;
 import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.User;
@@ -16,6 +16,7 @@ public class FetchReviewsTask extends Task.Modal {
 
     private boolean success;
 
+    private Project project;
     private User user;
 
     private Review[] reviews;
@@ -23,6 +24,7 @@ public class FetchReviewsTask extends Task.Modal {
     public FetchReviewsTask(Project project, User user) {
         super(project, MessageResources.message("task.selectReview.title"), false);
 
+        this.project = project;
         this.user = user;
     }
 
@@ -44,8 +46,8 @@ public class FetchReviewsTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            Messages.showErrorDialog(MessageResources.message("task.fetchReviews.errorOccurred.text"),
-                    MessageResources.message("task.fetchReviews.errorOccurred.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("task.fetchReviews.errorOccurred.text"), 
+                    MessageType.ERROR);
         }
     }
 
