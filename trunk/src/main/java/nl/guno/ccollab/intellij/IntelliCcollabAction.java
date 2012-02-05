@@ -2,7 +2,7 @@ package nl.guno.ccollab.intellij;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.MessageType;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
 import com.smartbear.beans.IGlobalOptions;
@@ -56,8 +56,8 @@ public abstract class IntelliCcollabAction extends AnAction {
         globalOptions = new IntelliCcollabGlobalOptions(configOptions.getA());
 
         if (globalOptions.settingsIncomplete()) {
-            Messages.showInfoMessage(MessageResources.message("configuration.error.mandatorySettingsMissing.text"),
-                    MessageResources.message("configuration.error.mandatorySettingsMissing.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("error.mandatorySettingsMissing"), 
+                    MessageType.ERROR);
             return;
         }
 

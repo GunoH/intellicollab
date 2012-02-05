@@ -3,7 +3,7 @@ package nl.guno.ccollab.intellij;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vcs.AbstractVcs;
 import com.intellij.openapi.vcs.changes.Change;
@@ -23,13 +23,13 @@ import java.util.List;
 public class AddControlledFileAction extends IntelliCcollabAction {
 
     private static Logger logger = Logger.getInstance(AddControlledFileAction.class.getName());
-
+    private Project project;
 
     @Override
     public void actionPerformed(AnActionEvent event) {
 
         try {
-            Project project = PluginUtil.getProject(event.getDataContext());
+            project = PluginUtil.getProject(event.getDataContext());
 
             init(project);
 
@@ -71,8 +71,10 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 
             if (files.length == 0) {
                 logger.debug("No files selected.");
-                Messages.showErrorDialog(MessageResources.message("task.addFilesToReview.noFilesSelected.text"),
-                        MessageResources.message("task.addFilesToReview.noFilesSelected.title"));
+                PluginUtil.createBalloon(
+                        project, 
+                        MessageResources.message("task.addFilesToReview.noFilesSelected.text"),
+                        MessageType.ERROR);
                 return;
             }
 
@@ -87,24 +89,25 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             }
         } catch (CollabClientServerConnectivityException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("action.addControlledFile.connectionException.text"),
-                    MessageResources.message("action.addControlledFile.connectionException.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.connectionException.text"),
+                    MessageType.ERROR);
+
         } catch (ScmConfigurationException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("action.addControlledFile.scmException.text"),
-            MessageResources.message("action.addControlledFile.scmException.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.scmException.text"), 
+                    MessageType.ERROR);
         } catch (CollabClientException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("action.addControlledFile.errorOccurred.text"),
-                    MessageResources.message("action.addControlledFile.errorOccurred.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.errorOccurred.text"), 
+                    MessageType.ERROR);
         } catch (IOException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("action.addControlledFile.ioErrorOccurred.text"),
-                    MessageResources.message("action.addControlledFile.ioErrorOccurred.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.ioErrorOccurred.text"),
+                    MessageType.ERROR);
         } catch (InterruptedException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("action.addControlledFile.uploadInterrupted.text"),
-                    MessageResources.message("action.addControlledFile.uploadInterrupted.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.uploadInterrupted.text"),
+                    MessageType.ERROR);
         } finally {
             finished();
         }
