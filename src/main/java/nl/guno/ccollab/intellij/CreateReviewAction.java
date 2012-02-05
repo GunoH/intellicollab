@@ -3,7 +3,7 @@ package nl.guno.ccollab.intellij;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.MessageType;
 import nl.guno.ccollab.intellij.ui.CreateReviewDialog;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
@@ -20,6 +20,8 @@ import java.util.Map;
 
 public class CreateReviewAction extends IntelliCcollabAction {
 
+    private Project project;
+    
     private static Logger logger = Logger.getInstance(CreateReviewAction.class.getName());
 
 
@@ -27,7 +29,7 @@ public class CreateReviewAction extends IntelliCcollabAction {
     public void actionPerformed(AnActionEvent event) {
 
         try {
-            Project project = PluginUtil.getProject(event.getDataContext());
+            project = PluginUtil.getProject(event.getDataContext());
 
             init(project);
 
@@ -85,20 +87,20 @@ public class CreateReviewAction extends IntelliCcollabAction {
 
         } catch (CollabClientServerConnectivityException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("action.createReview.connectionException.text"),
-                    MessageResources.message("action.createReview.connectionException.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("action.createReview.connectionException.text"), 
+                    MessageType.ERROR);
         } catch (ScmConfigurationException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("action.createReview.scmException.text"),
-            MessageResources.message("action.createReview.scmException.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("action.createReview.scmException.text"), 
+                    MessageType.ERROR);
         } catch (CollabClientException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("action.createReview.errorOccurred.text"),
-                    MessageResources.message("action.createReview.errorOccurred.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("action.createReview.errorOccurred.text"), 
+                    MessageType.ERROR);
         } catch (IOException e) {
             logger.warn(e);
-            Messages.showErrorDialog(MessageResources.message("action.createReview.ioErrorOccurred.text"),
-                    MessageResources.message("action.createReview.ioErrorOccurred.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("action.createReview.ioErrorOccurred.text"), 
+                    MessageType.ERROR);
         } finally {
             finished();
         }
