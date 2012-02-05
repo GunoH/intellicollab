@@ -4,7 +4,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.MessageType;
 import com.smartbear.beans.IGlobalOptions;
 import com.smartbear.ccollab.client.CollabClientIncompatibleVersionException;
 import com.smartbear.ccollab.client.CollabClientLoginCredentialsInvalidException;
@@ -21,6 +21,7 @@ public class LoginTask extends Task.Modal {
 
     private static Logger logger = Logger.getInstance(LoginTask.class.getName());
 
+    private Project project;
     private boolean success;
 
     private User user;
@@ -31,6 +32,7 @@ public class LoginTask extends Task.Modal {
     public LoginTask(Project project, IGlobalOptions globalOptions, ICollabClientInterface clientInterface) {
         super(project, MessageResources.message("task.login.title"), false);
 
+        this.project = project;
         this.globalOptions = globalOptions;
         this.clientInterface = clientInterface;
     }
@@ -67,8 +69,10 @@ public class LoginTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            Messages.showErrorDialog(MessageResources.message("task.login.connectionException.text"),
-                    MessageResources.message("task.login.connectionException.title"));
+            PluginUtil.createBalloon(
+                    project,
+                    MessageResources.message("task.login.connectionException.text"), 
+                    MessageType.ERROR);
         }
     }
 
