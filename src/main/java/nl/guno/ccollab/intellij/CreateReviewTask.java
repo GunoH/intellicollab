@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.MessageType;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.IDropDownItem;
@@ -20,7 +22,6 @@ import com.smartbear.ccollab.datamodel.ReviewAccess;
 import com.smartbear.ccollab.datamodel.ReviewParticipant;
 import com.smartbear.ccollab.datamodel.Role;
 import com.smartbear.ccollab.datamodel.User;
-import org.jetbrains.annotations.NotNull;
 
 public class CreateReviewTask extends Task.Modal {
 
@@ -28,6 +29,7 @@ public class CreateReviewTask extends Task.Modal {
 
     private boolean success;
 
+    private Project project;
     private User user;
     private GroupDescription group;
     private String reviewTitle;
@@ -45,6 +47,7 @@ public class CreateReviewTask extends Task.Modal {
                             User observer, Map<MetaDataDescription, Object> metadata) {
         super(project, MessageResources.message("task.createReview.title"), false);
 
+        this.project = project;
         this.user = user;
         this.group = group;
         this.reviewTitle = reviewTitle;
@@ -129,16 +132,16 @@ public class CreateReviewTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (success) {
-            showConfirmDialog(review);
+            PluginUtil.createBalloon(
+                    project,
+                    MessageResources.message("task.createReview.reviewCreated.text", review.getId(), review.getTitle()),
+                    MessageType.INFO);
+            
         } else {
-            Messages.showErrorDialog(MessageResources.message("task.createReview.errorOccurred.text"),
-                    MessageResources.message("task.createReview.errorOccurred.title"));
+            PluginUtil.createBalloon(
+                    project,
+                    MessageResources.message("task.createReview.errorOccurred.text"),
+                    MessageType.ERROR);
         }
-    }
-
-    private void showConfirmDialog(Review review) {
-        Messages.showInfoMessage(MessageResources.message("task.createReview.reviewCreated.text",
-                review.getId(), review.getTitle()),
-                MessageResources.message("task.createReview.reviewCreated.title"));
     }
 }

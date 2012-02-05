@@ -9,7 +9,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.MessageType;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.datamodel.Changelist;
 import com.smartbear.ccollab.datamodel.Engine;
@@ -27,6 +27,7 @@ public class AddToReviewTask extends Task.Backgroundable {
 
     private static Logger logger = Logger.getInstance(AddToReviewTask.class.getName());
 
+    private Project project;
     private Review review;
 
     private File[] files;
@@ -39,6 +40,7 @@ public class AddToReviewTask extends Task.Backgroundable {
     public AddToReviewTask(Project project, Review review, User user, File... files) {
         super(project, MessageResources.message("task.addFilesToReview.title"), true);
 
+        this.project = project;
         this.review = review;
         this.user = user;
         this.files = files;
@@ -137,26 +139,23 @@ public class AddToReviewTask extends Task.Backgroundable {
     @Override
     public void onSuccess() {
         if (success) {
-            showConfirmDialog(review, files);
+            PluginUtil.createBalloon(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
+                    files.length, review.getId(), review.getTitle()), MessageType.INFO);
         } else {
-            Messages.showErrorDialog(errorMessage, MessageResources.message("task.addFilesToReview.errorOccurred.title"));
+            PluginUtil.createBalloon(project, errorMessage, MessageType.ERROR);
         }
     }
 
     @Override
     public void onCancel() {
         if (success) {
-            showConfirmDialog(review, files);
+            PluginUtil.createBalloon(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
+                    files.length, review.getId(), review.getTitle()),
+                    MessageType.INFO);
         } else {
-            Messages.showErrorDialog(MessageResources.message("task.addFilesToReview.cancelled.text"),
-                    MessageResources.message("task.addFilesToReview.cancelled.title"));
+            PluginUtil.createBalloon(project, MessageResources.message("task.addFilesToReview.cancelled.text"), 
+                    MessageType.ERROR);
         }
-    }
-
-    private void showConfirmDialog(Review review, File... files) {
-        Messages.showInfoMessage(MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                files.length, review.getId(), review.getTitle()),
-                MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.title"));
     }
 
     @Override
