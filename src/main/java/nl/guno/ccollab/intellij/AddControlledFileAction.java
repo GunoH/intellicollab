@@ -1,5 +1,10 @@
 package nl.guno.ccollab.intellij;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -9,16 +14,11 @@ import com.intellij.openapi.vcs.AbstractVcs;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ChangeList;
 import com.intellij.openapi.vcs.changes.ChangesUtil;
-import nl.guno.ccollab.intellij.ui.FileAndReviewSelector;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.scm.ScmConfigurationException;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import nl.guno.ccollab.intellij.ui.FileAndReviewSelector;
 
 public class AddControlledFileAction extends IntelliCcollabAction {
 
@@ -104,10 +104,6 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             logger.warn(e);
             PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.ioErrorOccurred.text"),
                     MessageType.ERROR);
-        } catch (InterruptedException e) {
-            logger.warn(e);
-            PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.uploadInterrupted.text"),
-                    MessageType.ERROR);
         } finally {
             finished();
         }
@@ -121,7 +117,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
     /**
      * Attaches local files that are under version control to the given review
      */
-    private void attachControlledFiles(AnActionEvent event, final Review review, final File... files) throws InterruptedException {
+    private void attachControlledFiles(AnActionEvent event, final Review review, final File... files) {
 
         Project project = PluginUtil.getProject(event.getDataContext());
 

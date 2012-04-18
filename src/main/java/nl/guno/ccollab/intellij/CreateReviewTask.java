@@ -1,6 +1,5 @@
 package nl.guno.ccollab.intellij;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +11,6 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
-import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.IDropDownItem;
 import com.smartbear.ccollab.datamodel.MetaDataDescription;
@@ -62,24 +60,17 @@ public class CreateReviewTask extends Task.Modal {
     @Override
     public void run(@NotNull ProgressIndicator progressIndicator) {
 
-        try {
             progressIndicator.setText(MessageResources.message("progressIndicator.createReview.start"));
 
             createReview();
 
             success = true;
-
-        } catch (CollabClientException e) {
-            logger.warn(e);
-        } catch (IOException e) {
-            logger.warn(e);
-        }
     }
 
     /**
      * Creates a new review object
      */
-    private void createReview() throws CollabClientException, IOException {
+    private void createReview() {
 
         // Create the new review object with the local user as the creator
         review = user.getEngine().reviewCreate(user, reviewTitle);

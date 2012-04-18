@@ -17,7 +17,6 @@ import javax.swing.*;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.ui.CheckBoxList;
@@ -34,14 +33,14 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     private JPanel checkboxListPane;
     private CheckBoxList fileCheckBoxList;
     private JPanel reviewPane;
-    private JComboBox reviewComboBox;
+    private JComboBox<Review> reviewComboBox;
 
     private List<Pair<File, Boolean>> initialFileList;
     private List<Pair<File, Boolean>> workingFileList;
-    private DefaultListModel fileListModel;
+    private DefaultListModel<JCheckBox> fileListModel;
 
     private List<Review> reviewList;
-    private DefaultComboBoxModel reviewComboBoxModel;
+    private DefaultComboBoxModel<Review> reviewComboBoxModel;
 
     private boolean okPressed;
     
@@ -110,11 +109,11 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     }
 
     private void createUIComponents() {
-        fileListModel = new DefaultListModel();
+        fileListModel = new DefaultListModel<JCheckBox>();
         fileCheckBoxList = new CheckBoxList(fileListModel, this);
 
-        reviewComboBoxModel = new DefaultComboBoxModel();
-        reviewComboBox = new ComboBox(reviewComboBoxModel, -1);
+        reviewComboBoxModel = new DefaultComboBoxModel<Review>();
+        reviewComboBox = new JComboBox<Review>(reviewComboBoxModel);
         reviewComboBox.setRenderer(new ReviewComboboxRenderer());
     }
 
@@ -176,14 +175,14 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     }
 }
 
-class ReviewComboboxRenderer extends JLabel implements ListCellRenderer {
+class ReviewComboboxRenderer extends JLabel implements ListCellRenderer<Review> {
 
     public ReviewComboboxRenderer() {
         setOpaque(true);
     }
 
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        Review review = (Review) value;
+    public Component getListCellRendererComponent(JList<? extends Review> list, Review review, int index, 
+                                                  boolean isSelected, boolean cellHasFocus) {
 
         if (isSelected) {
             setBackground(Color.BLUE);
