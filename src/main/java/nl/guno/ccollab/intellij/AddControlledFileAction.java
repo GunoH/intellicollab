@@ -1,5 +1,10 @@
 package nl.guno.ccollab.intellij;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -9,16 +14,11 @@ import com.intellij.openapi.vcs.AbstractVcs;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ChangeList;
 import com.intellij.openapi.vcs.changes.ChangesUtil;
-import nl.guno.ccollab.intellij.ui.FileAndReviewSelector;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.scm.ScmConfigurationException;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import nl.guno.ccollab.intellij.ui.FileAndReviewSelector;
 
 public class AddControlledFileAction extends IntelliCcollabAction {
 

@@ -1,11 +1,12 @@
 package nl.guno.ccollab.intellij;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.smartbear.beans.IGlobalOptions;
-import org.apache.commons.lang.StringUtils;
-
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.intellij.openapi.application.ApplicationManager;
+import com.smartbear.beans.IGlobalOptions;
 
 public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 

@@ -1,27 +1,29 @@
 package nl.guno.ccollab.intellij.ui;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.ui.Messages;
-import nl.guno.ccollab.intellij.IntelliCcollabApplicationComponent;
-import nl.guno.ccollab.intellij.MessageResources;
-import com.smartbear.CollabClientException;
-import com.smartbear.beans.ConfigUtils;
-import com.smartbear.beans.IGlobalOptions;
-import com.smartbear.beans.IScmOptions;
-import com.smartbear.collections.Pair;
-import org.apache.commons.lang.StringUtils;
-
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.ui.Messages;
+import com.smartbear.CollabClientException;
+import com.smartbear.beans.ConfigUtils;
+import com.smartbear.beans.IGlobalOptions;
+import com.smartbear.beans.IScmOptions;
+import com.smartbear.collections.Pair;
+import nl.guno.ccollab.intellij.IntelliCcollabApplicationComponent;
+import nl.guno.ccollab.intellij.MessageResources;
 
 public class IntelliCcollabConfigurationForm {
     private JPanel rootComponent;
