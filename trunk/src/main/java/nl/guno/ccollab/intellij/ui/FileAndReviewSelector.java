@@ -32,6 +32,8 @@ import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.ui.CheckBoxList;
+import com.intellij.ui.CheckBoxListListener;
 import com.smartbear.ccollab.datamodel.Review;
 import nl.guno.ccollab.intellij.MessageResources;
 
