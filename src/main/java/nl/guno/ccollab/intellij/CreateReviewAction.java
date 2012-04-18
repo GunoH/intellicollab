@@ -1,10 +1,14 @@
 package nl.guno.ccollab.intellij;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
-import nl.guno.ccollab.intellij.ui.CreateReviewDialog;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.GroupDescription;
@@ -12,11 +16,7 @@ import com.smartbear.ccollab.datamodel.MetaDataDescription;
 import com.smartbear.ccollab.datamodel.ReviewAccess;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.scm.ScmConfigurationException;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import nl.guno.ccollab.intellij.ui.CreateReviewDialog;
 
 public class CreateReviewAction extends IntelliCcollabAction {
 

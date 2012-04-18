@@ -1,8 +1,8 @@
 package nl.guno.ccollab.intellij;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-
 import java.io.File;
+
+import com.intellij.openapi.actionSystem.AnActionEvent;
 
 public class AddControlledFileFromEditorTab extends AddControlledFileAction {
 

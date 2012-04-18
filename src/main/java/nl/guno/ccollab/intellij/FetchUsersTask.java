@@ -1,5 +1,7 @@
 package nl.guno.ccollab.intellij;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
@@ -7,7 +9,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.User;
-import org.jetbrains.annotations.NotNull;
 
 public class FetchUsersTask extends Task.Modal {
 

@@ -1,10 +1,11 @@
 package nl.guno.ccollab.intellij;
 
-import com.intellij.CommonBundle;
+import java.util.ResourceBundle;
+
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.PropertyKey;
 
-import java.util.ResourceBundle;
+import com.intellij.CommonBundle;
 
 
 public final class MessageResources {

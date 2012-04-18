@@ -1,8 +1,9 @@
 package nl.guno.ccollab.intellij.ui;
 
+import java.util.Date;
+
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
-import java.util.Date;
 
 public abstract class IncrementalKeySelManager implements JComboBox.KeySelectionManager {
  

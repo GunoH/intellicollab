@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -21,7 +22,6 @@ import com.smartbear.scm.IScmLocalCheckout;
 import com.smartbear.scm.ScmChangeset;
 import com.smartbear.scm.ScmConfigurationException;
 import com.smartbear.scm.ScmUtils;
-import org.jetbrains.annotations.NotNull;
 
 public class AddToReviewTask extends Task.Backgroundable {
 

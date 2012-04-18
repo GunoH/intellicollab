@@ -1,23 +1,13 @@
 package nl.guno.ccollab.intellij.ui;
 
-import com.intellij.openapi.ui.ComboBox;
-import nl.guno.ccollab.intellij.FetchMetadataTask;
-import nl.guno.ccollab.intellij.MessageResources;
-import com.smartbear.ccollab.datamodel.GroupDescription;
-import com.smartbear.ccollab.datamodel.IDropDownItem;
-import com.smartbear.ccollab.datamodel.MetaDataSelectItem;
-import com.smartbear.ccollab.datamodel.ReviewAccess;
-import com.smartbear.ccollab.datamodel.User;
-import org.apache.commons.lang.StringUtils;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,6 +27,17 @@ import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.intellij.openapi.ui.ComboBox;
+import com.smartbear.ccollab.datamodel.GroupDescription;
+import com.smartbear.ccollab.datamodel.IDropDownItem;
+import com.smartbear.ccollab.datamodel.MetaDataSelectItem;
+import com.smartbear.ccollab.datamodel.ReviewAccess;
+import com.smartbear.ccollab.datamodel.User;
+import nl.guno.ccollab.intellij.FetchMetadataTask;
+import nl.guno.ccollab.intellij.MessageResources;
 
 public class CreateReviewDialog extends JDialog {
     private JButton buttonOK;
