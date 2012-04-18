@@ -56,7 +56,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, @NotNull Review[] reviewList) {
         initialFileList = fileList;
 
-        this.reviewList = new ArrayList<Review>();
+        this.reviewList = new ArrayList<>();
         this.reviewList.addAll(Arrays.asList(reviewList));
 
         // Sort the list of reviews in descending order of last activity date.
@@ -127,7 +127,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     }
 
     public void reset() {
-        workingFileList = new ArrayList<Pair<File, Boolean>>(initialFileList);
+        workingFileList = new ArrayList<>(initialFileList);
         update();
     }
 
@@ -149,7 +149,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
 
     public static void main(String[] args) {
 
-        List<Pair<File, Boolean>> fileList = new ArrayList<Pair<File, Boolean>>();
+        List<Pair<File, Boolean>> fileList = new ArrayList<>();
         Review[] reviews = new Review[0];
 
         FileAndReviewSelector dialog = new FileAndReviewSelector(fileList, reviews);
@@ -165,7 +165,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     }
 
     public File[] retrieveSelectedFiles() {
-        List<File> result = new ArrayList<File>();
+        List<File> result = new ArrayList<>();
         for (Pair<File, Boolean> pair : workingFileList) {
             if (pair.second) {
                 result.add(pair.first);

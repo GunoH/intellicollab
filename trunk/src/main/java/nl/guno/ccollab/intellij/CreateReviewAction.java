@@ -71,7 +71,7 @@ public class CreateReviewAction extends IntelliCcollabAction {
             User selectedReviewer = createReviewDialog.getSelectedReviewer();
             User selectedObserver = createReviewDialog.getSelectedObserver();
 
-            Map<MetaDataDescription, Object> metadata = new HashMap<MetaDataDescription, Object>();
+            Map<MetaDataDescription, Object> metadata = new HashMap<>();
             metadata.put(fetchMetadataTask.getOverview(), createReviewDialog.getEnteredOverview());
             metadata.put(fetchMetadataTask.getBugzillaInstantie(), createReviewDialog.getSelectedBugzillaInstantie());
             metadata.put(fetchMetadataTask.getBugzillanummer(), createReviewDialog.getEnteredBugzillanummer());
