@@ -26,13 +26,13 @@ import nl.guno.ccollab.intellij.MessageResources;
 public class CreateReviewDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JComboBox<User> authorComboBox;
-    private JComboBox<User> reviewerComboBox;
-    private JComboBox<User> observerComboBox;
-    private JComboBox<GroupDescription> groupComboBox;
-    private JComboBox<IDropDownItem> bugzillaInstantieComboBox;
-    private JComboBox<ReviewAccess> reviewAccessComboBox;
-    private JComboBox<String> restrictUploadsToReviewComboBox;
+    private JComboBox authorComboBox;
+    private JComboBox reviewerComboBox;
+    private JComboBox observerComboBox;
+    private JComboBox groupComboBox;
+    private JComboBox bugzillaInstantieComboBox;
+    private JComboBox reviewAccessComboBox;
+    private JComboBox restrictUploadsToReviewComboBox;
     private JTextField titleTextField;
     private JTextArea overviewTextArea;
     private JTextField bugzillaNummerTextField;
@@ -77,12 +77,12 @@ public class CreateReviewDialog extends JDialog {
      */
     private Color highlightBackground = Color.yellow;
     
-    private DefaultComboBoxModel<User> reviewerComboBoxModel;
-    private DefaultComboBoxModel<User> authorComboBoxModel;
-    private DefaultComboBoxModel<User> observerComboBoxModel;
-    private DefaultComboBoxModel<GroupDescription> groupComboBoxModel;
-    private DefaultComboBoxModel<IDropDownItem> bugzillaInstantieComboBoxModel;
-    private DefaultComboBoxModel<ReviewAccess> reviewAccessComboBoxModel;
+    private DefaultComboBoxModel reviewerComboBoxModel;
+    private DefaultComboBoxModel authorComboBoxModel;
+    private DefaultComboBoxModel observerComboBoxModel;
+    private DefaultComboBoxModel groupComboBoxModel;
+    private DefaultComboBoxModel bugzillaInstantieComboBoxModel;
+    private DefaultComboBoxModel reviewAccessComboBoxModel;
 
     /**
      * Lijst met gebruikers waar uit gekozen kan worden in de userinterface.
@@ -233,8 +233,8 @@ public class CreateReviewDialog extends JDialog {
     @SuppressWarnings({"BoundFieldAssignment"})
     private void createUIComponents() {
 
-        authorComboBoxModel = new DefaultComboBoxModel<User>();
-        authorComboBox = new JComboBox<User>(authorComboBoxModel);
+        authorComboBoxModel = new DefaultComboBoxModel();
+        authorComboBox = new JComboBox(authorComboBoxModel);
         authorComboBox.setRenderer(new UserComboboxRenderer());
         authorComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -243,8 +243,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        reviewerComboBoxModel = new DefaultComboBoxModel<User>();
-        reviewerComboBox = new JComboBox<User>(reviewerComboBoxModel);
+        reviewerComboBoxModel = new DefaultComboBoxModel();
+        reviewerComboBox = new JComboBox(reviewerComboBoxModel);
         reviewerComboBox.setRenderer(new UserComboboxRenderer());
         reviewerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -253,8 +253,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        observerComboBoxModel = new DefaultComboBoxModel<User>();
-        observerComboBox = new JComboBox<User>(observerComboBoxModel);
+        observerComboBoxModel = new DefaultComboBoxModel();
+        observerComboBox = new JComboBox(observerComboBoxModel);
         observerComboBox.setRenderer(new UserComboboxRenderer());
         observerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -263,8 +263,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        groupComboBoxModel = new DefaultComboBoxModel<GroupDescription>();
-        groupComboBox = new JComboBox<GroupDescription>(groupComboBoxModel);
+        groupComboBoxModel = new DefaultComboBoxModel();
+        groupComboBox = new JComboBox(groupComboBoxModel);
         groupComboBox.setRenderer(new GroupDescriptionRenderer());
         groupComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -273,8 +273,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        bugzillaInstantieComboBoxModel = new DefaultComboBoxModel<IDropDownItem>();
-        bugzillaInstantieComboBox = new JComboBox<IDropDownItem>(bugzillaInstantieComboBoxModel);
+        bugzillaInstantieComboBoxModel = new DefaultComboBoxModel();
+        bugzillaInstantieComboBox = new JComboBox(bugzillaInstantieComboBoxModel);
         bugzillaInstantieComboBox.setRenderer(new IDropDownItemComboboxRenderer());
         bugzillaInstantieComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -283,8 +283,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        reviewAccessComboBoxModel = new DefaultComboBoxModel<ReviewAccess>();
-        reviewAccessComboBox = new JComboBox<ReviewAccess>(reviewAccessComboBoxModel);
+        reviewAccessComboBoxModel = new DefaultComboBoxModel();
+        reviewAccessComboBox = new JComboBox(reviewAccessComboBoxModel);
         reviewAccessComboBox.setRenderer(new ReviewAccessComboboxRenderer());
         reviewAccessComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -454,15 +454,15 @@ public class CreateReviewDialog extends JDialog {
         return okPressed;
     }
 
-    class UserComboboxRenderer extends JLabel implements ListCellRenderer<User> {
+    class UserComboboxRenderer extends JLabel implements ListCellRenderer {
 
         public UserComboboxRenderer() {
             setOpaque(true);
         }
 
-        public Component getListCellRendererComponent(JList<? extends User> list, User user, int index, 
-                                                      boolean isSelected, boolean cellHasFocus) {
-            
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            User user = (User) value;
+
             if (isSelected) {
                 setBackground(Color.BLUE);
             } else {
@@ -479,14 +479,14 @@ public class CreateReviewDialog extends JDialog {
         }
     }
 
-    class ReviewAccessComboboxRenderer extends JLabel implements ListCellRenderer<ReviewAccess> {
+    class ReviewAccessComboboxRenderer extends JLabel implements ListCellRenderer {
 
         public ReviewAccessComboboxRenderer() {
             setOpaque(true);
         }
 
-        public Component getListCellRendererComponent(JList<? extends ReviewAccess> list, ReviewAccess reviewAccess, 
-                                                      int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            ReviewAccess reviewAccess = (ReviewAccess) value;
 
             if (isSelected) {
                 setBackground(Color.BLUE);
@@ -504,14 +504,14 @@ public class CreateReviewDialog extends JDialog {
         }
     }
 
-    class IDropDownItemComboboxRenderer extends JLabel implements ListCellRenderer<IDropDownItem> {
+    class IDropDownItemComboboxRenderer extends JLabel implements ListCellRenderer {
 
         public IDropDownItemComboboxRenderer() {
             setOpaque(true);
         }
 
-        public Component getListCellRendererComponent(JList<? extends IDropDownItem> list, IDropDownItem item, 
-                                                      int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            IDropDownItem item = (IDropDownItem) value;
 
             if (isSelected) {
                 setBackground(Color.BLUE);
@@ -529,15 +529,14 @@ public class CreateReviewDialog extends JDialog {
         }
     }
 
-    class GroupDescriptionRenderer extends JLabel implements ListCellRenderer<GroupDescription> {
+    class GroupDescriptionRenderer extends JLabel implements ListCellRenderer {
 
         public GroupDescriptionRenderer() {
             setOpaque(true);
         }
 
-        public Component getListCellRendererComponent(JList<? extends GroupDescription> list, 
-                                                      GroupDescription groupDescription, int index, boolean isSelected, 
-                                                      boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            GroupDescription groupDescription = (GroupDescription) value;
 
             if (isSelected) {
                 setBackground(Color.BLUE);
