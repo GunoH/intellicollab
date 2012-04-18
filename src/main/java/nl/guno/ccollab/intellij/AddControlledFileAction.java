@@ -104,10 +104,6 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             logger.warn(e);
             PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.ioErrorOccurred.text"),
                     MessageType.ERROR);
-        } catch (InterruptedException e) {
-            logger.warn(e);
-            PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.uploadInterrupted.text"),
-                    MessageType.ERROR);
         } finally {
             finished();
         }
@@ -121,7 +117,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
     /**
      * Attaches local files that are under version control to the given review
      */
-    private void attachControlledFiles(AnActionEvent event, final Review review, final File... files) throws InterruptedException {
+    private void attachControlledFiles(AnActionEvent event, final Review review, final File... files) {
 
         Project project = PluginUtil.getProject(event.getDataContext());
 
