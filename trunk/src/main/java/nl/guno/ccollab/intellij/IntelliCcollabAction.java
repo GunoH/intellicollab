@@ -1,5 +1,7 @@
 package nl.guno.ccollab.intellij;
 
+import java.io.IOException;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
@@ -12,8 +14,6 @@ import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.collections.Pair;
-
-import java.io.IOException;
 
 public abstract class IntelliCcollabAction extends AnAction {
 

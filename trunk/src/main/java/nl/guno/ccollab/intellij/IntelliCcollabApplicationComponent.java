@@ -1,5 +1,13 @@
 package nl.guno.ccollab.intellij;
 
+import java.net.MalformedURLException;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+
+import org.jdom.Element;
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
@@ -9,12 +17,6 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizable;
 import com.intellij.openapi.util.WriteExternalException;
 import nl.guno.ccollab.intellij.ui.IntelliCcollabConfigurationForm;
-import org.jdom.Element;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import java.net.MalformedURLException;
 
 public class IntelliCcollabApplicationComponent implements ApplicationComponent, Configurable, JDOMExternalizable {
     private IntelliCcollabConfigurationForm form;
