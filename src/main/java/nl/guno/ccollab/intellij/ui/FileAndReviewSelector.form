@@ -42,7 +42,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="d529d" class="nl.guno.ccollab.intellij.ui.CheckBoxList" binding="fileCheckBoxList" custom-create="true">
+              <component id="c1956" class="com.intellij.ui.CheckBoxList" binding="fileCheckBoxList" custom-create="true">
                 <constraints/>
                 <properties/>
               </component>
