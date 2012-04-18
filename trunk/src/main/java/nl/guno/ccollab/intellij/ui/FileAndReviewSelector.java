@@ -33,14 +33,14 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     private JPanel checkboxListPane;
     private CheckBoxList fileCheckBoxList;
     private JPanel reviewPane;
-    private JComboBox<Review> reviewComboBox;
+    private JComboBox reviewComboBox;
 
     private List<Pair<File, Boolean>> initialFileList;
     private List<Pair<File, Boolean>> workingFileList;
-    private DefaultListModel<JCheckBox> fileListModel;
+    private DefaultListModel fileListModel;
 
     private List<Review> reviewList;
-    private DefaultComboBoxModel<Review> reviewComboBoxModel;
+    private DefaultComboBoxModel reviewComboBoxModel;
 
     private boolean okPressed;
     
@@ -109,11 +109,11 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     }
 
     private void createUIComponents() {
-        fileListModel = new DefaultListModel<JCheckBox>();
+        fileListModel = new DefaultListModel();
         fileCheckBoxList = new CheckBoxList(fileListModel, this);
 
-        reviewComboBoxModel = new DefaultComboBoxModel<Review>();
-        reviewComboBox = new JComboBox<Review>(reviewComboBoxModel);
+        reviewComboBoxModel = new DefaultComboBoxModel();
+        reviewComboBox = new JComboBox(reviewComboBoxModel);
         reviewComboBox.setRenderer(new ReviewComboboxRenderer());
     }
 
@@ -175,14 +175,17 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     }
 }
 
-class ReviewComboboxRenderer extends JLabel implements ListCellRenderer<Review> {
+class ReviewComboboxRenderer extends JLabel implements ListCellRenderer {
 
     public ReviewComboboxRenderer() {
         setOpaque(true);
     }
 
-    public Component getListCellRendererComponent(JList<? extends Review> list, Review review, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, 
+                                                  boolean cellHasFocus) {
 
+        Review review = (Review) value;
+        
         if (isSelected) {
             setBackground(Color.BLUE);
         } else {
