@@ -1,8 +1,6 @@
 package nl.guno.ccollab.intellij.ui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.KeyboardFocusManager;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -13,24 +11,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.ListCellRenderer;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.intellij.openapi.ui.ComboBox;
 import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.IDropDownItem;
 import com.smartbear.ccollab.datamodel.MetaDataSelectItem;
@@ -42,13 +26,13 @@ import nl.guno.ccollab.intellij.MessageResources;
 public class CreateReviewDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JComboBox authorComboBox;
-    private JComboBox reviewerComboBox;
-    private JComboBox observerComboBox;
-    private JComboBox groupComboBox;
-    private JComboBox bugzillaInstantieComboBox;
-    private JComboBox reviewAccessComboBox;
-    private JComboBox restrictUploadsToReviewComboBox;
+    private JComboBox<User> authorComboBox;
+    private JComboBox<User> reviewerComboBox;
+    private JComboBox<User> observerComboBox;
+    private JComboBox<GroupDescription> groupComboBox;
+    private JComboBox<IDropDownItem> bugzillaInstantieComboBox;
+    private JComboBox<ReviewAccess> reviewAccessComboBox;
+    private JComboBox<String> restrictUploadsToReviewComboBox;
     private JTextField titleTextField;
     private JTextArea overviewTextArea;
     private JTextField bugzillaNummerTextField;
@@ -93,12 +77,12 @@ public class CreateReviewDialog extends JDialog {
      */
     private Color highlightBackground = Color.yellow;
     
-    private DefaultComboBoxModel reviewerComboBoxModel;
-    private DefaultComboBoxModel authorComboBoxModel;
-    private DefaultComboBoxModel observerComboBoxModel;
-    private DefaultComboBoxModel groupComboBoxModel;
-    private DefaultComboBoxModel bugzillaInstantieComboBoxModel;
-    private DefaultComboBoxModel reviewAccessComboBoxModel;
+    private DefaultComboBoxModel<User> reviewerComboBoxModel;
+    private DefaultComboBoxModel<User> authorComboBoxModel;
+    private DefaultComboBoxModel<User> observerComboBoxModel;
+    private DefaultComboBoxModel<GroupDescription> groupComboBoxModel;
+    private DefaultComboBoxModel<IDropDownItem> bugzillaInstantieComboBoxModel;
+    private DefaultComboBoxModel<ReviewAccess> reviewAccessComboBoxModel;
 
     /**
      * Lijst met gebruikers waar uit gekozen kan worden in de userinterface.
@@ -241,15 +225,16 @@ public class CreateReviewDialog extends JDialog {
     }
 
     private void setToolTipText(JComponent component, String text) {
-        if (text != null && text.length() > 0)
-        component.setToolTipText(text);
+        if (text != null && text.length() > 0) {
+            component.setToolTipText(text);
+        }
     }
 
     @SuppressWarnings({"BoundFieldAssignment"})
     private void createUIComponents() {
 
-        authorComboBoxModel = new DefaultComboBoxModel();
-        authorComboBox = new ComboBox(authorComboBoxModel, -1);
+        authorComboBoxModel = new DefaultComboBoxModel<>();
+        authorComboBox = new JComboBox<>(authorComboBoxModel);
         authorComboBox.setRenderer(new UserComboboxRenderer());
         authorComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -258,8 +243,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        reviewerComboBoxModel = new DefaultComboBoxModel();
-        reviewerComboBox = new ComboBox(reviewerComboBoxModel, -1);
+        reviewerComboBoxModel = new DefaultComboBoxModel<>();
+        reviewerComboBox = new JComboBox<>(reviewerComboBoxModel);
         reviewerComboBox.setRenderer(new UserComboboxRenderer());
         reviewerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -268,8 +253,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        observerComboBoxModel = new DefaultComboBoxModel();
-        observerComboBox = new ComboBox(observerComboBoxModel, -1);
+        observerComboBoxModel = new DefaultComboBoxModel<>();
+        observerComboBox = new JComboBox<>(observerComboBoxModel);
         observerComboBox.setRenderer(new UserComboboxRenderer());
         observerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -278,8 +263,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        groupComboBoxModel = new DefaultComboBoxModel();
-        groupComboBox = new ComboBox(groupComboBoxModel, -1);
+        groupComboBoxModel = new DefaultComboBoxModel<>();
+        groupComboBox = new JComboBox<>(groupComboBoxModel);
         groupComboBox.setRenderer(new GroupDescriptionRenderer());
         groupComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -288,8 +273,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        bugzillaInstantieComboBoxModel = new DefaultComboBoxModel();
-        bugzillaInstantieComboBox = new ComboBox(bugzillaInstantieComboBoxModel, -1);
+        bugzillaInstantieComboBoxModel = new DefaultComboBoxModel<>();
+        bugzillaInstantieComboBox = new JComboBox<>(bugzillaInstantieComboBoxModel);
         bugzillaInstantieComboBox.setRenderer(new IDropDownItemComboboxRenderer());
         bugzillaInstantieComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -298,8 +283,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        reviewAccessComboBoxModel = new DefaultComboBoxModel();
-        reviewAccessComboBox = new ComboBox(reviewAccessComboBoxModel, -1);
+        reviewAccessComboBoxModel = new DefaultComboBoxModel<>();
+        reviewAccessComboBox = new JComboBox<>(reviewAccessComboBoxModel);
         reviewAccessComboBox.setRenderer(new ReviewAccessComboboxRenderer());
         reviewAccessComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -469,14 +454,13 @@ public class CreateReviewDialog extends JDialog {
         return okPressed;
     }
 
-    class UserComboboxRenderer extends JLabel implements ListCellRenderer {
+    class UserComboboxRenderer extends JLabel implements ListCellRenderer<User> {
 
         public UserComboboxRenderer() {
             setOpaque(true);
         }
 
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            User user = (User) value;
+        public Component getListCellRendererComponent(JList<? extends User> list, User user, int index, boolean isSelected, boolean cellHasFocus) {
 
             if (isSelected) {
                 setBackground(Color.BLUE);
@@ -485,7 +469,7 @@ public class CreateReviewDialog extends JDialog {
             }
 
             String name = "";
-            if (value != null) {
+            if (user != null) {
                 name = user.getDisplayName();
             }
             setText(name);
@@ -494,14 +478,14 @@ public class CreateReviewDialog extends JDialog {
         }
     }
 
-    class ReviewAccessComboboxRenderer extends JLabel implements ListCellRenderer {
+    class ReviewAccessComboboxRenderer extends JLabel implements ListCellRenderer<ReviewAccess> {
 
         public ReviewAccessComboboxRenderer() {
             setOpaque(true);
         }
 
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            ReviewAccess reviewAccess = (ReviewAccess) value;
+        public Component getListCellRendererComponent(JList<? extends ReviewAccess> list, ReviewAccess reviewAccess, 
+                                                      int index, boolean isSelected, boolean cellHasFocus) {
 
             if (isSelected) {
                 setBackground(Color.BLUE);
@@ -510,7 +494,7 @@ public class CreateReviewDialog extends JDialog {
             }
 
             String name = "";
-            if (value != null) {
+            if (reviewAccess != null) {
                 name = reviewAccess.getDisplayName();
             }
             setText(name);
@@ -519,14 +503,14 @@ public class CreateReviewDialog extends JDialog {
         }
     }
 
-    class IDropDownItemComboboxRenderer extends JLabel implements ListCellRenderer {
+    class IDropDownItemComboboxRenderer extends JLabel implements ListCellRenderer<IDropDownItem> {
 
         public IDropDownItemComboboxRenderer() {
             setOpaque(true);
         }
 
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            IDropDownItem item = (IDropDownItem) value;
+        public Component getListCellRendererComponent(JList<? extends IDropDownItem> list, IDropDownItem item, 
+                                                      int index, boolean isSelected, boolean cellHasFocus) {
 
             if (isSelected) {
                 setBackground(Color.BLUE);
@@ -535,7 +519,7 @@ public class CreateReviewDialog extends JDialog {
             }
 
             String name = "";
-            if (value != null) {
+            if (item != null) {
                 name = item.getDisplayName();
             }
             setText(name);
@@ -544,14 +528,15 @@ public class CreateReviewDialog extends JDialog {
         }
     }
 
-    class GroupDescriptionRenderer extends JLabel implements ListCellRenderer {
+    class GroupDescriptionRenderer extends JLabel implements ListCellRenderer<GroupDescription> {
 
         public GroupDescriptionRenderer() {
             setOpaque(true);
         }
 
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            GroupDescription item = (GroupDescription) value;
+        public Component getListCellRendererComponent(JList<? extends GroupDescription> list, 
+                                                      GroupDescription groupDescription, int index, boolean isSelected, 
+                                                      boolean cellHasFocus) {
 
             if (isSelected) {
                 setBackground(Color.BLUE);
@@ -560,12 +545,13 @@ public class CreateReviewDialog extends JDialog {
             }
 
             String name = "";
-            if (value != null) {
-                name = item.getDisplayName();
+            if (groupDescription != null) {
+                name = groupDescription.getDisplayName();
             }
             setText(name);
 
             return this;
         }
+
     }
 }

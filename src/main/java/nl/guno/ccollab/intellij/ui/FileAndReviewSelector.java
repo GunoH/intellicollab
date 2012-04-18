@@ -1,7 +1,6 @@
 package nl.guno.ccollab.intellij.ui;
 
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,22 +13,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.ui.CheckBoxList;
@@ -46,14 +33,14 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     private JPanel checkboxListPane;
     private CheckBoxList fileCheckBoxList;
     private JPanel reviewPane;
-    private JComboBox reviewComboBox;
+    private JComboBox<Review> reviewComboBox;
 
     private List<Pair<File, Boolean>> initialFileList;
     private List<Pair<File, Boolean>> workingFileList;
-    private DefaultListModel fileListModel;
+    private DefaultListModel<JCheckBox> fileListModel;
 
     private List<Review> reviewList;
-    private DefaultComboBoxModel reviewComboBoxModel;
+    private DefaultComboBoxModel<Review> reviewComboBoxModel;
 
     private boolean okPressed;
     
@@ -122,11 +109,11 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     }
 
     private void createUIComponents() {
-        fileListModel = new DefaultListModel();
+        fileListModel = new DefaultListModel<>();
         fileCheckBoxList = new CheckBoxList(fileListModel, this);
 
-        reviewComboBoxModel = new DefaultComboBoxModel();
-        reviewComboBox = new ComboBox(reviewComboBoxModel, -1);
+        reviewComboBoxModel = new DefaultComboBoxModel<>();
+        reviewComboBox = new JComboBox<>(reviewComboBoxModel);
         reviewComboBox.setRenderer(new ReviewComboboxRenderer());
     }
 
@@ -188,14 +175,13 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     }
 }
 
-class ReviewComboboxRenderer extends JLabel implements ListCellRenderer {
+class ReviewComboboxRenderer extends JLabel implements ListCellRenderer<Review> {
 
     public ReviewComboboxRenderer() {
         setOpaque(true);
     }
 
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        Review review = (Review) value;
+    public Component getListCellRendererComponent(JList<? extends Review> list, Review review, int index, boolean isSelected, boolean cellHasFocus) {
 
         if (isSelected) {
             setBackground(Color.BLUE);
