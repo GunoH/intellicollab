@@ -44,22 +44,7 @@ public class LoginTask extends Task.Modal {
 
         try {
             user = LoginUtils.login(globalOptions, clientInterface);
-        } catch (DataModelException e) {
-            logger.info("Error when logging on to code collaborator server.", e);
-            return;
-        } catch (CollabClientServerUrlConnectionException e) {
-            logger.info("Error when logging on to code collaborator server.", e);
-            return;
-        } catch (CollabClientLoginCredentialsInvalidException e) {
-            logger.info("Error when logging on to code collaborator server.", e);
-            return;
-        } catch (CollabClientIncompatibleVersionException e) {
-            logger.info("Error when logging on to code collaborator server.", e);
-            return;
-        } catch (CollabClientUserDoesNotExistException e) {
-            logger.info("Error when logging on to code collaborator server.", e);
-            return;
-        } catch (CollabClientServerConnectivityException e) {
+        } catch (DataModelException | CollabClientServerConnectivityException e) {
             logger.info("Error when logging on to code collaborator server.", e);
             return;
         }

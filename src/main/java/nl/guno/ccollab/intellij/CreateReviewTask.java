@@ -69,9 +69,7 @@ public class CreateReviewTask extends Task.Modal {
 
             success = true;
 
-        } catch (CollabClientException e) {
-            logger.warn(e);
-        } catch (IOException e) {
+        } catch (CollabClientException | IOException e) {
             logger.warn(e);
         }
     }
