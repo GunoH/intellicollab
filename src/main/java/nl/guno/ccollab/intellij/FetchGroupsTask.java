@@ -41,7 +41,7 @@ public class FetchGroupsTask extends Task.Modal {
 
         try {
             // Retrieve all groups from the code collaborator server
-            groups = new ArrayList<>();
+            groups = new ArrayList<GroupDescription>();
             for (GroupDescription group : user.getEngine().groupsFind()) {
                 if (!group.isReportingOnly()) {
                     groups.add(group);

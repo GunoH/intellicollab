@@ -8,6 +8,7 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.beans.IGlobalOptions;
+import com.smartbear.ccollab.client.CollabClientLoginCredentialsInvalidException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.client.LoginUtils;
@@ -41,7 +42,10 @@ public class LoginTask extends Task.Modal {
 
         try {
             user = LoginUtils.login(globalOptions, clientInterface);
-        } catch (DataModelException | CollabClientServerConnectivityException e) {
+        } catch (DataModelException e) {
+            logger.info("Error when logging on to code collaborator server.", e);
+            return;
+        } catch (CollabClientServerConnectivityException e) {
             logger.info("Error when logging on to code collaborator server.", e);
             return;
         }
