@@ -132,10 +132,10 @@ public class CreateReviewDialog extends JDialog {
 
         IDropDownItem[] bugzillaInstantieList = fetchMetadataTask.getBugzillaInstantie().getDropDownItems(true);
         
-        this.userList = new ArrayList<>();
+        this.userList = new ArrayList<User>();
         this.userList.addAll(Arrays.asList(userList));
 
-        this.bugzillaInstantieList = new ArrayList<>();
+        this.bugzillaInstantieList = new ArrayList<IDropDownItem>();
         this.bugzillaInstantieList.addAll(Arrays.asList(bugzillaInstantieList));
 
         this.groupList = groupList;
@@ -206,21 +206,21 @@ public class CreateReviewDialog extends JDialog {
 
         // Make sure tab and shift-tab move the focus instead of inserting tab characters.
         overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
         overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnFOTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnFOTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnTOTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnTOTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
 
     }
 
@@ -233,8 +233,8 @@ public class CreateReviewDialog extends JDialog {
     @SuppressWarnings({"BoundFieldAssignment"})
     private void createUIComponents() {
 
-        authorComboBoxModel = new DefaultComboBoxModel<>();
-        authorComboBox = new JComboBox<>(authorComboBoxModel);
+        authorComboBoxModel = new DefaultComboBoxModel<User>();
+        authorComboBox = new JComboBox<User>(authorComboBoxModel);
         authorComboBox.setRenderer(new UserComboboxRenderer());
         authorComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -243,8 +243,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        reviewerComboBoxModel = new DefaultComboBoxModel<>();
-        reviewerComboBox = new JComboBox<>(reviewerComboBoxModel);
+        reviewerComboBoxModel = new DefaultComboBoxModel<User>();
+        reviewerComboBox = new JComboBox<User>(reviewerComboBoxModel);
         reviewerComboBox.setRenderer(new UserComboboxRenderer());
         reviewerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -253,8 +253,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        observerComboBoxModel = new DefaultComboBoxModel<>();
-        observerComboBox = new JComboBox<>(observerComboBoxModel);
+        observerComboBoxModel = new DefaultComboBoxModel<User>();
+        observerComboBox = new JComboBox<User>(observerComboBoxModel);
         observerComboBox.setRenderer(new UserComboboxRenderer());
         observerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -263,8 +263,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        groupComboBoxModel = new DefaultComboBoxModel<>();
-        groupComboBox = new JComboBox<>(groupComboBoxModel);
+        groupComboBoxModel = new DefaultComboBoxModel<GroupDescription>();
+        groupComboBox = new JComboBox<GroupDescription>(groupComboBoxModel);
         groupComboBox.setRenderer(new GroupDescriptionRenderer());
         groupComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -273,8 +273,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        bugzillaInstantieComboBoxModel = new DefaultComboBoxModel<>();
-        bugzillaInstantieComboBox = new JComboBox<>(bugzillaInstantieComboBoxModel);
+        bugzillaInstantieComboBoxModel = new DefaultComboBoxModel<IDropDownItem>();
+        bugzillaInstantieComboBox = new JComboBox<IDropDownItem>(bugzillaInstantieComboBoxModel);
         bugzillaInstantieComboBox.setRenderer(new IDropDownItemComboboxRenderer());
         bugzillaInstantieComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -283,8 +283,8 @@ public class CreateReviewDialog extends JDialog {
             }
         });
 
-        reviewAccessComboBoxModel = new DefaultComboBoxModel<>();
-        reviewAccessComboBox = new JComboBox<>(reviewAccessComboBoxModel);
+        reviewAccessComboBoxModel = new DefaultComboBoxModel<ReviewAccess>();
+        reviewAccessComboBox = new JComboBox<ReviewAccess>(reviewAccessComboBoxModel);
         reviewAccessComboBox.setRenderer(new ReviewAccessComboboxRenderer());
         reviewAccessComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override

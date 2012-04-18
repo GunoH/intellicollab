@@ -47,7 +47,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, @NotNull Review[] reviewList) {
         initialFileList = fileList;
 
-        this.reviewList = new ArrayList<>();
+        this.reviewList = new ArrayList<Review>();
         this.reviewList.addAll(Arrays.asList(reviewList));
 
         // Sort the list of reviews in descending order of last activity date.
@@ -109,16 +109,16 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     }
 
     private void createUIComponents() {
-        fileListModel = new DefaultListModel<>();
+        fileListModel = new DefaultListModel<JCheckBox>();
         fileCheckBoxList = new CheckBoxList(fileListModel, this);
 
-        reviewComboBoxModel = new DefaultComboBoxModel<>();
-        reviewComboBox = new JComboBox<>(reviewComboBoxModel);
+        reviewComboBoxModel = new DefaultComboBoxModel<Review>();
+        reviewComboBox = new JComboBox<Review>(reviewComboBoxModel);
         reviewComboBox.setRenderer(new ReviewComboboxRenderer());
     }
 
     public void reset() {
-        workingFileList = new ArrayList<>(initialFileList);
+        workingFileList = new ArrayList<Pair<File, Boolean>>(initialFileList);
         update();
     }
 
@@ -140,7 +140,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
 
     public static void main(String[] args) {
 
-        List<Pair<File, Boolean>> fileList = new ArrayList<>();
+        List<Pair<File, Boolean>> fileList = new ArrayList<Pair<File, Boolean>>();
         Review[] reviews = new Review[0];
 
         FileAndReviewSelector dialog = new FileAndReviewSelector(fileList, reviews);
@@ -156,7 +156,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     }
 
     public File[] retrieveSelectedFiles() {
-        List<File> result = new ArrayList<>();
+        List<File> result = new ArrayList<File>();
         for (Pair<File, Boolean> pair : workingFileList) {
             if (pair.second) {
                 result.add(pair.first);
