@@ -41,7 +41,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             File[] files = getCurrentlySelectedFiles(event);
 
 
-            List<Pair<File, Boolean>> fileList = new ArrayList<>();
+            List<Pair<File, Boolean>> fileList = new ArrayList<Pair<File, Boolean>>();
             for (File file : files) {
                 fileList.add(Pair.create(file, Boolean.TRUE));
             }
