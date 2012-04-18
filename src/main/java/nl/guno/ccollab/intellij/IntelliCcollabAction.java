@@ -56,7 +56,7 @@ public abstract class IntelliCcollabAction extends AnAction {
         globalOptions = new IntelliCcollabGlobalOptions(configOptions.getA());
 
         if (globalOptions.settingsIncomplete()) {
-            PluginUtil.createBalloon(project, MessageResources.message("configuration.error.mandatorySettingsMissing.text"), 
+            PluginUtil.createBalloon(project, MessageResources.message("error.mandatorySettingsMissing"), 
                     MessageType.ERROR);
             return;
         }
