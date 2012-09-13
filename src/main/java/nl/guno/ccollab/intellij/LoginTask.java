@@ -42,9 +42,6 @@ public class LoginTask extends Task.Modal {
 
         try {
             user = LoginUtils.login(globalOptions, clientInterface);
-        } catch (DataModelException e) {
-            logger.info("Error when logging on to code collaborator server.", e);
-            return;
         } catch (CollabClientServerConnectivityException e) {
             logger.info("Error when logging on to code collaborator server.", e);
             return;
