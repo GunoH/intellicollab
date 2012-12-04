@@ -8,11 +8,9 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.beans.IGlobalOptions;
-import com.smartbear.ccollab.client.CollabClientLoginCredentialsInvalidException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.client.LoginUtils;
-import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.User;
 
 public class LoginTask extends Task.Modal {
