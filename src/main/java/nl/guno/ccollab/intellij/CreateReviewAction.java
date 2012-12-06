@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
@@ -29,7 +30,7 @@ public class CreateReviewAction extends IntelliCcollabAction {
     public void actionPerformed(AnActionEvent event) {
 
         try {
-            project = PluginUtil.getProject(event.getDataContext());
+            project = event.getData(LangDataKeys.PROJECT);
 
             init(project);
 
