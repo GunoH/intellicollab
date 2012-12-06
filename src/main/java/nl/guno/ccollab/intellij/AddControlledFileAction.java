@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vcs.AbstractVcs;
+import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ChangeList;
 import com.intellij.openapi.vcs.changes.ChangesUtil;
@@ -29,7 +31,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
     public void actionPerformed(AnActionEvent event) {
 
         try {
-            project = PluginUtil.getProject(event.getDataContext());
+			project = event.getData(LangDataKeys.PROJECT);
 
             init(project);
 
@@ -119,15 +121,15 @@ public class AddControlledFileAction extends IntelliCcollabAction {
      */
     private void attachControlledFiles(AnActionEvent event, final Review review, final File... files) {
 
-        Project project = PluginUtil.getProject(event.getDataContext());
+		project = event.getData(LangDataKeys.PROJECT);
 
         AddToReviewTask addToReviewTask = new AddToReviewTask(project, review, user, files);
         addToReviewTask.queue();
     }
 
     public void update(AnActionEvent event) {
-        Project project = PluginUtil.getProject(event.getDataContext());
-        Change[] changes = PluginUtil.getChanges(event.getDataContext());
+		project = event.getData(LangDataKeys.PROJECT);
+        Change[] changes = event.getData(VcsDataKeys.CHANGES);
 
         boolean enabled = false;
         if (project != null) {
