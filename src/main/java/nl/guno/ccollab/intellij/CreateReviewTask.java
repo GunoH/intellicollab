@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
@@ -39,6 +40,9 @@ public class CreateReviewTask extends Task.Modal {
     private Map<MetaDataDescription, Object> metadata;
 
     private Review review;
+
+    private IntelliCcollabApplicationComponent component =
+            ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
 
     public CreateReviewTask(Project project, User user, GroupDescription group, String reviewTitle,
                             boolean uploadRestricted, ReviewAccess reviewAccess, User author, User reviewer,
@@ -125,7 +129,7 @@ public class CreateReviewTask extends Task.Modal {
         if (success) {
             PluginUtil.createBalloon(
                     project,
-                    MessageResources.message("task.createReview.reviewCreated.text", review.getId(), review.getTitle()),
+                    MessageResources.message("task.createReview.reviewCreated.text", review.getId(), review.getTitle(), component.getRegularServerURL()),
                     MessageType.INFO);
             
         } else {

@@ -20,7 +20,8 @@ import nl.guno.ccollab.intellij.ui.IntelliCcollabConfigurationForm;
 
 public class IntelliCcollabApplicationComponent implements ApplicationComponent, Configurable, JDOMExternalizable {
     private IntelliCcollabConfigurationForm form;
-    public String serverURL;
+    public String httpServerURL;
+    public String regularServerURL;
     public String serverProxyHost;
     public String serverProxyPort;
     public String username;
@@ -37,12 +38,20 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
         return "IntelliCcollabApplicationComponent";
     }
 
-    public String getServerURL() {
-        return serverURL;
+    public String getHttpServerURL() {
+        return httpServerURL;
     }
 
-    public void setServerURL(final String serverURL) {
-        this.serverURL = serverURL;
+    public void setHttpServerURL(final String httpServerURL) {
+        this.httpServerURL = httpServerURL;
+    }
+
+    public String getRegularServerURL() {
+        return regularServerURL;
+    }
+
+    public void setRegularServerURL(String regularServerURL) {
+        this.regularServerURL = regularServerURL;
     }
 
     public String getServerProxyHost() {
