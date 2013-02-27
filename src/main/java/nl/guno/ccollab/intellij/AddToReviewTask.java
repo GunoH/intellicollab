@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
@@ -36,6 +37,9 @@ public class AddToReviewTask extends Task.Backgroundable {
 
     private boolean success;
     private String errorMessage;
+
+    private IntelliCcollabApplicationComponent component =
+            ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
 
     public AddToReviewTask(Project project, Review review, User user, File... files) {
         super(project, MessageResources.message("task.addFilesToReview.title"), true);
@@ -140,7 +144,7 @@ public class AddToReviewTask extends Task.Backgroundable {
     public void onSuccess() {
         if (success) {
             PluginUtil.createBalloon(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                    files.length, review.getId(), review.getTitle()), MessageType.INFO);
+                    files.length, review.getId(), review.getTitle(), component.getRegularServerURL()), MessageType.INFO);
         } else {
             PluginUtil.createBalloon(project, errorMessage, MessageType.ERROR);
         }
@@ -150,7 +154,7 @@ public class AddToReviewTask extends Task.Backgroundable {
     public void onCancel() {
         if (success) {
             PluginUtil.createBalloon(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                    files.length, review.getId(), review.getTitle()),
+                    files.length, review.getId(), review.getTitle(), component.getRegularServerURL()),
                     MessageType.INFO);
         } else {
             PluginUtil.createBalloon(project, MessageResources.message("task.addFilesToReview.cancelled.text"), 

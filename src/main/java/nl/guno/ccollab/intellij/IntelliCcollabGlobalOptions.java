@@ -12,7 +12,7 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 
     private IGlobalOptions wrappedOptions;
 
-    IntelliCcollabApplicationComponent component =
+    private IntelliCcollabApplicationComponent component =
             ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
 
     public IntelliCcollabGlobalOptions(IGlobalOptions wrappedOptions) {
@@ -25,16 +25,17 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
      * @return <code>true</code> if any of the mandatory settings are missing, <code>false</code> otherwise.
      */
     public boolean settingsIncomplete() {
-        return StringUtils.isEmpty(component.getServerURL())
+        return StringUtils.isEmpty(component.getHttpServerURL())
+                || StringUtils.isEmpty(component.getRegularServerURL())
                 || StringUtils.isEmpty(component.getUsername())
                 || StringUtils.isEmpty(component.getPassword());
     }
 
     public URL getUrl() {
         try {
-            return new URL(component.getServerURL());
+            return new URL(component.getHttpServerURL());
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Invalid URL:" + component.getServerURL());
+            throw new RuntimeException("Invalid URL:" + component.getHttpServerURL());
         }
     }
 
