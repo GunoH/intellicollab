@@ -21,6 +21,7 @@ import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.scm.ScmConfigurationException;
 import nl.guno.ccollab.intellij.ui.FileAndReviewSelector;
+import nl.guno.ccollab.intellij.ui.Notification;
 
 public class AddControlledFileAction extends IntelliCcollabAction {
 
@@ -73,10 +74,10 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 
             if (files.length == 0) {
                 logger.debug("No files selected.");
-                PluginUtil.createBalloon(
-                        project, 
+                new Notification(
+                        project,
                         MessageResources.message("task.addFilesToReview.noFilesSelected.text"),
-                        MessageType.ERROR);
+                        MessageType.ERROR).showBalloon();
                 return;
             }
 
@@ -91,21 +92,21 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             }
         } catch (CollabClientServerConnectivityException e) {
             logger.warn(e);
-            PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.connectionException.text"),
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("action.addControlledFile.connectionException.text"),
+                    MessageType.ERROR).showBalloon();
 
         } catch (ScmConfigurationException e) {
             logger.warn(e);
-            PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.scmException.text"), 
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("action.addControlledFile.scmException.text"),
+                    MessageType.ERROR).showBalloon();
         } catch (CollabClientException e) {
             logger.warn(e);
-            PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.errorOccurred.text"), 
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("action.addControlledFile.errorOccurred.text"),
+                    MessageType.ERROR).showBalloon();
         } catch (IOException e) {
             logger.warn(e);
-            PluginUtil.createBalloon(project, MessageResources.message("action.addControlledFile.ioErrorOccurred.text"),
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("action.addControlledFile.ioErrorOccurred.text"),
+                    MessageType.ERROR).showBalloon();
         } finally {
             finished();
         }

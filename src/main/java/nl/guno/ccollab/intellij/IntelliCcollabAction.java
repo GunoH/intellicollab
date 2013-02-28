@@ -2,7 +2,14 @@ package nl.guno.ccollab.intellij;
 
 import java.io.IOException;
 
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.intellij.notification.NotificationListener;
 import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.CollabClientException;
@@ -14,6 +21,7 @@ import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.collections.Pair;
+import nl.guno.ccollab.intellij.ui.Notification;
 
 public abstract class IntelliCcollabAction extends AnAction {
 
@@ -45,7 +53,7 @@ public abstract class IntelliCcollabAction extends AnAction {
      */
     protected static User user;
 
-    protected static void init(Project project) throws CollabClientException, IOException {
+    protected static void init(final Project project) throws CollabClientException, IOException {
         // If we've already initialized, don't do it again.
         if ( engine != null ) {
             return;
@@ -56,8 +64,20 @@ public abstract class IntelliCcollabAction extends AnAction {
         globalOptions = new IntelliCcollabGlobalOptions(configOptions.getA());
 
         if (globalOptions.settingsIncomplete()) {
-            PluginUtil.createBalloon(project, MessageResources.message("configuration.error.mandatorySettingsMissing.text"), 
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("configuration.error.mandatorySettingsMissing.text"),
+                    MessageType.ERROR).setHyperlinkListener(new HyperlinkListener() {
+                @Override
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        openSettings(project);
+                    }
+                }
+            }).setNotificationListener(new NotificationListener() {
+                @Override
+                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification, @NotNull HyperlinkEvent hyperlinkEvent) {
+                    openSettings(project);
+                }
+            }).showBalloon().addToEventLog();
             return;
         }
 
@@ -75,6 +95,10 @@ public abstract class IntelliCcollabAction extends AnAction {
         if (user != null) {
             engine = user.getEngine();
         }
+    }
+
+    private static void openSettings(Project project) {
+        ShowSettingsUtil.getInstance().editConfigurable(project, new IntelliCcollabApplicationComponent());
     }
 
     /**
