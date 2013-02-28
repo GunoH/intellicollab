@@ -10,6 +10,7 @@ import com.intellij.openapi.ui.MessageType;
 import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.User;
+import nl.guno.ccollab.intellij.ui.Notification;
 
 public class FetchReviewsTask extends Task.Modal {
 
@@ -47,8 +48,8 @@ public class FetchReviewsTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            PluginUtil.createBalloon(project, MessageResources.message("task.fetchReviews.errorOccurred.text"), 
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("task.fetchReviews.errorOccurred.text"),
+                    MessageType.ERROR).showBalloon();
         }
     }
 

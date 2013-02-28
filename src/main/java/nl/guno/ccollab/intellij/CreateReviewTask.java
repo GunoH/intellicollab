@@ -21,6 +21,7 @@ import com.smartbear.ccollab.datamodel.ReviewAccess;
 import com.smartbear.ccollab.datamodel.ReviewParticipant;
 import com.smartbear.ccollab.datamodel.Role;
 import com.smartbear.ccollab.datamodel.User;
+import nl.guno.ccollab.intellij.ui.Notification;
 
 public class CreateReviewTask extends Task.Modal {
 
@@ -127,16 +128,16 @@ public class CreateReviewTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (success) {
-            PluginUtil.createBalloon(
+            new Notification(
                     project,
                     MessageResources.message("task.createReview.reviewCreated.text", review.getId(), review.getTitle(), component.getRegularServerURL()),
-                    MessageType.INFO);
+                    MessageType.INFO).showBalloon().addToEventLog();
             
         } else {
-            PluginUtil.createBalloon(
+            new Notification(
                     project,
                     MessageResources.message("task.createReview.errorOccurred.text"),
-                    MessageType.ERROR);
+                    MessageType.ERROR).showBalloon();
         }
     }
 }

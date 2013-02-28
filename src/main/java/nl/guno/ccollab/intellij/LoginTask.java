@@ -12,6 +12,7 @@ import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.client.LoginUtils;
 import com.smartbear.ccollab.datamodel.User;
+import nl.guno.ccollab.intellij.ui.Notification;
 
 public class LoginTask extends Task.Modal {
 
@@ -50,10 +51,10 @@ public class LoginTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            PluginUtil.createBalloon(
+            new Notification(
                     project,
-                    MessageResources.message("task.login.connectionException.text"), 
-                    MessageType.ERROR);
+                    MessageResources.message("task.login.connectionException.text"),
+                    MessageType.ERROR).showBalloon();
         }
     }
 
