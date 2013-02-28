@@ -23,6 +23,7 @@ import com.smartbear.scm.IScmLocalCheckout;
 import com.smartbear.scm.ScmChangeset;
 import com.smartbear.scm.ScmConfigurationException;
 import com.smartbear.scm.ScmUtils;
+import nl.guno.ccollab.intellij.ui.Notification;
 
 public class AddToReviewTask extends Task.Backgroundable {
 
@@ -143,22 +144,22 @@ public class AddToReviewTask extends Task.Backgroundable {
     @Override
     public void onSuccess() {
         if (success) {
-            PluginUtil.createBalloon(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                    files.length, review.getId(), review.getTitle(), component.getRegularServerURL()), MessageType.INFO);
+            new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
+                    files.length, review.getId(), review.getTitle(), component.getRegularServerURL()), MessageType.INFO).showBalloon().addToEventLog();
         } else {
-            PluginUtil.createBalloon(project, errorMessage, MessageType.ERROR);
+            new Notification(project, errorMessage, MessageType.ERROR).showBalloon();
         }
     }
 
     @Override
     public void onCancel() {
         if (success) {
-            PluginUtil.createBalloon(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
+            new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
                     files.length, review.getId(), review.getTitle(), component.getRegularServerURL()),
-                    MessageType.INFO);
+                    MessageType.INFO).showBalloon().addToEventLog();
         } else {
-            PluginUtil.createBalloon(project, MessageResources.message("task.addFilesToReview.cancelled.text"), 
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("task.addFilesToReview.cancelled.text"),
+                    MessageType.ERROR).showBalloon();
         }
     }
 

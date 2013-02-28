@@ -15,6 +15,7 @@ import com.intellij.openapi.ui.MessageType;
 import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.User;
+import nl.guno.ccollab.intellij.ui.Notification;
 
 public class FetchGroupsTask extends Task.Modal {
 
@@ -65,8 +66,8 @@ public class FetchGroupsTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            PluginUtil.createBalloon(project, MessageResources.message("task.fetchGroups.errorOccurred.text"), 
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("task.fetchGroups.errorOccurred.text"),
+                    MessageType.ERROR).showBalloon();
         }
     }
 

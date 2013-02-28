@@ -18,6 +18,7 @@ import com.smartbear.ccollab.datamodel.ReviewAccess;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.scm.ScmConfigurationException;
 import nl.guno.ccollab.intellij.ui.CreateReviewDialog;
+import nl.guno.ccollab.intellij.ui.Notification;
 
 public class CreateReviewAction extends IntelliCcollabAction {
 
@@ -88,20 +89,20 @@ public class CreateReviewAction extends IntelliCcollabAction {
 
         } catch (CollabClientServerConnectivityException e) {
             logger.warn(e);
-            PluginUtil.createBalloon(project, MessageResources.message("action.createReview.connectionException.text"), 
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("action.createReview.connectionException.text"),
+                    MessageType.ERROR).showBalloon();
         } catch (ScmConfigurationException e) {
             logger.warn(e);
-            PluginUtil.createBalloon(project, MessageResources.message("action.createReview.scmException.text"), 
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("action.createReview.scmException.text"),
+                    MessageType.ERROR).showBalloon();
         } catch (CollabClientException e) {
             logger.warn(e);
-            PluginUtil.createBalloon(project, MessageResources.message("action.createReview.errorOccurred.text"), 
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("action.createReview.errorOccurred.text"),
+                    MessageType.ERROR).showBalloon();
         } catch (IOException e) {
             logger.warn(e);
-            PluginUtil.createBalloon(project, MessageResources.message("action.createReview.ioErrorOccurred.text"), 
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("action.createReview.ioErrorOccurred.text"),
+                    MessageType.ERROR).showBalloon();
         } finally {
             finished();
         }

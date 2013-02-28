@@ -9,6 +9,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.User;
+import nl.guno.ccollab.intellij.ui.Notification;
 
 public class FetchUsersTask extends Task.Modal {
 
@@ -46,8 +47,8 @@ public class FetchUsersTask extends Task.Modal {
     @Override
     public void onSuccess() {
         if (!success) {
-            PluginUtil.createBalloon(project, MessageResources.message("task.fetchUsers.errorOccurred.text"), 
-                    MessageType.ERROR);
+            new Notification(project, MessageResources.message("task.fetchUsers.errorOccurred.text"),
+                    MessageType.ERROR).showBalloon();
         }
     }
 

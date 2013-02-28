@@ -2,24 +2,17 @@ package nl.guno.ccollab.intellij;
 
 import java.io.File;
 
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-
 import com.intellij.cvsSupport2.actions.cvsContext.CvsContextWrapper;
-import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.changes.ui.ChangesViewContentManager;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.wm.ToolWindowManager;
 
 public final class PluginUtil {
+
     private PluginUtil() {
     }
 
@@ -56,18 +49,5 @@ public final class PluginUtil {
         }
 
         return files;
-    }
-
-	public static void createBalloon(Project project, String message, MessageType type) {
-
-        ToolWindowManager.getInstance(project).notifyByBalloon(ChangesViewContentManager.TOOLWINDOW_ID, type, message, null, new HyperlinkListener() {
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent e) {
-                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    BrowserUtil.launchBrowser(e.getURL().toExternalForm());
-                }
-            }
-        });
-
     }
 }
