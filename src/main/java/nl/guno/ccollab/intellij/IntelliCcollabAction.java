@@ -90,6 +90,28 @@ public abstract class IntelliCcollabAction extends AnAction {
         LoginTask loginTask = new LoginTask(project, globalOptions, clientInterface);
         loginTask.queue();
 
+        if (!loginTask.success()) {
+            if (loginTask.authenticationErrorOccured()) {
+                new Notification(project, MessageResources.message("task.login.authenticationError.text"),
+                        MessageType.ERROR).setHyperlinkListener(new HyperlinkListener() {
+                    @Override
+                    public void hyperlinkUpdate(HyperlinkEvent e) {
+                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            openSettings(project);
+                        }
+                    }
+                }).setNotificationListener(new NotificationListener() {
+                    @Override
+                    public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
+                                                @NotNull HyperlinkEvent hyperlinkEvent) {
+                        openSettings(project);
+                    }
+                }).showBalloon().addToEventLog();
+            }
+
+            return;
+        }
+        
         user = loginTask.getUser();
 
         if (user != null) {

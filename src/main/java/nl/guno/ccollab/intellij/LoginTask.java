@@ -8,6 +8,7 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.beans.IGlobalOptions;
+import com.smartbear.ccollab.client.CollabClientLoginCredentialsInvalidException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.client.LoginUtils;
@@ -22,6 +23,8 @@ public class LoginTask extends Task.Modal {
     private boolean success;
 
     private User user;
+    
+    private boolean authenticationErrorOccured;
 
     private IGlobalOptions globalOptions;
     private ICollabClientInterface clientInterface;
@@ -41,6 +44,10 @@ public class LoginTask extends Task.Modal {
 
         try {
             user = LoginUtils.login(globalOptions, clientInterface);
+        } catch (CollabClientLoginCredentialsInvalidException e) {
+            logger.info("Invalid username or password.", e);
+            authenticationErrorOccured = true;
+            return;
         } catch (CollabClientServerConnectivityException e) {
             logger.info("Error when logging on to code collaborator server.", e);
             return;
@@ -60,5 +67,13 @@ public class LoginTask extends Task.Modal {
 
     public User getUser() {
         return user;
+    }
+
+    public boolean authenticationErrorOccured() {
+        return authenticationErrorOccured;
+    }
+
+    public boolean success() {
+        return success;
     }
 }
