@@ -75,7 +75,7 @@ public class CreateReviewDialog extends JDialog {
     /**
      * De achtergrondkleur voor niet-validerende velden.
      */
-    private Color highlightBackground = Color.yellow;
+    private final Color highlightBackground = Color.yellow;
     
     private DefaultComboBoxModel reviewerComboBoxModel;
     private DefaultComboBoxModel authorComboBoxModel;
@@ -87,17 +87,17 @@ public class CreateReviewDialog extends JDialog {
     /**
      * Lijst met gebruikers waar uit gekozen kan worden in de userinterface.
      */
-    private List<User> userList;
+    private final List<User> userList;
 
     /**
      * Lijst met bugzillaInstanties waar uit gekozen kan worden in de userinterface.
      */
-    private List<IDropDownItem> bugzillaInstantieList;
+    private final List<IDropDownItem> bugzillaInstantieList;
 
     /**
      * Lijst met groepen waar uit gekozen kan worden in de userinterface.
      */
-    private List<GroupDescription> groupList;
+    private final List<GroupDescription> groupList;
 
     /**
      * Geeft aan of de gebruiker op de OK knop heeft gedrukt of niet.
@@ -294,7 +294,7 @@ public class CreateReviewDialog extends JDialog {
         });
     }
 
-    public void update() {
+    void update() {
 
         authorComboBoxModel.removeAllElements();
         reviewerComboBoxModel.removeAllElements();

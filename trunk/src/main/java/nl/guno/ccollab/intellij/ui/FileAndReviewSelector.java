@@ -35,11 +35,11 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
     private JPanel reviewPane;
     private JComboBox reviewComboBox;
 
-    private List<Pair<File, Boolean>> initialFileList;
+    private final List<Pair<File, Boolean>> initialFileList;
     private List<Pair<File, Boolean>> workingFileList;
     private DefaultListModel fileListModel;
 
-    private List<Review> reviewList;
+    private final List<Review> reviewList;
     private DefaultComboBoxModel reviewComboBoxModel;
 
     private boolean okPressed;
@@ -117,12 +117,12 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
         reviewComboBox.setRenderer(new ReviewComboboxRenderer());
     }
 
-    public void reset() {
+    void reset() {
         workingFileList = new ArrayList<Pair<File, Boolean>>(initialFileList);
         update();
     }
 
-    public void update() {
+    void update() {
         fileListModel.clear();
         for (Pair<File, Boolean> pair : workingFileList) {
             fileListModel.addElement(createCheckBox(pair.first, pair.second));
@@ -134,7 +134,7 @@ public class FileAndReviewSelector extends JDialog implements CheckBoxListListen
         }
     }
 
-    public JCheckBox createCheckBox(File file, boolean checked) {
+    JCheckBox createCheckBox(File file, boolean checked) {
         return new JCheckBox(FileUtil.toSystemDependentName(file.getPath()), checked);
     }
 

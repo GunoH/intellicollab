@@ -25,7 +25,7 @@ import nl.guno.ccollab.intellij.ui.Notification;
 
 public class AddControlledFileAction extends IntelliCcollabAction {
 
-    private static Logger logger = Logger.getInstance(AddControlledFileAction.class.getName());
+    private static final Logger logger = Logger.getInstance(AddControlledFileAction.class.getName());
     private Project project;
 
     @Override
@@ -113,7 +113,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 
     }
 
-    protected File[] getCurrentlySelectedFiles(AnActionEvent event) {
+    File[] getCurrentlySelectedFiles(AnActionEvent event) {
         return PluginUtil.getSelectedFiles(event);
     }
 

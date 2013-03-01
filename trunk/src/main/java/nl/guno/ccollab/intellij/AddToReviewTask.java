@@ -25,21 +25,21 @@ import com.smartbear.scm.ScmConfigurationException;
 import com.smartbear.scm.ScmUtils;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-public class AddToReviewTask extends Task.Backgroundable {
+class AddToReviewTask extends Task.Backgroundable {
 
-    private static Logger logger = Logger.getInstance(AddToReviewTask.class.getName());
+    private static final Logger logger = Logger.getInstance(AddToReviewTask.class.getName());
 
-    private Project project;
-    private Review review;
+    private final Project project;
+    private final Review review;
 
-    private File[] files;
+    private final File[] files;
 
-    private User user;
+    private final User user;
 
     private boolean success;
     private String errorMessage;
 
-    private IntelliCcollabApplicationComponent component =
+    private final IntelliCcollabApplicationComponent component =
             ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
 
     public AddToReviewTask(Project project, Review review, User user, File... files) {

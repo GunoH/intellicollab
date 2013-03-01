@@ -11,12 +11,12 @@ import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 
-public final class PluginUtil {
+final class PluginUtil {
 
     private PluginUtil() {
     }
 
-	public static VirtualFile[] getCurrentVirtualFiles(DataContext dataContext) {
+	private static VirtualFile[] getCurrentVirtualFiles(DataContext dataContext) {
         return DataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
     }
 

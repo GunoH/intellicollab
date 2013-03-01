@@ -11,14 +11,14 @@ import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-public class FetchUsersTask extends Task.Modal {
+class FetchUsersTask extends Task.Modal {
 
-    private static Logger logger = Logger.getInstance(FetchUsersTask.class.getName());
+    private static final Logger logger = Logger.getInstance(FetchUsersTask.class.getName());
 
     private boolean success;
 
-    private Project project;
-    private User user;
+    private final Project project;
+    private final User user;
 
     private User[] users;
 

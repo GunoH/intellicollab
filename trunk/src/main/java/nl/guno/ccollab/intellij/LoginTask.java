@@ -17,23 +17,23 @@ import com.smartbear.ccollab.client.LoginUtils;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-public class LoginTask extends Task.Modal {
+class LoginTask extends Task.Modal {
 
     private static final int MAX_ATTEMPTS = 3;
     private static final int BACKOFF_MILLI_SECONDS = 2000;
     private static final Random random = new Random();
 
-    private static Logger logger = Logger.getInstance(LoginTask.class.getName());
+    private static final Logger logger = Logger.getInstance(LoginTask.class.getName());
 
-    private Project project;
+    private final Project project;
     private boolean success;
 
     private User user;
     
     private boolean authenticationErrorOccured;
 
-    private IGlobalOptions globalOptions;
-    private ICollabClientInterface clientInterface;
+    private final IGlobalOptions globalOptions;
+    private final ICollabClientInterface clientInterface;
 
     public LoginTask(Project project, IGlobalOptions globalOptions, ICollabClientInterface clientInterface) {
         super(project, MessageResources.message("task.login.title"), false);
