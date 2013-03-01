@@ -1,5 +1,7 @@
 package nl.guno.ccollab.intellij;
 
+import java.util.Random;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.diagnostic.Logger;
@@ -16,6 +18,10 @@ import com.smartbear.ccollab.datamodel.User;
 import nl.guno.ccollab.intellij.ui.Notification;
 
 public class LoginTask extends Task.Modal {
+
+    private static final int MAX_ATTEMPTS = 3;
+    private static final int BACKOFF_MILLI_SECONDS = 2000;
+    private static final Random random = new Random();
 
     private static Logger logger = Logger.getInstance(LoginTask.class.getName());
 
@@ -41,16 +47,34 @@ public class LoginTask extends Task.Modal {
     public void run(@NotNull ProgressIndicator progressIndicator) {
 
         progressIndicator.setText(MessageResources.message("progressIndicator.login"));
+        long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
 
-        try {
-            user = LoginUtils.login(globalOptions, clientInterface);
-        } catch (CollabClientLoginCredentialsInvalidException e) {
-            logger.info("Invalid username or password.", e);
-            authenticationErrorOccured = true;
-            return;
-        } catch (CollabClientServerConnectivityException e) {
-            logger.info("Error when logging on to code collaborator server.", e);
-            return;
+        for (int i = 1; i <= MAX_ATTEMPTS; i++) {
+            logger.debug("Attempt #" + i + " to login");
+
+            try {
+                user = LoginUtils.login(globalOptions, clientInterface);
+            } catch (CollabClientLoginCredentialsInvalidException e) {
+                logger.info("Invalid username or password.", e);
+                authenticationErrorOccured = true;
+                return;
+            } catch (CollabClientServerConnectivityException e) {
+                logger.info("Error when logging on to code collaborator server.", e);
+                if (i == MAX_ATTEMPTS) {
+                    return;
+                }
+                try {
+                    logger.debug("Sleeping for " + backoff + " ms before retry");
+                    Thread.sleep(backoff);
+                } catch (InterruptedException e1) {
+                    // Activity finished before we complete - exit.
+                    logger.debug("Thread interrupted: abort remaining retries!");
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+            }
+            // increase backoff exponentially
+            backoff *= 2;
         }
         success = true;
     }
