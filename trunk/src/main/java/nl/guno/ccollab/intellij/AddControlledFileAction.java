@@ -7,7 +7,9 @@ import java.util.List;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.util.Pair;
@@ -39,6 +41,13 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             if (engine == null) {
                 return;
             }
+
+            // Save all changes to disk.
+            ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                public void run() {
+                    FileDocumentManager.getInstance().saveAllDocuments();
+                }
+            });
 
             // Retrieve the current file(s)
             File[] files = getCurrentlySelectedFiles(event);
