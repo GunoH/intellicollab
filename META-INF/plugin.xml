@@ -5,12 +5,12 @@
     <h4>Code Collaborator integration</h4>
     ]]>
     </description>
-    <version>0.16Dev</version>
+    <version>0.16</version>
     <vendor email="idea@guno.nl">Guno Heitman</vendor>
     <depends>CVS</depends>
     <change-notes><![CDATA[
         <ul>
-            <li>v0.16: Improved errors and notifications.</li>
+            <li>v0.16: Improved errors and notifications, and logon process.</li>
             <li>v0.15: IntelliJ compatibility.</li>
             <li>v0.14: Added Relese Notes related fields, put notifications in balloons, various bugfixes.</li>
             <li>v0.13: Added fields for TO and FO.</li>
@@ -29,7 +29,7 @@
         </ul>
         ]]>
     </change-notes>
-    <idea-version since-build="7757"/>
+    <idea-version since-build="111.69"/>
     <application-components>
         <component>
             <implementation-class>nl.guno.ccollab.intellij.IntelliCcollabApplicationComponent</implementation-class>
