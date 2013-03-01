@@ -48,7 +48,7 @@ public class Notification {
         return this;
     }
 
-    public Notification addToEventLog() {
+    ;public Notification addToEventLog() {
         NOTIFICATION_GROUP.createNotification("", message, type.toNotificationType(), notificationListener).notify(project);
         return this;
     }

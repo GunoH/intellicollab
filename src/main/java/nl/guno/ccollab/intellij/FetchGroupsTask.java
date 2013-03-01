@@ -17,14 +17,14 @@ import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-public class FetchGroupsTask extends Task.Modal {
+class FetchGroupsTask extends Task.Modal {
 
-    private static Logger logger = Logger.getInstance(FetchGroupsTask.class.getName());
+    private static final Logger logger = Logger.getInstance(FetchGroupsTask.class.getName());
 
     private boolean success;
 
-    private Project project;
-    private User user;
+    private final Project project;
+    private final User user;
 
     private List<GroupDescription> groups;
 

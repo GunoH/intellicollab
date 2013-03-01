@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 
-public abstract class IncrementalKeySelManager implements JComboBox.KeySelectionManager {
+abstract class IncrementalKeySelManager implements JComboBox.KeySelectionManager {
  
     private long lastKeyPressTime = new Date().getTime();
     private StringBuffer searchString = new StringBuffer("");

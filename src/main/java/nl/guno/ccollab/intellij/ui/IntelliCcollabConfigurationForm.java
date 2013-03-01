@@ -35,7 +35,7 @@ public class IntelliCcollabConfigurationForm {
     private JPasswordField passwordField;
     private JButton autofillButton;
 
-    private static Logger logger = Logger.getInstance(IntelliCcollabConfigurationForm.class.getName());
+    private static final Logger logger = Logger.getInstance(IntelliCcollabConfigurationForm.class.getName());
 
     public IntelliCcollabConfigurationForm() {
         autofillButton.addActionListener(new ActionListener() {

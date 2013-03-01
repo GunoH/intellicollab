@@ -20,12 +20,12 @@ import nl.guno.ccollab.intellij.ui.IntelliCcollabConfigurationForm;
 
 public class IntelliCcollabApplicationComponent implements ApplicationComponent, Configurable, JDOMExternalizable {
     private IntelliCcollabConfigurationForm form;
-    public String httpServerURL;
-    public String regularServerURL;
-    public String serverProxyHost;
-    public String serverProxyPort;
-    public String username;
-    public String password;
+    private String httpServerURL;
+    private String regularServerURL;
+    private String serverProxyHost;
+    private String serverProxyPort;
+    private String username;
+    private String password;
 
     public void initComponent() {
     }
@@ -88,10 +88,6 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
 
     public String getDisplayName() {
         return "IntelliCcollab";
-    }
-
-    public Icon getIcon() {
-        return IconLoader.getIcon("/icons/settingsIcon.png");
     }
 
     public String getHelpTopic() {

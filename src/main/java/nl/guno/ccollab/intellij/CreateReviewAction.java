@@ -24,7 +24,7 @@ public class CreateReviewAction extends IntelliCcollabAction {
 
     private Project project;
     
-    private static Logger logger = Logger.getInstance(CreateReviewAction.class.getName());
+    private static final Logger logger = Logger.getInstance(CreateReviewAction.class.getName());
 
 
     @Override
