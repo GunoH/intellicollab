@@ -10,7 +10,7 @@
     <depends>CVS</depends>
     <change-notes><![CDATA[
         <ul>
-            <li>v0.16: Improved errors and notifications, and logon process.</li>
+            <li>v0.16: Improvements for errors and notifications, logon process, and file upload process (all changes are now flushed to disk prior to uploading).</li>
             <li>v0.15: IntelliJ compatibility.</li>
             <li>v0.14: Added Relese Notes related fields, put notifications in balloons, various bugfixes.</li>
             <li>v0.13: Added fields for TO and FO.</li>
