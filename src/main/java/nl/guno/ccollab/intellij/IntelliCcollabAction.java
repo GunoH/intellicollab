@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.intellij.notification.NotificationListener;
 import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
@@ -52,6 +53,9 @@ public abstract class IntelliCcollabAction extends AnAction {
      * created by {@link #init(com.intellij.openapi.project.Project)}
      */
     protected static User user;
+
+    private static final IntelliCcollabApplicationComponent component =
+            ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
 
     protected static void init(final Project project) throws CollabClientException, IOException {
         // If we've already initialized, don't do it again.
@@ -120,7 +124,7 @@ public abstract class IntelliCcollabAction extends AnAction {
     }
 
     private static void openSettings(Project project) {
-        ShowSettingsUtil.getInstance().editConfigurable(project, new IntelliCcollabApplicationComponent());
+        ShowSettingsUtil.getInstance().editConfigurable(project, component);
     }
 
     /**
