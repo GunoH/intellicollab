@@ -7,8 +7,8 @@ import javax.swing.text.PlainDocument;
 /**
  * Use this class to limit the length of a JTextComponent.
  */
-public class InputLimiterDocument extends PlainDocument {
-    private int limit;
+class InputLimiterDocument extends PlainDocument {
+    private final int limit;
 
     InputLimiterDocument(int limit) {
         super();

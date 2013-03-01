@@ -25,24 +25,24 @@ import nl.guno.ccollab.intellij.ui.Notification;
 
 public class CreateReviewTask extends Task.Modal {
 
-    private static Logger logger = Logger.getInstance(CreateReviewTask.class.getName());
+    private static final Logger logger = Logger.getInstance(CreateReviewTask.class.getName());
 
     private boolean success;
 
-    private Project project;
-    private User user;
-    private GroupDescription group;
-    private String reviewTitle;
-    private boolean uploadRestricted;
-    private ReviewAccess reviewAccess;
-    private User author;
-    private User reviewer;
-    private User observer;
-    private Map<MetaDataDescription, Object> metadata;
+    private final Project project;
+    private final User user;
+    private final GroupDescription group;
+    private final String reviewTitle;
+    private final boolean uploadRestricted;
+    private final ReviewAccess reviewAccess;
+    private final User author;
+    private final User reviewer;
+    private final User observer;
+    private final Map<MetaDataDescription, Object> metadata;
 
     private Review review;
 
-    private IntelliCcollabApplicationComponent component =
+    private final IntelliCcollabApplicationComponent component =
             ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
 
     public CreateReviewTask(Project project, User user, GroupDescription group, String reviewTitle,

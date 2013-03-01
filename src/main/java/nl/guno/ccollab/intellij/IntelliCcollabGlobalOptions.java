@@ -10,9 +10,9 @@ import com.smartbear.beans.IGlobalOptions;
 
 public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 
-    private IGlobalOptions wrappedOptions;
+    private final IGlobalOptions wrappedOptions;
 
-    private IntelliCcollabApplicationComponent component =
+    private final IntelliCcollabApplicationComponent component =
             ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
 
     public IntelliCcollabGlobalOptions(IGlobalOptions wrappedOptions) {

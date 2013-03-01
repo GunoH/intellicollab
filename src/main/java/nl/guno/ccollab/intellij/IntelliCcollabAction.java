@@ -24,40 +24,40 @@ import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.collections.Pair;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-public abstract class IntelliCcollabAction extends AnAction {
+abstract class IntelliCcollabAction extends AnAction {
 
     /**
      * Global and SCM options, created by {@link #init(com.intellij.openapi.project.Project)}
      */
-    protected static IntelliCcollabGlobalOptions globalOptions;
+    private static IntelliCcollabGlobalOptions globalOptions;
 
     /**
      * SCM options, created by {@link #init(com.intellij.openapi.project.Project)}
      */
-    protected static IScmOptions scmOptions;
+    static IScmOptions scmOptions;
 
     /**
      * Interface to user for prompting, etc...
      * created by {@link #init(com.intellij.openapi.project.Project)}
      */
-    protected static ICollabClientInterface clientInterface;
+    private static ICollabClientInterface clientInterface;
 
     /**
      * Connection to Code Collaborator server
      * created by {@link #init(com.intellij.openapi.project.Project)}
      */
-    protected static Engine engine;
+    static Engine engine;
 
     /**
      * Currently logged-in user
      * created by {@link #init(com.intellij.openapi.project.Project)}
      */
-    protected static User user;
+    static User user;
 
     private static final IntelliCcollabApplicationComponent component =
             ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
 
-    protected static void init(final Project project) throws CollabClientException, IOException {
+    static void init(final Project project) throws CollabClientException, IOException {
         // If we've already initialized, don't do it again.
         if ( engine != null ) {
             return;
@@ -133,7 +133,7 @@ public abstract class IntelliCcollabAction extends AnAction {
      * <b>THIS IS CRITICAL</b>.  If you do not close out your <code>CollabClientConnection</code>
      * object, data might not be flushed out to the server!
      */
-    protected void finished() {
+    void finished() {
         if (engine != null) {
             engine.close(true);
         }

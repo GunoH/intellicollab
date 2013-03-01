@@ -12,14 +12,14 @@ import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-public class FetchReviewsTask extends Task.Modal {
+class FetchReviewsTask extends Task.Modal {
 
-    private static Logger logger = Logger.getInstance(FetchReviewsTask.class.getName());
+    private static final Logger logger = Logger.getInstance(FetchReviewsTask.class.getName());
 
     private boolean success;
 
-    private Project project;
-    private User user;
+    private final Project project;
+    private final User user;
 
     private Review[] reviews;
 

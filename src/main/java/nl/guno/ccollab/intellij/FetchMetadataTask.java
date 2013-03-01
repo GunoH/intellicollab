@@ -14,12 +14,12 @@ import nl.guno.ccollab.intellij.ui.Notification;
 
 public class FetchMetadataTask extends Task.Modal {
 
-    private static Logger logger = Logger.getInstance(FetchMetadataTask.class.getName());
+    private static final Logger logger = Logger.getInstance(FetchMetadataTask.class.getName());
 
     private boolean success;
 
-    private Project project;
-    private User user;
+    private final Project project;
+    private final User user;
 
     private MetaDataDescription overview;
     private MetaDataDescription bugzillaInstantie;
