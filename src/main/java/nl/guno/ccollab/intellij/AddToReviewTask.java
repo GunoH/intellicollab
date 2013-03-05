@@ -113,7 +113,7 @@ class AddToReviewTask extends Task.Backgroundable {
             Changelist changelist = scm.uploadChangeset(changeset, null, null, null, user.getLogin(),
                     "Local changes uploaded from IntelliJ IDEA", new NullProgressMonitor());
 
-            progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.attaching", review.getId()));
+            progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.attaching", review.getId().toString()));
 
             progressIndicator.checkCanceled();
 
@@ -145,7 +145,7 @@ class AddToReviewTask extends Task.Backgroundable {
     public void onSuccess() {
         if (success) {
             new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                    files.length, review.getId(), review.getTitle(), component.getRegularServerURL()), MessageType.INFO).showBalloon().addToEventLog();
+                    files.length, review.getId().toString(), review.getTitle(), component.getRegularServerURL()), MessageType.INFO).showBalloon().addToEventLog();
         } else {
             new Notification(project, errorMessage, MessageType.ERROR).showBalloon();
         }
@@ -155,7 +155,7 @@ class AddToReviewTask extends Task.Backgroundable {
     public void onCancel() {
         if (success) {
             new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                    files.length, review.getId(), review.getTitle(), component.getRegularServerURL()),
+                    files.length, review.getId().toString(), review.getTitle(), component.getRegularServerURL()),
                     MessageType.INFO).showBalloon().addToEventLog();
         } else {
             new Notification(project, MessageResources.message("task.addFilesToReview.cancelled.text"),
