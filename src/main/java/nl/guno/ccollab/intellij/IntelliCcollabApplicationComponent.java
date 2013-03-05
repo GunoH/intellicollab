@@ -2,8 +2,7 @@ package nl.guno.ccollab.intellij;
 
 import java.net.MalformedURLException;
 
-import javax.swing.Icon;
-import javax.swing.JComponent;
+import javax.swing.*;
 
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +11,6 @@ import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.util.DefaultJDOMExternalizer;
-import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizable;
 import com.intellij.openapi.util.WriteExternalException;
