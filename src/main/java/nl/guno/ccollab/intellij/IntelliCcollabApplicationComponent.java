@@ -18,12 +18,15 @@ import nl.guno.ccollab.intellij.ui.IntelliCcollabConfigurationForm;
 
 public class IntelliCcollabApplicationComponent implements ApplicationComponent, Configurable, JDOMExternalizable {
     private IntelliCcollabConfigurationForm form;
-    private String httpServerURL;
-    private String regularServerURL;
-    private String serverProxyHost;
-    private String serverProxyPort;
-    private String username;
-    private String password;
+    
+    /* The settings themselves; these need to be public for IntelliJ to save them. */
+    
+    public String httpServerURL;
+    public String regularServerURL;
+    public String serverProxyHost;
+    public String serverProxyPort;
+    public String username;
+    public String password;
 
     public void initComponent() {
     }
