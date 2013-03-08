@@ -19,7 +19,7 @@ import nl.guno.ccollab.intellij.ui.Notification;
 
 class LoginTask extends Task.Modal {
 
-    private static final int MAX_ATTEMPTS = 3;
+    private static final int MAX_ATTEMPTS = 1;
     private static final int BACKOFF_MILLI_SECONDS = 2000;
     private static final Random random = new Random();
 
