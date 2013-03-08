@@ -13,6 +13,7 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.CollabClientException;
+import com.smartbear.beans.NullAskUser;
 import com.smartbear.ccollab.datamodel.Changelist;
 import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.Review;
@@ -93,7 +94,8 @@ class AddToReviewTask extends Task.Backgroundable {
                 // Create the SCM object representing a local file under version control.
                 // We assume the local SCM is already configured properly.
                 logger.debug("Loading SCM File object...");
-                clientConfig = ScmUtils.requireScm(file, AddControlledFileAction.scmOptions, new NullProgressMonitor(), ScmUtils.SCMS);
+                clientConfig = ScmUtils.requireScm(file, AddControlledFileAction.scmOptions, NullAskUser.INSTANCE, 
+                        new NullProgressMonitor(), ScmUtils.SCMS);
                 scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
                 changeset.addLocalCheckout(scmFile, true, new NullProgressMonitor());
             }

@@ -15,6 +15,7 @@ import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
 import com.smartbear.beans.IGlobalOptions;
 import com.smartbear.beans.IScmOptions;
+import com.smartbear.beans.NullAskUser;
 import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.client.LoginUtils;
 import com.smartbear.ccollab.datamodel.ActionItem;
@@ -340,7 +341,7 @@ public class Examples {
         // Create the SCM object representing a local file under version control.
         // We assume the local SCM is already configured properly.
         System.out.println("Loading SCM File object...");
-        IScmClientConfiguration clientConfig = ScmUtils.requireScm(null, scmOptions, new NullProgressMonitor(), ScmUtils.SCMS);
+        IScmClientConfiguration clientConfig = ScmUtils.requireScm(null, scmOptions,  NullAskUser.INSTANCE, new NullProgressMonitor(), ScmUtils.SCMS);
         IScmLocalCheckout scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
         if (scmFile == null) {
             System.err.println("error: file is not under version control: " + file.getAbsolutePath());
@@ -382,6 +383,7 @@ public class Examples {
         IScmClientConfiguration clientConfig = ScmUtils.requireScm(
                 null, //get configuration from working directory
                 scmOptions,
+                NullAskUser.INSTANCE,
                 new NullProgressMonitor(),
                 Arrays.asList(PerforceSystem.INSTANCE, SubversionSystem.INSTANCE));
 
