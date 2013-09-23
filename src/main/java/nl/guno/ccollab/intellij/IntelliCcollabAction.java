@@ -128,9 +128,9 @@ abstract class IntelliCcollabAction extends AnAction {
     }
 
     /**
-     * Called to clean up a previous call to <code>init()</code>.
+     * Called to clean up a previous call to {@link #init(Project)}.
      * <p/>
-     * <b>THIS IS CRITICAL</b>.  If you do not close out your <code>CollabClientConnection</code>
+     * <b>THIS IS CRITICAL</b>.  If you do not close out your {@code CollabClientConnection}
      * object, data might not be flushed out to the server!
      */
     void finished() {

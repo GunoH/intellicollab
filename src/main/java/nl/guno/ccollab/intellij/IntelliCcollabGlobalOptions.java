@@ -22,7 +22,7 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 
     /**
      * Indicates if any of the mandatory settings are missing.
-     * @return <code>true</code> if any of the mandatory settings are missing, <code>false</code> otherwise.
+     * @return {@code true} if any of the mandatory settings are missing, {@code false} otherwise.
      */
     public boolean settingsIncomplete() {
         return StringUtils.isEmpty(component.getHttpServerURL())
