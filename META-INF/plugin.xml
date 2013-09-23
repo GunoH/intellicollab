@@ -3,6 +3,7 @@
     <name>IntelliCcollab</name>
     <description><![CDATA[
     <h4>Code Collaborator integration</h4>
+    <p>Needs CVS v1.11.20 to be on the PATH</p>
     ]]>
     </description>
     <version>0.16</version>
