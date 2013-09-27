@@ -147,7 +147,7 @@ class AddToReviewTask extends Task.Backgroundable {
     public void onSuccess() {
         if (success) {
             new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                    files.length, review.getId().toString(), review.getTitle(), component.getRegularServerURL()), MessageType.INFO).showBalloon().addToEventLog();
+                    files.length, review.getId().toString(), review.getTitle(), component.getServerURL()), MessageType.INFO).showBalloon().addToEventLog();
         } else {
             new Notification(project, errorMessage, MessageType.ERROR).showBalloon();
         }
@@ -157,7 +157,7 @@ class AddToReviewTask extends Task.Backgroundable {
     public void onCancel() {
         if (success) {
             new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                    files.length, review.getId().toString(), review.getTitle(), component.getRegularServerURL()),
+                    files.length, review.getId().toString(), review.getTitle(), component.getServerURL()),
                     MessageType.INFO).showBalloon().addToEventLog();
         } else {
             new Notification(project, MessageResources.message("task.addFilesToReview.cancelled.text"),

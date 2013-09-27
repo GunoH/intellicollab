@@ -21,8 +21,7 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
     
     /* The settings themselves; these need to be public for IntelliJ to save them. */
     
-    public String httpServerURL;
-    public String regularServerURL;
+    public String serverURL;
     public String serverProxyHost;
     public String serverProxyPort;
     public String username;
@@ -39,20 +38,12 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
         return "IntelliCcollabApplicationComponent";
     }
 
-    public String getHttpServerURL() {
-        return httpServerURL;
+    public String getServerURL() {
+        return serverURL;
     }
 
-    public void setHttpServerURL(final String httpServerURL) {
-        this.httpServerURL = httpServerURL;
-    }
-
-    public String getRegularServerURL() {
-        return regularServerURL;
-    }
-
-    public void setRegularServerURL(String regularServerURL) {
-        this.regularServerURL = regularServerURL;
+    public void setServerURL(String serverURL) {
+        this.serverURL = serverURL;
     }
 
     public String getServerProxyHost() {
