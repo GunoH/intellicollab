@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.intellij.history.LocalHistory;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
@@ -98,6 +99,12 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 
                 // Add the current file to the selected review.
                 attachControlledFiles(event, review, files);
+	            
+	            // Add a label to the local history.
+	            LocalHistory.getInstance().putSystemLabel(project, 
+			            MessageResources.message("localhistory.label.filesuploaded", 
+					            review.getId().toString(), 
+					            review.getTitle())); 
             }
         } catch (CollabClientServerConnectivityException e) {
             logger.warn(e);
