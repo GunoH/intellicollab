@@ -27,8 +27,7 @@ import nl.guno.ccollab.intellij.MessageResources;
 
 public class IntelliCcollabConfigurationForm {
     private JPanel rootComponent;
-    private JTextField httpUrlField;
-    private JTextField regularUrlField;
+    private JTextField urlField;
     private JTextField proxyPortField;
     private JTextField proxyHostField;
     private JTextField usernameField;
@@ -58,8 +57,7 @@ public class IntelliCcollabConfigurationForm {
         Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
         IGlobalOptions options = configOptions.getA();
 
-        httpUrlField.setText(options.getUrl().toString());
-        regularUrlField.setText(options.getUrl().toString());
+        urlField.setText(options.getUrl().toString());
         proxyHostField.setText(options.getServerProxyHost());
         proxyPortField.setText(options.getServerProxyPort());
         usernameField.setText(options.getUser());
@@ -75,18 +73,12 @@ public class IntelliCcollabConfigurationForm {
     }
 
     public void setData(IntelliCcollabApplicationComponent data) {
-        String regularServerUrlFromConfig = data.getRegularServerURL();
-        String httpServerUrlFromConfig = data.getHttpServerURL();
+        String serverUrlFromConfig = data.getServerURL();
 
-        if (StringUtils.isNotEmpty(regularServerUrlFromConfig)) {
-            regularUrlField.setText(regularServerUrlFromConfig);
+        if (StringUtils.isNotEmpty(serverUrlFromConfig)) {
+            urlField.setText(serverUrlFromConfig);
         } else {
-            regularUrlField.setText(MessageResources.message("configuration.serverURL.default"));
-        }
-        if (StringUtils.isNotEmpty(httpServerUrlFromConfig)) {
-            httpUrlField.setText(httpServerUrlFromConfig);
-        } else {
-            httpUrlField.setText(MessageResources.message("configuration.serverURL.http.default"));
+            urlField.setText(MessageResources.message("configuration.serverURL.default"));
         }
         proxyHostField.setText(data.getServerProxyHost());
         proxyPortField.setText(data.getServerProxyPort());
@@ -95,21 +87,21 @@ public class IntelliCcollabConfigurationForm {
     }
 
     public void getData(IntelliCcollabApplicationComponent data) throws MalformedURLException {
-        String urlText = regularUrlField.getText();
+        String urlText = urlField.getText();
         if (StringUtils.isNotEmpty(urlText)) {
             // Validate the URL.
             new URL(urlText);
-            data.setRegularServerURL(urlText);
+            data.setServerURL(urlText);
         } else {
-            data.setRegularServerURL(null);
+            data.setServerURL(null);
         }
-        urlText = httpUrlField.getText();
+        urlText = urlField.getText();
         if (StringUtils.isNotEmpty(urlText)) {
             // Validate the URL.
             new URL(urlText);
-            data.setHttpServerURL(urlText);
+            data.setServerURL(urlText);
         } else {
-            data.setHttpServerURL(null);
+            data.setServerURL(null);
         }
 
         data.setServerProxyHost(proxyHostField.getText());
@@ -120,11 +112,11 @@ public class IntelliCcollabConfigurationForm {
 
     public boolean isModified(IntelliCcollabApplicationComponent data) {
 
-        if (data.getRegularServerURL() == null) {
-            return regularUrlField.getText() != null;
+        if (data.getServerURL() == null) {
+            return urlField.getText() != null;
         }
-        if (data.getHttpServerURL() == null) {
-            return httpUrlField.getText() != null;
+        if (data.getServerURL() == null) {
+            return urlField.getText() != null;
         }
         if (data.getServerProxyHost() == null) {
             return proxyHostField.getText() != null;
@@ -139,10 +131,7 @@ public class IntelliCcollabConfigurationForm {
             return passwordField.getPassword() != null;
         }
 
-        if (regularUrlField.getText() == null) {
-            return false;
-        }
-        if (httpUrlField.getText() == null) {
+        if (urlField.getText() == null) {
             return false;
         }
         if (proxyHostField.getText() == null) {
@@ -158,10 +147,7 @@ public class IntelliCcollabConfigurationForm {
             return false;
         }
 
-        if (!regularUrlField.getText().equals(data.getRegularServerURL())) {
-            return true;
-        }
-        if (!httpUrlField.getText().equals(data.getHttpServerURL())) {
+        if (!urlField.getText().equals(data.getServerURL())) {
             return true;
         }
         if (!proxyHostField.getText().equals(data.getServerProxyHost())) {

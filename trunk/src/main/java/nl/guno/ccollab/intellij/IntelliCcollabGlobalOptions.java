@@ -25,17 +25,16 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
      * @return {@code true} if any of the mandatory settings are missing, {@code false} otherwise.
      */
     public boolean settingsIncomplete() {
-        return StringUtils.isEmpty(component.getHttpServerURL())
-                || StringUtils.isEmpty(component.getRegularServerURL())
+        return StringUtils.isEmpty(component.getServerURL())
                 || StringUtils.isEmpty(component.getUsername())
                 || StringUtils.isEmpty(component.getPassword());
     }
 
     public URL getUrl() {
         try {
-            return new URL(component.getHttpServerURL());
+            return new URL(component.getServerURL());
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Invalid URL:" + component.getHttpServerURL());
+            throw new RuntimeException("Invalid URL:" + component.getServerURL());
         }
     }
 
