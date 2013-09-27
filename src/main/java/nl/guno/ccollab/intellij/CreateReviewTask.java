@@ -130,7 +130,7 @@ public class CreateReviewTask extends Task.Modal {
         if (success) {
             new Notification(
                     project,
-                    MessageResources.message("task.createReview.reviewCreated.text", review.getId().toString(), review.getTitle(), component.getRegularServerURL()),
+                    MessageResources.message("task.createReview.reviewCreated.text", review.getId().toString(), review.getTitle(), component.getServerURL()),
                     MessageType.INFO).showBalloon().addToEventLog();
             
         } else {
