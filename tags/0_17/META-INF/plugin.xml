@@ -1,0 +1,85 @@
+<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<idea-plugin url="https://guno.nl/confluence/display/IC">
+    <name>IntelliCcollab</name>
+    <description><![CDATA[
+    <h4>Code Collaborator integration</h4>
+    <p>Needs CVS v1.11.20 to be on the PATH</p>
+    ]]>
+    </description>
+    <version>0.17</version>
+    <vendor email="idea@guno.nl">Guno Heitman</vendor>
+    <depends>CVS</depends>
+    <change-notes><![CDATA[
+        <ul>
+            <li>v0.17: Merged the two serverUrl settings into one; A https url can now be used.</li>
+            <li>v0.16: Improvements for errors and notifications, logon process, and file upload process (all changes are now flushed to disk prior to uploading).</li>
+            <li>v0.15: IntelliJ compatibility.</li>
+            <li>v0.14: Added Relese Notes related fields, put notifications in balloons, various bugfixes.</li>
+            <li>v0.13: Added fields for TO and FO.</li>
+            <li>v0.12: Bugfixes.</li>
+            <li>v0.11: Added keyboard shortcuts and plugin settings, bugfixes.</li>
+            <li>v0.10: No more CVS-only builds. Bugfixes. Added possibility to create a new review: Tools -> Create new review...</li>
+            <li>v0.9: Bugfixes; Upgraded to new Code Collaborator Libraries; Review selection and file selection now share a single dialog.</li>
+            <li>v0.8: Several bugfixes and a new feature: when adding files to a review, the file selection can now be altered using checkboxes.</li>
+            <li>v0.7: Implemented progress bars</li>
+            <li>v0.6: Improved feedback to user</li>
+            <li>v0.5: Until further notice, builds will be CVS-only from now</li>
+            <li>v0.4: Minor refactorings</li>
+            <li>v0.3: Improved error messages</li>
+            <li>v0.2: It is now possible to attach multiple files to a review at once (Using the changeset popup menu)</li>
+            <li>v0.1: Initial version</li>
+        </ul>
+        ]]>
+    </change-notes>
+    <idea-version since-build="111.69"/>
+    <application-components>
+        <component>
+            <implementation-class>nl.guno.ccollab.intellij.IntelliCcollabApplicationComponent</implementation-class>
+        </component>
+    </application-components>
+    <actions>
+        <group>
+            <separator/>
+            <action id="nl.guno.ccollab.intellij.AddControlledFileFromChangesViewPopupMenu"
+                    class="nl.guno.ccollab.intellij.AddControlledFileAction"
+                    text="Add file(s) to _review..."
+                    description="Adds one or more version-controlled file(s) to an existing Code Collaborator review"
+                    icon="/icons/addToReview.png">
+            </action>
+            <separator/>
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
+        </group>
+        <group>
+            <action id="nl.guno.ccollab.intellij.AddControlledFileFromChangesView"
+                    class="nl.guno.ccollab.intellij.AddControlledFileAction"
+                    text="Add file(s) to review..."
+                    description="Adds one or more version-controlled file(s) to an existing Code Collaborator review"
+                    icon="/icons/addToReview.png">
+            </action>
+            <add-to-group group-id="ChangesViewToolbar" anchor="last"/>
+        </group>
+        <group>
+            <separator/>
+            <action id="nl.guno.ccollab.intellij.AddControlledFileFromEditorTab"
+                    class="nl.guno.ccollab.intellij.AddControlledFileFromEditorTab"
+                    text="Add file to _review..."
+                    description="Adds the selected file to an existing Code Collaborator review"
+                    icon="/icons/addToReview.png">
+            </action>
+            <separator/>
+            <add-to-group group-id="EditorTabPopupMenu" anchor="last"/>
+        </group>
+        <group>
+            <separator/>
+            <action id="nl.guno.ccollab.intellij.CreateReviewTask"
+                    class="nl.guno.ccollab.intellij.CreateReviewAction"
+                    text="Create _new review..."
+                    description="Creates a new Code Collaborator review"
+                    icon="/icons/newReview.png">
+                <keyboard-shortcut first-keystroke="control alt R" keymap="$default"/>
+            </action>
+            <separator/>
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </group>
+    </actions>
+</idea-plugin>
