@@ -57,7 +57,9 @@ public class IntelliCcollabConfigurationForm {
         Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
         IGlobalOptions options = configOptions.getA();
 
-        urlField.setText(options.getUrl().toString());
+        if (options.getUrl() != null) {
+            urlField.setText(options.getUrl().toString());
+        }
         proxyHostField.setText(options.getServerProxyHost());
         proxyPortField.setText(options.getServerProxyPort());
         usernameField.setText(options.getUser());
