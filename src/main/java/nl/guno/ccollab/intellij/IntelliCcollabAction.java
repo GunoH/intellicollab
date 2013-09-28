@@ -27,20 +27,9 @@ import nl.guno.ccollab.intellij.ui.Notification;
 abstract class IntelliCcollabAction extends AnAction {
 
     /**
-     * Global and SCM options, created by {@link #init(com.intellij.openapi.project.Project)}
-     */
-    private static IntelliCcollabGlobalOptions globalOptions;
-
-    /**
      * SCM options, created by {@link #init(com.intellij.openapi.project.Project)}
      */
     static IScmOptions scmOptions;
-
-    /**
-     * Interface to user for prompting, etc...
-     * created by {@link #init(com.intellij.openapi.project.Project)}
-     */
-    private static ICollabClientInterface clientInterface;
 
     /**
      * Connection to Code Collaborator server
@@ -65,7 +54,7 @@ abstract class IntelliCcollabAction extends AnAction {
 
         //load options from config files
         Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
-        globalOptions = new IntelliCcollabGlobalOptions(configOptions.getA());
+        IntelliCcollabGlobalOptions globalOptions = new IntelliCcollabGlobalOptions(configOptions.getA());
 
         if (globalOptions.settingsIncomplete()) {
             new Notification(project, MessageResources.message("configuration.error.mandatorySettingsMissing.text"),
@@ -88,7 +77,7 @@ abstract class IntelliCcollabAction extends AnAction {
         scmOptions = configOptions.getB();
 
         //initialize client interface
-        clientInterface = new CommandLineClient(globalOptions);
+        ICollabClientInterface clientInterface = new CommandLineClient(globalOptions);
 
         //connect to server and log in (throws exception if authentication fails, can't find server, etc...)
         LoginTask loginTask = new LoginTask(project, globalOptions, clientInterface);
