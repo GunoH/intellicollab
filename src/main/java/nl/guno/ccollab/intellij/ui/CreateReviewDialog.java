@@ -13,6 +13,8 @@ import java.util.List;
 
 import javax.swing.*;
 
+import com.intellij.openapi.ui.ComboBox;
+import com.intellij.ui.JBColor;
 import org.apache.commons.lang.StringUtils;
 
 import com.smartbear.ccollab.datamodel.GroupDescription;
@@ -75,7 +77,7 @@ public class CreateReviewDialog extends JDialog {
     /**
      * De achtergrondkleur voor niet-validerende velden.
      */
-    private final Color highlightBackground = Color.yellow;
+    private final Color highlightBackground = JBColor.YELLOW;
     
     private DefaultComboBoxModel reviewerComboBoxModel;
     private DefaultComboBoxModel authorComboBoxModel;
@@ -234,7 +236,7 @@ public class CreateReviewDialog extends JDialog {
     private void createUIComponents() {
 
         authorComboBoxModel = new DefaultComboBoxModel();
-        authorComboBox = new JComboBox(authorComboBoxModel);
+        authorComboBox = new ComboBox(authorComboBoxModel);
         authorComboBox.setRenderer(new UserComboboxRenderer());
         authorComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -244,7 +246,7 @@ public class CreateReviewDialog extends JDialog {
         });
 
         reviewerComboBoxModel = new DefaultComboBoxModel();
-        reviewerComboBox = new JComboBox(reviewerComboBoxModel);
+        reviewerComboBox = new ComboBox(reviewerComboBoxModel);
         reviewerComboBox.setRenderer(new UserComboboxRenderer());
         reviewerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -254,7 +256,7 @@ public class CreateReviewDialog extends JDialog {
         });
 
         observerComboBoxModel = new DefaultComboBoxModel();
-        observerComboBox = new JComboBox(observerComboBoxModel);
+        observerComboBox = new ComboBox(observerComboBoxModel);
         observerComboBox.setRenderer(new UserComboboxRenderer());
         observerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -264,7 +266,7 @@ public class CreateReviewDialog extends JDialog {
         });
 
         groupComboBoxModel = new DefaultComboBoxModel();
-        groupComboBox = new JComboBox(groupComboBoxModel);
+        groupComboBox = new ComboBox(groupComboBoxModel);
         groupComboBox.setRenderer(new GroupDescriptionRenderer());
         groupComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -274,7 +276,7 @@ public class CreateReviewDialog extends JDialog {
         });
 
         bugzillaInstantieComboBoxModel = new DefaultComboBoxModel();
-        bugzillaInstantieComboBox = new JComboBox(bugzillaInstantieComboBoxModel);
+        bugzillaInstantieComboBox = new ComboBox(bugzillaInstantieComboBoxModel);
         bugzillaInstantieComboBox.setRenderer(new IDropDownItemComboboxRenderer());
         bugzillaInstantieComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -284,7 +286,7 @@ public class CreateReviewDialog extends JDialog {
         });
 
         reviewAccessComboBoxModel = new DefaultComboBoxModel();
-        reviewAccessComboBox = new JComboBox(reviewAccessComboBoxModel);
+        reviewAccessComboBox = new ComboBox(reviewAccessComboBoxModel);
         reviewAccessComboBox.setRenderer(new ReviewAccessComboboxRenderer());
         reviewAccessComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
             @Override
@@ -466,7 +468,7 @@ public class CreateReviewDialog extends JDialog {
             User user = (User) value;
             
             if (isSelected) {
-                setBackground(Color.BLUE);
+                setBackground(JBColor.BLUE);
             } else {
                 setBackground(list.getBackground());
             }
@@ -493,7 +495,7 @@ public class CreateReviewDialog extends JDialog {
             ReviewAccess reviewAccess = (ReviewAccess) value;
             
             if (isSelected) {
-                setBackground(Color.BLUE);
+                setBackground(JBColor.BLUE);
             } else {
                 setBackground(list.getBackground());
             }
@@ -520,7 +522,7 @@ public class CreateReviewDialog extends JDialog {
             IDropDownItem item = (IDropDownItem) value;
 
             if (isSelected) {
-                setBackground(Color.BLUE);
+                setBackground(JBColor.BLUE);
             } else {
                 setBackground(list.getBackground());
             }
@@ -547,7 +549,7 @@ public class CreateReviewDialog extends JDialog {
             GroupDescription groupDescription = (GroupDescription) value;
 
             if (isSelected) {
-                setBackground(Color.BLUE);
+                setBackground(JBColor.BLUE);
             } else {
                 setBackground(list.getBackground());
             }
