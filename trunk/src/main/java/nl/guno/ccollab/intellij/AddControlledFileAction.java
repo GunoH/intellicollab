@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.history.LocalHistory;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
@@ -66,8 +71,24 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 
             Review[] reviews = fetchReviewsTask.getReviews();
 
-            if (reviews == null) {
+            if (reviews == null || reviews.length == 0) {
                 logger.debug("No reviews found");
+	            new Notification(
+			            project,
+			            MessageResources.message("task.addFilesToReview.noReviews.text"),
+			            MessageType.WARNING)
+			            .setHyperlinkListener(new HyperlinkListener() {
+				            @Override
+				            public void hyperlinkUpdate(@NotNull HyperlinkEvent e) {
+					            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+						            // Open create review dialog
+						            new CreateReviewAction().invoke(project);
+					            }
+				            }
+			            })
+			            .showBalloon();
+
+
                 return;
             }
 
