@@ -65,11 +65,6 @@ abstract class IntelliCcollabAction extends AnAction {
                         openSettings(project);
                     }
                 }
-            }).setNotificationListener(new NotificationListener() {
-                @Override
-                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification, @NotNull HyperlinkEvent hyperlinkEvent) {
-                    openSettings(project);
-                }
             }).showBalloon().addToEventLog();
             return;
         }
@@ -92,12 +87,6 @@ abstract class IntelliCcollabAction extends AnAction {
                         if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                             openSettings(project);
                         }
-                    }
-                }).setNotificationListener(new NotificationListener() {
-                    @Override
-                    public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
-                                                @NotNull HyperlinkEvent hyperlinkEvent) {
-                        openSettings(project);
                     }
                 }).showBalloon().addToEventLog();
             }

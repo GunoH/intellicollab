@@ -63,9 +63,4 @@ public class Notification {
         this.hyperlinkListener = hyperlinkListener;
         return this;
     }
-
-    public Notification setNotificationListener(NotificationListener notificationListener) {
-        this.notificationListener = notificationListener;
-        return this;
-    }
 }
