@@ -34,7 +34,9 @@ public class CreateReviewAction extends IntelliCcollabAction {
 	public void invoke(Project project) {
 		try {
 
-			init(project);
+			if (!init(project)) {
+				return;
+			}
 
 			if (engine == null) {
 				return;
@@ -103,6 +105,9 @@ public class CreateReviewAction extends IntelliCcollabAction {
 		} catch (IOException e) {
 			logger.warn(e);
 			new Notification(project, MessageResources.message("action.createReview.ioErrorOccurred.text"),
+					MessageType.ERROR).showBalloon();
+		} catch (InterruptedException e) {
+			new Notification(project, MessageResources.message("action.createReview.errorOccurred.text"),
 					MessageType.ERROR).showBalloon();
 		} finally {
 			finished();

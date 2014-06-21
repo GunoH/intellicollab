@@ -46,10 +46,17 @@ abstract class IntelliCcollabAction extends AnAction {
     private static final IntelliCcollabApplicationComponent component =
             ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
 
-    static void init(final Project project) throws CollabClientException, IOException {
+    static boolean init(final Project project) throws CollabClientException, IOException, InterruptedException {
+
+	    if (!Environment.checkConnection()) {
+		    new Notification(project, MessageResources.message("action.error.serverNotAvaliable.text"),
+				    MessageType.ERROR).showBalloon().addToEventLog();
+		    return false;
+	    }
+
         // If we've already initialized, don't do it again.
         if ( engine != null ) {
-            return;
+            return true;
         }
 
         //load options from config files
@@ -66,7 +73,7 @@ abstract class IntelliCcollabAction extends AnAction {
                     }
                 }
             }).showBalloon().addToEventLog();
-            return;
+            return false;
         }
 
         scmOptions = configOptions.getB();
@@ -91,7 +98,7 @@ abstract class IntelliCcollabAction extends AnAction {
                 }).showBalloon().addToEventLog();
             }
 
-            return;
+            return false;
         }
         
         user = loginTask.getUser();
@@ -99,6 +106,8 @@ abstract class IntelliCcollabAction extends AnAction {
         if (user != null) {
             engine = user.getEngine();
         }
+
+	    return true;
     }
 
     private static void openSettings(Project project) {
