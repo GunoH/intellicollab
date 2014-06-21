@@ -16,7 +16,6 @@ import java.util.List;
 import javax.swing.*;
 
 import com.intellij.openapi.ui.ComboBox;
-import com.intellij.ui.JBColor;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.util.Pair;
@@ -189,7 +188,7 @@ class ReviewComboboxRenderer extends JLabel implements ListCellRenderer {
         Review review = (Review) value;
         
         if (isSelected) {
-            setBackground(JBColor.BLUE);
+            setBackground(Color.BLUE);
         } else {
             setBackground(list.getBackground());
         }

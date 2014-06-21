@@ -14,7 +14,6 @@ import java.util.List;
 import javax.swing.*;
 
 import com.intellij.openapi.ui.ComboBox;
-import com.intellij.ui.JBColor;
 import org.apache.commons.lang.StringUtils;
 
 import com.smartbear.ccollab.datamodel.GroupDescription;
@@ -77,7 +76,7 @@ public class CreateReviewDialog extends JDialog {
     /**
      * De achtergrondkleur voor niet-validerende velden.
      */
-    private final Color highlightBackground = JBColor.YELLOW;
+    private final Color highlightBackground = Color.yellow;
     
     private DefaultComboBoxModel reviewerComboBoxModel;
     private DefaultComboBoxModel authorComboBoxModel;
@@ -468,7 +467,7 @@ public class CreateReviewDialog extends JDialog {
             User user = (User) value;
             
             if (isSelected) {
-                setBackground(JBColor.BLUE);
+                setBackground(Color.BLUE);
             } else {
                 setBackground(list.getBackground());
             }
@@ -495,7 +494,7 @@ public class CreateReviewDialog extends JDialog {
             ReviewAccess reviewAccess = (ReviewAccess) value;
             
             if (isSelected) {
-                setBackground(JBColor.BLUE);
+                setBackground(Color.BLUE);
             } else {
                 setBackground(list.getBackground());
             }
@@ -522,7 +521,7 @@ public class CreateReviewDialog extends JDialog {
             IDropDownItem item = (IDropDownItem) value;
 
             if (isSelected) {
-                setBackground(JBColor.BLUE);
+                setBackground(Color.BLUE);
             } else {
                 setBackground(list.getBackground());
             }
@@ -549,7 +548,7 @@ public class CreateReviewDialog extends JDialog {
             GroupDescription groupDescription = (GroupDescription) value;
 
             if (isSelected) {
-                setBackground(JBColor.BLUE);
+                setBackground(Color.BLUE);
             } else {
                 setBackground(list.getBackground());
             }
