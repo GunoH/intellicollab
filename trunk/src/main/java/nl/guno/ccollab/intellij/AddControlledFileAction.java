@@ -42,9 +42,17 @@ public class AddControlledFileAction extends IntelliCcollabAction {
         try {
 			project = event.getData(LangDataKeys.PROJECT);
 
-            init(project);
+            if (!init(project)) {
+	            return;
+            }
 
-            if (engine == null) {
+	        if (!Environment.checkCVSExecutable()) {
+		        new Notification(project, MessageResources.message("action.error.cvsNotAvaliable.text"),
+				        MessageType.ERROR).showBalloon().addToEventLog();
+		        return;
+	        }
+
+	        if (engine == null) {
                 return;
             }
 
@@ -144,6 +152,9 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             logger.warn(e);
             new Notification(project, MessageResources.message("action.addControlledFile.ioErrorOccurred.text"),
                     MessageType.ERROR).showBalloon();
+        } catch (InterruptedException e) {
+	        new Notification(project, MessageResources.message("action.addControlledFile.errorOccurred.text"),
+			        MessageType.ERROR).showBalloon();
         } finally {
             finished();
         }
