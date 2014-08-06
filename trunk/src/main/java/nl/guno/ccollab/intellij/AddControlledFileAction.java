@@ -46,7 +46,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 	            return;
             }
 
-	        if (!Environment.checkCVSExecutable()) {
+	        if (!new Environment().checkCVSExecutable()) {
 		        new Notification(project, MessageResources.message("action.error.cvsNotAvaliable.text"),
 				        MessageType.ERROR).showBalloon().addToEventLog();
 		        return;
