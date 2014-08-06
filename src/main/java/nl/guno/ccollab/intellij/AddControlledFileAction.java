@@ -31,6 +31,9 @@ import com.smartbear.scm.ScmConfigurationException;
 import nl.guno.ccollab.intellij.ui.FileAndReviewSelector;
 import nl.guno.ccollab.intellij.ui.Notification;
 
+import nl.guno.ccollab.intellij.Environment.CVSNotAvailableException;
+import nl.guno.ccollab.intellij.Environment.CVSWrongVersionException;
+
 public class AddControlledFileAction extends IntelliCcollabAction {
 
     private static final Logger logger = Logger.getInstance(AddControlledFileAction.class.getName());
@@ -46,11 +49,17 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 	            return;
             }
 
-	        if (!new Environment().checkCVSExecutable()) {
-		        new Notification(project, MessageResources.message("action.error.cvsNotAvaliable.text"),
-				        MessageType.ERROR).showBalloon().addToEventLog();
-		        return;
-	        }
+            try {
+                new Environment().checkCVSExecutable();
+            } catch (CVSNotAvailableException e) {
+                new Notification(project, MessageResources.message("action.error.cvsNotAvaliable.text"),
+                        MessageType.ERROR).showBalloon().addToEventLog();
+                return;
+            } catch (CVSWrongVersionException e) {
+                new Notification(project, MessageResources.message("action.error.cvsWrongVersion.text"),
+                        MessageType.ERROR).showBalloon().addToEventLog();
+                return;
+            }
 
 	        if (engine == null) {
                 return;
