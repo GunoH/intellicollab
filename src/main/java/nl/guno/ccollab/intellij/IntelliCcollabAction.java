@@ -1,13 +1,5 @@
 package nl.guno.ccollab.intellij;
 
-import java.io.IOException;
-
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-
-import org.jetbrains.annotations.NotNull;
-
-import com.intellij.notification.NotificationListener;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.ShowSettingsUtil;
@@ -23,6 +15,10 @@ import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.collections.Pair;
 import nl.guno.ccollab.intellij.ui.Notification;
+
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import java.io.IOException;
 
 abstract class IntelliCcollabAction extends AnAction {
 
@@ -48,7 +44,7 @@ abstract class IntelliCcollabAction extends AnAction {
 
     static boolean init(final Project project) throws CollabClientException, IOException, InterruptedException {
 
-	    if (!Environment.checkConnection()) {
+	    if (!new Environment().checkConnection()) {
 		    new Notification(project, MessageResources.message("action.error.serverNotAvaliable.text"),
 				    MessageType.ERROR).showBalloon().addToEventLog();
 		    return false;
