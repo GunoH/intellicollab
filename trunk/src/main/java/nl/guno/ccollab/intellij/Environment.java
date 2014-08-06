@@ -1,12 +1,12 @@
 package nl.guno.ccollab.intellij;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.PumpStreamHandler;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class Environment {
 
@@ -20,10 +20,14 @@ public class Environment {
 		return exec("ping -n 1 " + HOST);
 	}
 
-    public boolean checkCVSExecutable() throws InterruptedException {
-        return exec("cvs -v")
-                && output.contains(REQUIRED_VERSION);
+    public void checkCVSExecutable() throws InterruptedException, CVSNotAvailableException, CVSWrongVersionException {
+        if (!exec("cvs -v")) {
+            throw new CVSNotAvailableException();
+        }
 
+        if (!output.contains(REQUIRED_VERSION)) {
+            throw new CVSWrongVersionException();
+        }
     }
 
     private boolean exec(String command) throws InterruptedException {
@@ -46,8 +50,17 @@ public class Environment {
 		}
 	}
 
-    public static void main(String[] args) throws InterruptedException {
-        Environment environment = new Environment();
-        System.out.println(environment.checkCVSExecutable());
+    public static void main(String[] args) throws InterruptedException, CVSNotAvailableException, CVSWrongVersionException {
+        try {
+            new Environment().checkCVSExecutable();
+            System.out.println("Correct version installed.");
+        } catch (CVSNotAvailableException e) {
+            System.err.println(MessageResources.message("action.error.cvsNotAvaliable.text"));
+        } catch (CVSWrongVersionException e) {
+            System.err.println(MessageResources.message("action.error.cvsWrongVersion.text"));
+        }
     }
+
+    public class CVSNotAvailableException extends Exception {}
+    public class CVSWrongVersionException extends Exception {}
 }

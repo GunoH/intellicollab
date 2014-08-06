@@ -11,6 +11,7 @@
     <depends>CVS</depends>
     <change-notes><![CDATA[
         <ul>
+            <li>v0.19: Added checl for correct CVS version.</li>
             <li>v0.18: Added checks for availability of server and CVS executable.</li>
             <li>v0.17: Merged the two serverUrl settings into one; A https url can now be used.</li>
             <li>v0.16: Improvements for errors and notifications, logon process, and file upload process (all changes are now flushed to disk prior to uploading).</li>
