@@ -12,7 +12,7 @@ public class Environment {
 
 	private static final int EXIT_STATUS_SUCCESS = 0;
 	private static final String HOST = "codecollaborator.quinity.net";
-    private static final String REQUIRED_VERSION = "1.11.20";
+    static final String REQUIRED_VERSION = "1.11.20";
 
     private String output;
 
@@ -55,9 +55,9 @@ public class Environment {
             new Environment().checkCVSExecutable();
             System.out.println("Correct version installed.");
         } catch (CVSNotAvailableException e) {
-            System.err.println(MessageResources.message("action.error.cvsNotAvaliable.text"));
+            System.err.println(MessageResources.message("action.error.cvsNotAvaliable.text", REQUIRED_VERSION));
         } catch (CVSWrongVersionException e) {
-            System.err.println(MessageResources.message("action.error.cvsWrongVersion.text"));
+            System.err.println(MessageResources.message("action.error.cvsWrongVersion.text", REQUIRED_VERSION));
         }
     }
 
