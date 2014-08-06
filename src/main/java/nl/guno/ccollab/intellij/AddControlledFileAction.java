@@ -52,11 +52,13 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             try {
                 new Environment().checkCVSExecutable();
             } catch (CVSNotAvailableException e) {
-                new Notification(project, MessageResources.message("action.error.cvsNotAvaliable.text"),
+                new Notification(project, MessageResources.message("action.error.cvsNotAvaliable.text",
+                        Environment.REQUIRED_VERSION),
                         MessageType.ERROR).showBalloon().addToEventLog();
                 return;
             } catch (CVSWrongVersionException e) {
-                new Notification(project, MessageResources.message("action.error.cvsWrongVersion.text"),
+                new Notification(project, MessageResources.message("action.error.cvsWrongVersion.text",
+                        Environment.REQUIRED_VERSION),
                         MessageType.ERROR).showBalloon().addToEventLog();
                 return;
             }
