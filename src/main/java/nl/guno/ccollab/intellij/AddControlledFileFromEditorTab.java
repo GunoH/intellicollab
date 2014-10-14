@@ -2,6 +2,8 @@ package nl.guno.ccollab.intellij;
 
 import java.io.File;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 public class AddControlledFileFromEditorTab extends AddControlledFileAction {
@@ -11,7 +13,7 @@ public class AddControlledFileFromEditorTab extends AddControlledFileAction {
         return PluginUtil.getCurrentFiles(event.getDataContext());
     }
 
-    public void update(AnActionEvent event) {
+    public void update(@NotNull AnActionEvent event) {
         // This action should always be enabled, because we know which file is selected.
     }
 }

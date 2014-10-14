@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.diagnostic.Logger;
@@ -26,7 +28,7 @@ public class CreateReviewAction extends IntelliCcollabAction {
 
 
 	@Override
-	public void actionPerformed(AnActionEvent event) {
+	public void actionPerformed(@NotNull AnActionEvent event) {
 		Project project = event.getData(LangDataKeys.PROJECT);
 		invoke(project);
 	}
@@ -58,12 +60,11 @@ public class CreateReviewAction extends IntelliCcollabAction {
 			FetchMetadataTask fetchMetadataTask = new FetchMetadataTask(project, user);
 			fetchMetadataTask.queue();
 
-			CreateReviewDialog createReviewDialog = new CreateReviewDialog(fetchMetadataTask, users, groups, user);
+			CreateReviewDialog createReviewDialog = new CreateReviewDialog(fetchMetadataTask, users, groups, user, project);
 			createReviewDialog.pack();
-			createReviewDialog.setMinimumSize(createReviewDialog.getSize());
-			createReviewDialog.setVisible(true);
+			createReviewDialog.show();
 
-			if (!createReviewDialog.isOkPressed()) {
+			if (CreateReviewDialog.OK_EXIT_CODE != createReviewDialog.getExitCode()) {
 				logger.debug("User pressed cancel.");
 				return;
 			}

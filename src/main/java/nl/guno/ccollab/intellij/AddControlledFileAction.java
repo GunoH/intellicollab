@@ -28,6 +28,7 @@ import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.scm.ScmConfigurationException;
+import nl.guno.ccollab.intellij.ui.CreateReviewDialog;
 import nl.guno.ccollab.intellij.ui.FileAndReviewSelector;
 import nl.guno.ccollab.intellij.ui.Notification;
 
@@ -40,7 +41,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
     private Project project;
 
     @Override
-    public void actionPerformed(AnActionEvent event) {
+    public void actionPerformed(@NotNull AnActionEvent event) {
 
         try {
 			project = event.getData(LangDataKeys.PROJECT);
@@ -111,11 +112,11 @@ public class AddControlledFileAction extends IntelliCcollabAction {
                 return;
             }
 
-            FileAndReviewSelector fileAndReviewSelector = new FileAndReviewSelector(fileList, reviews);
+            FileAndReviewSelector fileAndReviewSelector = new FileAndReviewSelector(fileList, reviews, project);
             fileAndReviewSelector.pack();
-            fileAndReviewSelector.setVisible(true);
+            fileAndReviewSelector.show();
 
-            if (!fileAndReviewSelector.isOkPressed()) {
+            if (CreateReviewDialog.OK_EXIT_CODE != fileAndReviewSelector.getExitCode()) {
                 logger.debug("User pressed cancel.");
                 return;
             }
@@ -187,7 +188,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
         addToReviewTask.queue();
     }
 
-    public void update(AnActionEvent event) {
+    public void update(@NotNull AnActionEvent event) {
 		project = event.getData(LangDataKeys.PROJECT);
         Change[] changes = event.getData(VcsDataKeys.CHANGES);
 
