@@ -53,6 +53,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
 
         // Sort the list of reviews in descending order of last activity date.
         Collections.sort(this.reviewList, new Comparator<Review>() {
+            @Override
             public int compare(Review r1, Review r2) {
                 return r2.getCreationDate().compareTo(r1.getCreationDate());
             }
@@ -111,6 +112,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
         return new JCheckBox(FileUtil.toSystemDependentName(file.getPath()), checked);
     }
 
+    @Override
     public void checkBoxSelectionChanged(int index, boolean value) {
         final Pair<File, Boolean> pair = workingFileList.remove(index);
         workingFileList.add(index, Pair.create(pair.first, value));

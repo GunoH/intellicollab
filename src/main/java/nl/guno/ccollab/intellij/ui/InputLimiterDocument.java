@@ -15,6 +15,7 @@ class InputLimiterDocument extends PlainDocument {
         this.limit = limit;
     }
 
+    @Override
     public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
         if (str == null) {
             return;

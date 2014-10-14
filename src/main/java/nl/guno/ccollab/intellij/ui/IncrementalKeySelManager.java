@@ -10,6 +10,7 @@ abstract class IncrementalKeySelManager implements JComboBox.KeySelectionManager
     private long lastKeyPressTime = new Date().getTime();
     private StringBuffer searchString = new StringBuffer("");
  
+    @Override
     public int selectionForKey(char aKey, ComboBoxModel aModel) {
         try {
             long actKeyPressTime = new Date().getTime();

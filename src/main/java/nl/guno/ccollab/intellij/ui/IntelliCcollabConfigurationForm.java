@@ -38,6 +38,7 @@ public class IntelliCcollabConfigurationForm {
 
     public IntelliCcollabConfigurationForm() {
         autofillButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     autofill();
