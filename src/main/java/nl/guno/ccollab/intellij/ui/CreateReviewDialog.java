@@ -1,11 +1,6 @@
 package nl.guno.ccollab.intellij.ui;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,20 +8,22 @@ import java.util.List;
 
 import javax.swing.*;
 
-import com.intellij.openapi.ui.ComboBox;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.ComboBox;
+import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.ValidationInfo;
+import com.intellij.ui.ListCellRendererWrapper;
 import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.IDropDownItem;
-import com.smartbear.ccollab.datamodel.MetaDataSelectItem;
 import com.smartbear.ccollab.datamodel.ReviewAccess;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.ccollab.intellij.FetchMetadataTask;
 import nl.guno.ccollab.intellij.MessageResources;
 
-public class CreateReviewDialog extends JDialog {
-    private JButton buttonOK;
-    private JButton buttonCancel;
+public class CreateReviewDialog extends DialogWrapper {
     private JComboBox authorComboBox;
     private JComboBox reviewerComboBox;
     private JComboBox observerComboBox;
@@ -40,7 +37,6 @@ public class CreateReviewDialog extends JDialog {
     private JTextField foTextField;
     private JTextField toTextField;
     private JPanel contentPane;
-    private JPanel buttonPane;
     private JPanel authorPane;
     private JPanel reviewerPane;
     private JPanel titlePane;
@@ -61,23 +57,6 @@ public class CreateReviewDialog extends JDialog {
     private JTextArea rnTOTextArea;
     private JTextArea rnMigratiePadTextArea;
 
-    /**
-     * De default achtergrondkleur van een combobox; deze bewaren we zodat we na het tonen van een eventuele foutmelding de
-     * achtergrondkleur kunnen restoren.
-     */
-    private Color defaultComboboxBackground;
-
-    /**
-     * De default achtergrondkleur van een textfield; deze bewaren we zodat we na het tonen van een eventuele foutmelding de
-     * achtergrondkleur kunnen restoren.
-     */
-    private Color defaultTextFieldBackground;
-
-    /**
-     * De achtergrondkleur voor niet-validerende velden.
-     */
-    private final Color highlightBackground = Color.yellow;
-    
     private DefaultComboBoxModel reviewerComboBoxModel;
     private DefaultComboBoxModel authorComboBoxModel;
     private DefaultComboBoxModel observerComboBoxModel;
@@ -99,11 +78,6 @@ public class CreateReviewDialog extends JDialog {
      * Lijst met groepen waar uit gekozen kan worden in de userinterface.
      */
     private final List<GroupDescription> groupList;
-
-    /**
-     * Geeft aan of de gebruiker op de OK knop heeft gedrukt of niet.
-     */
-    private boolean okPressed;
 
     /** Maximale lengte van het 'Overview' veld. */
     private static final int MAXLENGTH_OVERVIEW = 4000;
@@ -129,10 +103,15 @@ public class CreateReviewDialog extends JDialog {
     /** Maximale lengte van het 'Release notes: Migratiepad' veld. */
     private static final int MAXLENGTH_RNMIGRATIEPAD = 4000;
 
-    public CreateReviewDialog(FetchMetadataTask fetchMetadataTask, User[] userList, List<GroupDescription> groupList, User currentUser) {
+    public CreateReviewDialog(FetchMetadataTask fetchMetadataTask, User[] userList, List<GroupDescription> groupList,
+                              User currentUser, Project project) {
+
+        super(project);
+
+        init();
 
         IDropDownItem[] bugzillaInstantieList = fetchMetadataTask.getBugzillaInstantie().getDropDownItems(true);
-        
+
         this.userList = new ArrayList<User>();
         this.userList.addAll(Arrays.asList(userList));
 
@@ -148,42 +127,14 @@ public class CreateReviewDialog extends JDialog {
         prepareUI(fetchMetadataTask);
     }
 
+    @Nullable
+    @Override
+    protected JComponent createCenterPanel() {
+        return contentPane;
+    }
+
     private void prepareUI(FetchMetadataTask fetchMetadataTask) {
         setTitle(MessageResources.message("dialog.createReview.title"));
-        setContentPane(contentPane);
-        setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
-
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
-
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
-        UIDefaults defaults = UIManager.getDefaults();
-        defaultComboboxBackground = defaults.getColor("Combobox.background");
-        defaultTextFieldBackground = defaults.getColor("TextField.background");
 
         // Set tooltip texts
         setToolTipText(overviewTextArea, fetchMetadataTask.getOverview().getDescription());
@@ -205,7 +156,11 @@ public class CreateReviewDialog extends JDialog {
         rnTOTextArea.setDocument(new InputLimiterDocument(MAXLENGTH_RNTO));
         rnMigratiePadTextArea.setDocument(new InputLimiterDocument(MAXLENGTH_RNMIGRATIEPAD));
 
-        // Make sure tab and shift-tab move the focus instead of inserting tab characters.
+        setTabBehaviorOnTextAreas();
+    }
+
+    /** Makes sure tab and shift-tab move the focus instead of inserting tab characters. */
+    private void setTabBehaviorOnTextAreas() {
         overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
                 new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
         overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
@@ -222,7 +177,6 @@ public class CreateReviewDialog extends JDialog {
                 new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
                 new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
-
     }
 
     private void setToolTipText(JComponent component, String text) {
@@ -236,66 +190,36 @@ public class CreateReviewDialog extends JDialog {
 
         authorComboBoxModel = new DefaultComboBoxModel();
         authorComboBox = new ComboBox(authorComboBoxModel);
-        authorComboBox.setRenderer(new UserComboboxRenderer());
-        authorComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
-            @Override
-            protected String getDisplayedText(Object object) {
-                return ((User)object).getDisplayName().toUpperCase();
-            }
-        });
+        authorComboBox.setRenderer(new MyListCellRenderer());
+        authorComboBox.setKeySelectionManager(new MyKeySelManager());
 
         reviewerComboBoxModel = new DefaultComboBoxModel();
         reviewerComboBox = new ComboBox(reviewerComboBoxModel);
-        reviewerComboBox.setRenderer(new UserComboboxRenderer());
-        reviewerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
-            @Override
-            protected String getDisplayedText(Object object) {
-                return ((User)object).getDisplayName().toUpperCase();
-            }
-        });
+        reviewerComboBox.setRenderer(new MyListCellRenderer());
+        reviewerComboBox.setKeySelectionManager(new MyKeySelManager());
 
         observerComboBoxModel = new DefaultComboBoxModel();
         observerComboBox = new ComboBox(observerComboBoxModel);
-        observerComboBox.setRenderer(new UserComboboxRenderer());
-        observerComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
-            @Override
-            protected String getDisplayedText(Object object) {
-                return ((User)object).getDisplayName().toUpperCase();
-            }
-        });
+        observerComboBox.setRenderer(new MyListCellRenderer());
+        observerComboBox.setKeySelectionManager(new MyKeySelManager());
 
         groupComboBoxModel = new DefaultComboBoxModel();
         groupComboBox = new ComboBox(groupComboBoxModel);
-        groupComboBox.setRenderer(new GroupDescriptionRenderer());
-        groupComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
-            @Override
-            protected String getDisplayedText(Object object) {
-                return ((GroupDescription)object).getDisplayName().toUpperCase();
-            }
-        });
+        groupComboBox.setRenderer(new MyListCellRenderer());
+        groupComboBox.setKeySelectionManager(new MyKeySelManager());
 
         bugzillaInstantieComboBoxModel = new DefaultComboBoxModel();
         bugzillaInstantieComboBox = new ComboBox(bugzillaInstantieComboBoxModel);
-        bugzillaInstantieComboBox.setRenderer(new IDropDownItemComboboxRenderer());
-        bugzillaInstantieComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
-            @Override
-            protected String getDisplayedText(Object object) {
-                return ((MetaDataSelectItem)object).getDisplayName().toUpperCase();
-            }
-        });
+        bugzillaInstantieComboBox.setRenderer(new MyListCellRenderer());
+        bugzillaInstantieComboBox.setKeySelectionManager(new MyKeySelManager());
 
         reviewAccessComboBoxModel = new DefaultComboBoxModel();
         reviewAccessComboBox = new ComboBox(reviewAccessComboBoxModel);
-        reviewAccessComboBox.setRenderer(new ReviewAccessComboboxRenderer());
-        reviewAccessComboBox.setKeySelectionManager(new IncrementalKeySelManager() {
-            @Override
-            protected String getDisplayedText(Object object) {
-                return ((ReviewAccess)object).getDisplayName().toUpperCase();
-            }
-        });
+        reviewAccessComboBox.setRenderer(new MyListCellRenderer());
+        reviewAccessComboBox.setKeySelectionManager(new MyKeySelManager());
     }
 
-    void update() {
+    private void update() {
 
         authorComboBoxModel.removeAllElements();
         reviewerComboBoxModel.removeAllElements();
@@ -327,68 +251,27 @@ public class CreateReviewDialog extends JDialog {
         reviewAccessComboBoxModel.addElement(ReviewAccess.PARTICIPANTS);
     }
 
-    private boolean validateUserInput() {
-        boolean result = true;
-        if (groupComboBoxModel.getSelectedItem() == null) {
-            
-            groupComboBox.setBackground(highlightBackground);
+    @Nullable
+    @Override
+    protected ValidationInfo doValidate() {
 
-            if (result) {
-                // This is the first error, so set focus to this field.
-                groupComboBox.grabFocus();
-            }
-            result = false;
-        } else {
-            groupComboBox.setBackground(defaultComboboxBackground);
+        if (groupComboBoxModel.getSelectedItem() == null) {
+            return new ValidationInfo("Field is mandatory", groupComboBox);
         }
 
         if (StringUtils.isEmpty(titleTextField.getText())) {
-            titleTextField.setBackground(highlightBackground);
-            if (result) {
-                // This is the first error, so set focus to this field.
-                titleTextField.grabFocus();
-            }
-            result = false;
-        } else {
-            titleTextField.setBackground(defaultTextFieldBackground);
+            return new ValidationInfo("Field is mandatory", titleTextField);
         }
 
         if (authorComboBoxModel.getSelectedItem() == null) {
-            authorComboBox.setBackground(highlightBackground);
-            if (result) {
-                // This is the first error, so set focus to this field.
-                authorComboBox.grabFocus();
-            }
-            result = false;
-        } else {
-            authorComboBox.setBackground(defaultComboboxBackground);
+            return new ValidationInfo("Field is mandatory", authorComboBox);
         }
 
         if (reviewerComboBoxModel.getSelectedItem() == null) {
-            reviewerComboBox.setBackground(highlightBackground);
-            if (result) {
-                // This is the first error, so set focus to this field.
-                reviewerComboBox.grabFocus();
-            }
-            result = false;
-        } else {
-            reviewerComboBox.setBackground(defaultComboboxBackground);
+            return new ValidationInfo("Field is mandatory", reviewerComboBox);
         }
 
-        return result;
-    }
-
-    private void onOK() {
-        if (!validateUserInput()) {
-            return;
-        }
-
-        okPressed = true;
-        dispose();
-    }
-
-    private void onCancel() {
-        dispose();
+        return null;
     }
 
     public GroupDescription getSelectedGroup() {
@@ -444,82 +327,17 @@ public class CreateReviewDialog extends JDialog {
     }
 
     public boolean isUploadRestricted() {
-        return "yes".equalsIgnoreCase((String)restrictUploadsToReviewComboBox.getSelectedItem());
+        return "yes".equalsIgnoreCase((String) restrictUploadsToReviewComboBox.getSelectedItem());
     }
 
     public ReviewAccess getReviewAccess() {
         return (ReviewAccess) reviewAccessComboBoxModel.getSelectedItem();
     }
 
-    public boolean isOkPressed() {
-        return okPressed;
-    }
+    private class MyListCellRenderer extends ListCellRendererWrapper<IDropDownItem> {
 
-    class UserComboboxRenderer extends JLabel implements ListCellRenderer {
-
-        public UserComboboxRenderer() {
-            setOpaque(true);
-        }
-
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, 
-                                                      boolean cellHasFocus) {
-
-            User user = (User) value;
-            
-            if (isSelected) {
-                setBackground(Color.BLUE);
-            } else {
-                setBackground(list.getBackground());
-            }
-
-            String name = "";
-            if (user != null) {
-                name = user.getDisplayName();
-            }
-            setText(name);
-
-            return this;
-        }
-    }
-
-    class ReviewAccessComboboxRenderer extends JLabel implements ListCellRenderer {
-
-        public ReviewAccessComboboxRenderer() {
-            setOpaque(true);
-        }
-
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, 
-                                                      boolean cellHasFocus) {
-            
-            ReviewAccess reviewAccess = (ReviewAccess) value;
-            
-            if (isSelected) {
-                setBackground(Color.BLUE);
-            } else {
-                setBackground(list.getBackground());
-            }
-
-            String name = "";
-            if (reviewAccess != null) {
-                name = reviewAccess.getDisplayName();
-            }
-            setText(name);
-
-            return this;
-        }
-    }
-
-    class IDropDownItemComboboxRenderer extends JLabel implements ListCellRenderer {
-
-        public IDropDownItemComboboxRenderer() {
-            setOpaque(true);
-        }
-
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, 
-                                                      boolean cellHasFocus) {
-            
-            IDropDownItem item = (IDropDownItem) value;
-
+        @Override
+        public void customize(JList list, IDropDownItem item, int index, boolean isSelected, boolean hasFocus) {
             if (isSelected) {
                 setBackground(Color.BLUE);
             } else {
@@ -531,36 +349,14 @@ public class CreateReviewDialog extends JDialog {
                 name = item.getDisplayName();
             }
             setText(name);
-
-            return this;
         }
     }
 
-    class GroupDescriptionRenderer extends JLabel implements ListCellRenderer {
-
-        public GroupDescriptionRenderer() {
-            setOpaque(true);
+    private class MyKeySelManager extends IncrementalKeySelManager {
+        @Override
+        protected String getDisplayedText(Object object) {
+            return ((IDropDownItem)object).getDisplayName().toUpperCase();
         }
-
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, 
-                                                      boolean cellHasFocus) {
-            
-            GroupDescription groupDescription = (GroupDescription) value;
-
-            if (isSelected) {
-                setBackground(Color.BLUE);
-            } else {
-                setBackground(list.getBackground());
-            }
-
-            String name = "";
-            if (groupDescription != null) {
-                name = groupDescription.getDisplayName();
-            }
-            setText(name);
-
-            return this;
-        }
-
     }
+
 }
