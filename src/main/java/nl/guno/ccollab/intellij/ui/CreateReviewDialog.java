@@ -57,12 +57,12 @@ public class CreateReviewDialog extends DialogWrapper {
     private JTextArea rnTOTextArea;
     private JTextArea rnMigratiePadTextArea;
 
-    private DefaultComboBoxModel reviewerComboBoxModel;
-    private DefaultComboBoxModel authorComboBoxModel;
-    private DefaultComboBoxModel observerComboBoxModel;
-    private DefaultComboBoxModel groupComboBoxModel;
-    private DefaultComboBoxModel bugzillaInstantieComboBoxModel;
-    private DefaultComboBoxModel reviewAccessComboBoxModel;
+    private DefaultComboBoxModel<User> reviewerComboBoxModel;
+    private DefaultComboBoxModel<User> authorComboBoxModel;
+    private DefaultComboBoxModel<User> observerComboBoxModel;
+    private DefaultComboBoxModel<GroupDescription> groupComboBoxModel;
+    private DefaultComboBoxModel<IDropDownItem> bugzillaInstantieComboBoxModel;
+    private DefaultComboBoxModel<ReviewAccess> reviewAccessComboBoxModel;
 
     /**
      * Lijst met gebruikers waar uit gekozen kan worden in de userinterface.
@@ -185,37 +185,36 @@ public class CreateReviewDialog extends DialogWrapper {
         }
     }
 
-    @SuppressWarnings({"BoundFieldAssignment"})
     private void createUIComponents() {
 
-        authorComboBoxModel = new DefaultComboBoxModel();
+        authorComboBoxModel = new DefaultComboBoxModel<User>();
         authorComboBox = new ComboBox(authorComboBoxModel);
-        authorComboBox.setRenderer(new MyListCellRenderer());
+        authorComboBox.setRenderer(new MyListCellRenderer<User>());
         authorComboBox.setKeySelectionManager(new MyKeySelManager());
 
-        reviewerComboBoxModel = new DefaultComboBoxModel();
+        reviewerComboBoxModel = new DefaultComboBoxModel<User>();
         reviewerComboBox = new ComboBox(reviewerComboBoxModel);
-        reviewerComboBox.setRenderer(new MyListCellRenderer());
+        reviewerComboBox.setRenderer(new MyListCellRenderer<User>());
         reviewerComboBox.setKeySelectionManager(new MyKeySelManager());
 
-        observerComboBoxModel = new DefaultComboBoxModel();
+        observerComboBoxModel = new DefaultComboBoxModel<User>();
         observerComboBox = new ComboBox(observerComboBoxModel);
-        observerComboBox.setRenderer(new MyListCellRenderer());
+        observerComboBox.setRenderer(new MyListCellRenderer<User>());
         observerComboBox.setKeySelectionManager(new MyKeySelManager());
 
-        groupComboBoxModel = new DefaultComboBoxModel();
+        groupComboBoxModel = new DefaultComboBoxModel<GroupDescription>();
         groupComboBox = new ComboBox(groupComboBoxModel);
-        groupComboBox.setRenderer(new MyListCellRenderer());
+        groupComboBox.setRenderer(new MyListCellRenderer<GroupDescription>());
         groupComboBox.setKeySelectionManager(new MyKeySelManager());
 
-        bugzillaInstantieComboBoxModel = new DefaultComboBoxModel();
+        bugzillaInstantieComboBoxModel = new DefaultComboBoxModel<IDropDownItem>();
         bugzillaInstantieComboBox = new ComboBox(bugzillaInstantieComboBoxModel);
-        bugzillaInstantieComboBox.setRenderer(new MyListCellRenderer());
+        bugzillaInstantieComboBox.setRenderer(new MyListCellRenderer<IDropDownItem>());
         bugzillaInstantieComboBox.setKeySelectionManager(new MyKeySelManager());
 
-        reviewAccessComboBoxModel = new DefaultComboBoxModel();
+        reviewAccessComboBoxModel = new DefaultComboBoxModel<ReviewAccess>();
         reviewAccessComboBox = new ComboBox(reviewAccessComboBoxModel);
-        reviewAccessComboBox.setRenderer(new MyListCellRenderer());
+        reviewAccessComboBox.setRenderer(new MyListCellRenderer<ReviewAccess>());
         reviewAccessComboBox.setKeySelectionManager(new MyKeySelManager());
     }
 
@@ -334,11 +333,12 @@ public class CreateReviewDialog extends DialogWrapper {
         return (ReviewAccess) reviewAccessComboBoxModel.getSelectedItem();
     }
 
-    private class MyListCellRenderer extends ListCellRendererWrapper<IDropDownItem> {
+    private class MyListCellRenderer<T extends IDropDownItem> extends ListCellRendererWrapper<T> {
 
         @Override
-        public void customize(JList list, IDropDownItem item, int index, boolean isSelected, boolean hasFocus) {
+        public void customize(JList list, T item, int index, boolean isSelected, boolean hasFocus) {
             if (isSelected) {
+                //noinspection UseJBColor
                 setBackground(Color.BLUE);
             } else {
                 setBackground(list.getBackground());

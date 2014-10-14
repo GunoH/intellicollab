@@ -15,6 +15,7 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizable;
 import com.intellij.openapi.util.WriteExternalException;
 import nl.guno.ccollab.intellij.ui.IntelliCcollabConfigurationForm;
+import org.jetbrains.annotations.Nullable;
 
 public class IntelliCcollabApplicationComponent implements ApplicationComponent, Configurable, JDOMExternalizable {
     private IntelliCcollabConfigurationForm form;
@@ -38,14 +39,14 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
     @Override
     @NotNull
     public String getComponentName() {
-        return "IntelliCcollabApplicationComponent";
+        return getClass().getSimpleName();
     }
 
     public String getServerURL() {
         return serverURL;
     }
 
-    public void setServerURL(String serverURL) {
+    public void setServerURL(@Nullable String serverURL) {
         this.serverURL = serverURL;
     }
 

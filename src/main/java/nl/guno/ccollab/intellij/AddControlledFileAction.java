@@ -46,6 +46,11 @@ public class AddControlledFileAction extends IntelliCcollabAction {
         try {
 			project = event.getData(LangDataKeys.PROJECT);
 
+            if (project == null) {
+                logger.error("project is null", new Throwable());
+                return;
+            }
+
             if (!init(project)) {
 	            return;
             }
@@ -184,6 +189,11 @@ public class AddControlledFileAction extends IntelliCcollabAction {
     private void attachControlledFiles(AnActionEvent event, final Review review, final File... files) {
 
 		project = event.getData(LangDataKeys.PROJECT);
+
+        if (project == null) {
+            logger.error("project is null", new Throwable());
+            return;
+        }
 
         AddToReviewTask addToReviewTask = new AddToReviewTask(project, review, user, files);
         addToReviewTask.queue();
