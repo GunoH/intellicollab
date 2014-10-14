@@ -27,12 +27,15 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
     public String username;
     public String password;
 
+    @Override
     public void initComponent() {
     }
 
+    @Override
     public void disposeComponent() {
     }
 
+    @Override
     @NotNull
     public String getComponentName() {
         return "IntelliCcollabApplicationComponent";
@@ -78,14 +81,17 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
         this.password = password;
     }
 
+    @Override
     public String getDisplayName() {
         return "IntelliCcollab";
     }
 
+    @Override
     public String getHelpTopic() {
         return null;
     }
 
+    @Override
     public JComponent createComponent() {
         if (form == null) {
             form = new IntelliCcollabConfigurationForm();
@@ -93,10 +99,12 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
         return form.getRootComponent();
     }
 
+    @Override
     public boolean isModified() {
         return form != null && form.isModified(this);
     }
 
+    @Override
     public void apply() throws ConfigurationException {
         if (form != null) {
             try {
@@ -107,20 +115,24 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
         }
     }
 
+    @Override
     public void reset() {
         if (form != null) {
             form.setData(this);
         }
     }
 
+    @Override
     public void disposeUIResources() {
         form = null;
     }
 
+    @Override
     public void readExternal(Element element) throws InvalidDataException {
         DefaultJDOMExternalizer.readExternal(this, element);
     }
 
+    @Override
     public void writeExternal(Element element) throws WriteExternalException {
         DefaultJDOMExternalizer.writeExternal(this, element);
     }

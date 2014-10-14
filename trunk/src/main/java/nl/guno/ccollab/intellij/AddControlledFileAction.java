@@ -70,6 +70,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 
             // Save all changes to disk.
             ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                @Override
                 public void run() {
                     FileDocumentManager.getInstance().saveAllDocuments();
                 }
@@ -188,6 +189,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
         addToReviewTask.queue();
     }
 
+    @Override
     public void update(@NotNull AnActionEvent event) {
 		project = event.getData(LangDataKeys.PROJECT);
         Change[] changes = event.getData(VcsDataKeys.CHANGES);
