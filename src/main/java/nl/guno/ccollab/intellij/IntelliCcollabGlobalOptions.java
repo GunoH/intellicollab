@@ -30,6 +30,7 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
                 || StringUtils.isEmpty(component.getPassword());
     }
 
+    @Override
     public URL getUrl() {
         try {
             return new URL(component.getServerURL());
@@ -38,50 +39,62 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
         }
     }
 
+    @Override
     public String getServerProxyHost() {
         return component.getServerProxyHost();
     }
 
+    @Override
     public String getServerProxyPort() {
         return component.getServerProxyPort();
     }
 
+    @Override
     public String getUser() {
         return component.getUsername();
     }
 
+    @Override
     public String getPassword() {
         return component.getPassword();
     }
 
+    @Override
     public Boolean isNoBrowser() {
         return wrappedOptions.isNoBrowser();
     }
 
+    @Override
     public Boolean isNonInteractive() {
         return wrappedOptions.isNonInteractive();
     }
 
+    @Override
     public Boolean isQuiet() {
         return wrappedOptions.isQuiet();
     }
 
+    @Override
     public String getEditor() {
         return wrappedOptions.getEditor();
     }
 
+    @Override
     public Boolean isEditorPrompt() {
         return wrappedOptions.isEditorPrompt();
     }
 
+    @Override
     public Boolean isPauseOnError() {
         return wrappedOptions.isPauseOnError();
     }
 
+    @Override
     public String getBrowser() {
         return wrappedOptions.getBrowser();
     }
 
+    @Override
     public Boolean isForceNewBrowser() {
         return wrappedOptions.isForceNewBrowser();
     }
