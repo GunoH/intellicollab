@@ -34,10 +34,10 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
 
     private final List<Pair<File, Boolean>> initialFileList;
     private List<Pair<File, Boolean>> workingFileList;
-    private DefaultListModel fileListModel;
+    private DefaultListModel<JCheckBox> fileListModel;
 
     private final List<Review> reviewList;
-    private DefaultComboBoxModel reviewComboBoxModel;
+    private DefaultComboBoxModel<Review> reviewComboBoxModel;
 
     public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, @NotNull Review[] reviewList, Project project) {
 
@@ -71,16 +71,17 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
     }
 
     private void createUIComponents() {
-        fileListModel = new DefaultListModel();
+        fileListModel = new DefaultListModel<JCheckBox>();
         fileCheckBoxList = new CheckBoxList(fileListModel, this);
 
-        reviewComboBoxModel = new DefaultComboBoxModel();
+        reviewComboBoxModel = new DefaultComboBoxModel<Review>();
         reviewComboBox = new ComboBox(reviewComboBoxModel);
         reviewComboBox.setRenderer(new ListCellRendererWrapper<Review>() {
             @Override
             public void customize(JList list, Review review, int index, boolean isSelected, boolean hasFocus) {
 
                 if (isSelected) {
+                    //noinspection UseJBColor
                     setBackground(Color.BLUE);
                 } else {
                     setBackground(list.getBackground());

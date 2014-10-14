@@ -30,6 +30,11 @@ public class CreateReviewAction extends IntelliCcollabAction {
 	@Override
 	public void actionPerformed(@NotNull AnActionEvent event) {
 		Project project = event.getData(LangDataKeys.PROJECT);
+		if (project == null) {
+			logger.error("project is null", new Throwable());
+			return;
+		}
+
 		invoke(project);
 	}
 
