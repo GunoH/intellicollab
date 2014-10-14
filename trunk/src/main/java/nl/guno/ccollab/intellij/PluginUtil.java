@@ -1,6 +1,8 @@
 package nl.guno.ccollab.intellij;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.intellij.cvsSupport2.actions.cvsContext.CvsContextWrapper;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -10,18 +12,24 @@ import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.jetbrains.annotations.Nullable;
 
 final class PluginUtil {
 
     private PluginUtil() {
     }
 
-	private static VirtualFile[] getCurrentVirtualFiles(DataContext dataContext) {
+	@Nullable
+    private static VirtualFile[] getCurrentVirtualFiles(DataContext dataContext) {
         return DataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
     }
 
     public static File[] getCurrentFiles(DataContext dataContext) {
         VirtualFile[] virtualFiles = getCurrentVirtualFiles(dataContext);
+
+        if (virtualFiles == null) {
+            return new File[0];
+        }
 
         File[] files = new File[virtualFiles.length];
         for (int i = 0; i < virtualFiles.length; i++) {
@@ -32,22 +40,27 @@ final class PluginUtil {
 
     public static File[] getSelectedFiles(AnActionEvent actionEvent) {
         Change[] changes = CvsContextWrapper.createInstance(actionEvent).getSelectedChanges();
+        if (changes == null) {
+            return new File[0];
+        }
 
-        File[] files = new File[changes.length];
+        List<File> files = new ArrayList<File>();
 
-        for (int i = 0; i < changes.length; i++) {
-            Change.Type changeType = changes[i].getType();
+        for (Change change : changes) {
+            Change.Type changeType = change.getType();
             ContentRevision revision;
             if (changeType == Change.Type.DELETED) {
                 // The file was deleted, so we use the revision that was active before the deletion.
-                revision = changes[i].getBeforeRevision();
+                revision = change.getBeforeRevision();
             } else {
                 // In all other cases, we use the new revision.
-                revision = changes[i].getAfterRevision();
+                revision = change.getAfterRevision();
             }
-            files[i] = revision.getFile().getIOFile();
+            if (revision != null) {
+                files.add(revision.getFile().getIOFile());
+            }
         }
 
-        return files;
+        return files.toArray(new File[files.size()]);
     }
 }

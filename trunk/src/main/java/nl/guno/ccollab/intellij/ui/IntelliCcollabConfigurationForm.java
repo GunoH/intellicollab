@@ -118,9 +118,6 @@ public class IntelliCcollabConfigurationForm {
         if (data.getServerURL() == null) {
             return urlField.getText() != null;
         }
-        if (data.getServerURL() == null) {
-            return urlField.getText() != null;
-        }
         if (data.getServerProxyHost() == null) {
             return proxyHostField.getText() != null;
         }

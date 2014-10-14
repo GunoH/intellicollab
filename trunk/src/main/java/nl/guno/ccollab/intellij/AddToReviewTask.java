@@ -97,7 +97,13 @@ class AddToReviewTask extends Task.Backgroundable {
                 clientConfig = ScmUtils.requireScm(file, AddControlledFileAction.scmOptions, NullAskUser.INSTANCE, 
                         new NullProgressMonitor(), ScmUtils.SCMS);
                 scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
-                changeset.addLocalCheckout(scmFile, true, new NullProgressMonitor());
+                if (scmFile != null) {
+                    changeset.addLocalCheckout(scmFile, true, new NullProgressMonitor());
+                }
+            }
+
+            if (scmFile == null) {
+                return;
             }
 
             progressIndicator.checkCanceled();
@@ -140,7 +146,6 @@ class AddToReviewTask extends Task.Backgroundable {
             logger.warn(e);
             errorMessage = MessageResources.message("task.addFilesToReview.ioErrorOccurred.text");
         }
-
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.apache.commons.exec.PumpStreamHandler;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class Environment {
+class Environment {
 
 	private static final int EXIT_STATUS_SUCCESS = 0;
 	private static final String HOST = "codecollaborator.quinity.net";
@@ -30,7 +30,7 @@ public class Environment {
         }
     }
 
-    private boolean exec(String command) throws InterruptedException {
+    private boolean exec(String command) {
         output = null;
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

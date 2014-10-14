@@ -45,7 +45,7 @@ import com.smartbear.scm.impl.subversion.SubversionSystem;
  * <p/>
  * For full documentation, refer to:  http://smartbear.com/docs/javadocs/
  */
-@SuppressWarnings({"UseOfSystemOutOrSystemErr"})
+@SuppressWarnings("ALL")
 public class Examples {
 
     /**
