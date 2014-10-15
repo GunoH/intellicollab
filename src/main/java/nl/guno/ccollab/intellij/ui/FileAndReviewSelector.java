@@ -34,10 +34,10 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
 
     private final List<Pair<File, Boolean>> initialFileList;
     private List<Pair<File, Boolean>> workingFileList;
-    private DefaultListModel<JCheckBox> fileListModel;
+    private DefaultListModel fileListModel;
 
     private final List<Review> reviewList;
-    private DefaultComboBoxModel<Review> reviewComboBoxModel;
+    private DefaultComboBoxModel reviewComboBoxModel;
 
     public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, @NotNull Review[] reviewList, Project project) {
 
@@ -71,10 +71,10 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
     }
 
     private void createUIComponents() {
-        fileListModel = new DefaultListModel<JCheckBox>();
+        fileListModel = new DefaultListModel();
         fileCheckBoxList = new CheckBoxList(fileListModel, this);
 
-        reviewComboBoxModel = new DefaultComboBoxModel<Review>();
+        reviewComboBoxModel = new DefaultComboBoxModel();
         reviewComboBox = new ComboBox(reviewComboBoxModel);
         reviewComboBox.setRenderer(new ListCellRendererWrapper<Review>() {
             @Override

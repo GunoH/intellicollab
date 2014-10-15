@@ -57,12 +57,12 @@ public class CreateReviewDialog extends DialogWrapper {
     private JTextArea rnTOTextArea;
     private JTextArea rnMigratiePadTextArea;
 
-    private DefaultComboBoxModel<User> reviewerComboBoxModel;
-    private DefaultComboBoxModel<User> authorComboBoxModel;
-    private DefaultComboBoxModel<User> observerComboBoxModel;
-    private DefaultComboBoxModel<GroupDescription> groupComboBoxModel;
-    private DefaultComboBoxModel<IDropDownItem> bugzillaInstantieComboBoxModel;
-    private DefaultComboBoxModel<ReviewAccess> reviewAccessComboBoxModel;
+    private DefaultComboBoxModel reviewerComboBoxModel;
+    private DefaultComboBoxModel authorComboBoxModel;
+    private DefaultComboBoxModel observerComboBoxModel;
+    private DefaultComboBoxModel groupComboBoxModel;
+    private DefaultComboBoxModel bugzillaInstantieComboBoxModel;
+    private DefaultComboBoxModel reviewAccessComboBoxModel;
 
     /**
      * Lijst met gebruikers waar uit gekozen kan worden in de userinterface.
@@ -187,32 +187,32 @@ public class CreateReviewDialog extends DialogWrapper {
 
     private void createUIComponents() {
 
-        authorComboBoxModel = new DefaultComboBoxModel<User>();
+        authorComboBoxModel = new DefaultComboBoxModel();
         authorComboBox = new ComboBox(authorComboBoxModel);
         authorComboBox.setRenderer(new MyListCellRenderer<User>());
         authorComboBox.setKeySelectionManager(new MyKeySelManager());
 
-        reviewerComboBoxModel = new DefaultComboBoxModel<User>();
+        reviewerComboBoxModel = new DefaultComboBoxModel();
         reviewerComboBox = new ComboBox(reviewerComboBoxModel);
         reviewerComboBox.setRenderer(new MyListCellRenderer<User>());
         reviewerComboBox.setKeySelectionManager(new MyKeySelManager());
 
-        observerComboBoxModel = new DefaultComboBoxModel<User>();
+        observerComboBoxModel = new DefaultComboBoxModel();
         observerComboBox = new ComboBox(observerComboBoxModel);
         observerComboBox.setRenderer(new MyListCellRenderer<User>());
         observerComboBox.setKeySelectionManager(new MyKeySelManager());
 
-        groupComboBoxModel = new DefaultComboBoxModel<GroupDescription>();
+        groupComboBoxModel = new DefaultComboBoxModel();
         groupComboBox = new ComboBox(groupComboBoxModel);
         groupComboBox.setRenderer(new MyListCellRenderer<GroupDescription>());
         groupComboBox.setKeySelectionManager(new MyKeySelManager());
 
-        bugzillaInstantieComboBoxModel = new DefaultComboBoxModel<IDropDownItem>();
+        bugzillaInstantieComboBoxModel = new DefaultComboBoxModel();
         bugzillaInstantieComboBox = new ComboBox(bugzillaInstantieComboBoxModel);
         bugzillaInstantieComboBox.setRenderer(new MyListCellRenderer<IDropDownItem>());
         bugzillaInstantieComboBox.setKeySelectionManager(new MyKeySelManager());
 
-        reviewAccessComboBoxModel = new DefaultComboBoxModel<ReviewAccess>();
+        reviewAccessComboBoxModel = new DefaultComboBoxModel();
         reviewAccessComboBox = new ComboBox(reviewAccessComboBoxModel);
         reviewAccessComboBox.setRenderer(new MyListCellRenderer<ReviewAccess>());
         reviewAccessComboBox.setKeySelectionManager(new MyKeySelManager());
