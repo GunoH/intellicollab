@@ -120,7 +120,7 @@ public class CreateReviewDialog extends DialogWrapper {
 
         this.groupList = groupList;
 
-        update();
+        fillDropDowns();
 
         authorComboBoxModel.setSelectedItem(currentUser);
 
@@ -218,14 +218,7 @@ public class CreateReviewDialog extends DialogWrapper {
         reviewAccessComboBox.setKeySelectionManager(new MyKeySelManager());
     }
 
-    private void update() {
-
-        authorComboBoxModel.removeAllElements();
-        reviewerComboBoxModel.removeAllElements();
-        observerComboBoxModel.removeAllElements();
-        groupComboBoxModel.removeAllElements();
-        bugzillaInstantieComboBoxModel.removeAllElements();
-        reviewAccessComboBoxModel.removeAllElements();
+    private void fillDropDowns() {
 
         // Set default to empty value
         reviewerComboBoxModel.addElement(null);
