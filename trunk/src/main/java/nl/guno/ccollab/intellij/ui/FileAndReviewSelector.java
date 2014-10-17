@@ -70,6 +70,12 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
         return contentPane;
     }
 
+    @Nullable
+    @Override
+    public JComponent getPreferredFocusedComponent() {
+        return reviewComboBox;
+    }
+
     private void createUIComponents() {
         fileListModel = new DefaultListModel();
         fileCheckBoxList = new CheckBoxList(fileListModel, this);
