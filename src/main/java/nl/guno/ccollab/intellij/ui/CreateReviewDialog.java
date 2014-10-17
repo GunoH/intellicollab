@@ -133,6 +133,12 @@ public class CreateReviewDialog extends DialogWrapper {
         return contentPane;
     }
 
+    @Nullable
+    @Override
+    public JComponent getPreferredFocusedComponent() {
+        return groupComboBox;
+    }
+
     private void prepareUI(FetchMetadataTask fetchMetadataTask) {
         setTitle(MessageResources.message("dialog.createReview.title"));
 
