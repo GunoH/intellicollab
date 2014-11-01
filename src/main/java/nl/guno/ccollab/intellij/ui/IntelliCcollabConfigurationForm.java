@@ -58,6 +58,10 @@ public class IntelliCcollabConfigurationForm {
         Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
         IGlobalOptions options = configOptions.getA();
 
+        if (options == null) {
+            return;
+        }
+
         if (options.getUrl() != null) {
             urlField.setText(options.getUrl().toString());
         }
