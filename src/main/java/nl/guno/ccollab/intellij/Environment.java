@@ -12,7 +12,8 @@ class Environment {
 
 	private static final int EXIT_STATUS_SUCCESS = 0;
 	private static final String HOST = "codecollaborator.quinity.net";
-    static final String REQUIRED_VERSION = "1.11.20";
+    static final String REQUIRED_CVS_VERSION = "1.11.20";
+    static final String REQUIRED_SVN_VERSION = "1.6";
 
     private String output;
 
@@ -25,8 +26,18 @@ class Environment {
             throw new CVSNotAvailableException();
         }
 
-        if (!output.contains(REQUIRED_VERSION)) {
+        if (!output.contains(REQUIRED_CVS_VERSION)) {
             throw new CVSWrongVersionException();
+        }
+    }
+
+    public void checkSVNExecutable() throws InterruptedException, SVNWrongVersionException, SVNNotAvailableException {
+        if (!exec("svn --version")) {
+            throw new SVNNotAvailableException();
+        }
+
+        if (!output.contains(REQUIRED_SVN_VERSION)) {
+            throw new SVNWrongVersionException();
         }
     }
 
@@ -53,14 +64,21 @@ class Environment {
     public static void main(String[] args) throws InterruptedException, CVSNotAvailableException, CVSWrongVersionException {
         try {
             new Environment().checkCVSExecutable();
+            new Environment().checkSVNExecutable();
             System.out.println("Correct version installed.");
         } catch (CVSNotAvailableException e) {
-            System.err.println(MessageResources.message("action.error.cvsNotAvaliable.text", REQUIRED_VERSION));
+            System.err.println(MessageResources.message("action.error.cvsNotAvaliable.text", REQUIRED_CVS_VERSION));
         } catch (CVSWrongVersionException e) {
-            System.err.println(MessageResources.message("action.error.cvsWrongVersion.text", REQUIRED_VERSION));
+            System.err.println(MessageResources.message("action.error.cvsWrongVersion.text", REQUIRED_CVS_VERSION));
+        } catch (SVNNotAvailableException e) {
+            System.err.println(MessageResources.message("action.error.svnNotAvaliable.text", REQUIRED_SVN_VERSION));
+        } catch (SVNWrongVersionException e) {
+            System.err.println(MessageResources.message("action.error.svnWrongVersion.text", REQUIRED_SVN_VERSION));
         }
     }
 
     public class CVSNotAvailableException extends Exception {}
     public class CVSWrongVersionException extends Exception {}
+    public class SVNNotAvailableException extends Exception {}
+    public class SVNWrongVersionException extends Exception {}
 }
