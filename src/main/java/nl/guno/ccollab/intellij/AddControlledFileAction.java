@@ -32,8 +32,6 @@ import nl.guno.ccollab.intellij.ui.CreateReviewDialog;
 import nl.guno.ccollab.intellij.ui.FileAndReviewSelector;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-import nl.guno.ccollab.intellij.Environment.CVSNotAvailableException;
-import nl.guno.ccollab.intellij.Environment.CVSWrongVersionException;
 import nl.guno.ccollab.intellij.Environment.SVNNotAvailableException;
 import nl.guno.ccollab.intellij.Environment.SVNWrongVersionException;
 
@@ -58,26 +56,15 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             }
 
             try {
-                new Environment().checkCVSExecutable();
                 new Environment().checkSVNExecutable();
-            } catch (CVSNotAvailableException e) {
-                new Notification(project, MessageResources.message("action.error.cvsNotAvaliable.text",
-                        Environment.REQUIRED_CVS_VERSION),
-                        MessageType.ERROR).showBalloon().addToEventLog();
-                return;
-            } catch (CVSWrongVersionException e) {
-                new Notification(project, MessageResources.message("action.error.cvsWrongVersion.text",
-                        Environment.REQUIRED_CVS_VERSION),
-                        MessageType.ERROR).showBalloon().addToEventLog();
-                return;
             } catch (SVNNotAvailableException e) {
-                new Notification(project, MessageResources.message("action.error.svnNotAvaliable.text",
-                        Environment.REQUIRED_CVS_VERSION),
+                new Notification(project, MessageResources.message("action.error.svnNotAvailable.text",
+                        Environment.REQUIRED_SVN_VERSION),
                         MessageType.ERROR).showBalloon().addToEventLog();
                 return;
             } catch (SVNWrongVersionException e) {
                 new Notification(project, MessageResources.message("action.error.svnWrongVersion.text",
-                        Environment.REQUIRED_CVS_VERSION),
+                        Environment.REQUIRED_SVN_VERSION),
                         MessageType.ERROR).showBalloon().addToEventLog();
                 return;
             }

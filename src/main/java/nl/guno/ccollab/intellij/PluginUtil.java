@@ -4,10 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.intellij.cvsSupport2.actions.cvsContext.CvsContextWrapper;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.vcs.actions.VcsContext;
+import com.intellij.openapi.vcs.actions.VcsContextFactory;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vfs.VfsUtil;
@@ -39,7 +40,8 @@ final class PluginUtil {
     }
 
     public static File[] getSelectedFiles(AnActionEvent actionEvent) {
-        Change[] changes = CvsContextWrapper.createInstance(actionEvent).getSelectedChanges();
+        VcsContext vcsContext = VcsContextFactory.SERVICE.getInstance().createContextOn(actionEvent);
+        Change[] changes = vcsContext.getSelectedChanges();
         if (changes == null) {
             return new File[0];
         }

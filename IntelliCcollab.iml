@@ -12,7 +12,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="CVS Plugin" level="project" />
     <orderEntry type="library" name="IntelliCcollab libs" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
@@ -183,4 +182,3 @@
     </option>
   </component>
 </module>
-
