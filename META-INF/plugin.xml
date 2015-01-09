@@ -10,7 +10,7 @@
     <vendor email="idea@guno.nl">Guno Heitman</vendor>
     <change-notes><![CDATA[
         <ul>
-            <li>v0.20: Removed CVS support.</li>
+            <li>v0.20: Removed CVS support, fixed error when uploading new directory.</li>
             <li>v0.19: Added check for correct CVS version, added Subversion (v1.6) support.</li>
             <li>v0.18: Added checks for availability of server and CVS executable.</li>
             <li>v0.17: Merged the two serverUrl settings into one; A https url can now be used.</li>

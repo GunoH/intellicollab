@@ -94,12 +94,6 @@ class AddToReviewTask extends Task.Backgroundable {
                 logger.debug("Working with file: " + file.getPath());
 
 
-                if (file.isDirectory()) {
-                    logger.warn("error: path points to a directory instead of to a file: " + file.getPath());
-                    throw new IntelliCcollabException("error: path points to a directory instead of to a file: "
-                            + file.getPath());
-                }
-
                 // Create the SCM object representing a local file under version control.
                 // We assume the local SCM is already configured properly.
                 logger.debug("Loading SCM File object...");
@@ -148,9 +142,6 @@ class AddToReviewTask extends Task.Backgroundable {
         } catch (CollabClientException e) {
             logger.warn(e);
             errorMessage = MessageResources.message("task.addFilesToReview.errorOccurred.text");
-        } catch (IntelliCcollabException e) {
-            logger.warn(e);
-            errorMessage = MessageResources.message("task.addFilesToReview.errorOccurred.error.text", e.getMessage());
         } catch (IOException e) {
             logger.warn(e);
             errorMessage = MessageResources.message("task.addFilesToReview.ioErrorOccurred.text");
