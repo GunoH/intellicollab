@@ -45,7 +45,7 @@ abstract class IntelliCcollabAction extends AnAction {
     static boolean init(final Project project) throws CollabClientException, IOException, InterruptedException {
 
 	    if (!new Environment().checkConnection()) {
-		    new Notification(project, MessageResources.message("action.error.serverNotAvaliable.text"),
+		    new Notification(project, MessageResources.message("action.error.serverNotAvailable.text"),
 				    MessageType.ERROR).showBalloon().addToEventLog();
 		    return false;
 	    }

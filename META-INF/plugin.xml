@@ -3,14 +3,14 @@
     <name>IntelliCcollab</name>
     <description><![CDATA[
     <h4>Code Collaborator integration</h4>
-    <p>Needs CVS v1.11.20 and Subversion 1.6 client to be on the PATH</p>
+    <p>Needs Subversion 1.6 client to be on the PATH</p>
     ]]>
     </description>
-    <version>0.19</version>
+    <version>0.20pre</version>
     <vendor email="idea@guno.nl">Guno Heitman</vendor>
-    <depends>CVS</depends>
     <change-notes><![CDATA[
         <ul>
+            <li>v0.20: Removed CVS support.</li>
             <li>v0.19: Added check for correct CVS version, added Subversion (v1.6) support.</li>
             <li>v0.18: Added checks for availability of server and CVS executable.</li>
             <li>v0.17: Merged the two serverUrl settings into one; A https url can now be used.</li>
