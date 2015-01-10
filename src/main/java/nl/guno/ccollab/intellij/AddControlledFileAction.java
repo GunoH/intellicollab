@@ -179,14 +179,15 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 
     }
 
-    File[] getCurrentlySelectedFiles(AnActionEvent event) {
+    @NotNull
+    File[] getCurrentlySelectedFiles(@NotNull AnActionEvent event) {
         return PluginUtil.getSelectedFiles(event);
     }
 
     /**
      * Attaches local files that are under version control to the given review
      */
-    private void attachControlledFiles(AnActionEvent event, final Review review, final File... files) {
+    private void attachControlledFiles(@NotNull AnActionEvent event, final Review review, final File... files) {
 
 		project = event.getData(LangDataKeys.PROJECT);
 

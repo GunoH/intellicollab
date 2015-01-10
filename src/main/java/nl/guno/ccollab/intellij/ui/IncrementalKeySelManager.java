@@ -1,5 +1,7 @@
 package nl.guno.ccollab.intellij.ui;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Date;
 
 import javax.swing.ComboBoxModel;
@@ -11,7 +13,7 @@ abstract class IncrementalKeySelManager implements JComboBox.KeySelectionManager
     private StringBuffer searchString = new StringBuffer("");
  
     @Override
-    public int selectionForKey(char aKey, ComboBoxModel aModel) {
+    public int selectionForKey(char aKey, @NotNull ComboBoxModel aModel) {
         try {
             long actKeyPressTime = new Date().getTime();
 

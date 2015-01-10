@@ -3,6 +3,7 @@ package nl.guno.ccollab.intellij;
 import java.util.ResourceBundle;
 
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.PropertyKey;
 
 import com.intellij.CommonBundle;
@@ -16,7 +17,8 @@ public final class MessageResources {
     private MessageResources() {
     }
 
-    public static String message(@PropertyKey(resourceBundle = BUNDLE_NAME) String key, Object... params) {
+    @NotNull
+    public static String message(@PropertyKey(resourceBundle = BUNDLE_NAME) @NotNull String key, @NotNull Object... params) {
         return CommonBundle.message(BUNDLE, key, params);
         
     }

@@ -42,18 +42,20 @@ public class Notification {
         this.type = type;
     }
 
+    @NotNull
     public Notification showBalloon() {
         ToolWindowManager.getInstance(project).notifyByBalloon(ChangesViewContentManager.TOOLWINDOW_ID, type, message, 
                 null, hyperlinkListener);
         return this;
     }
 
+    @NotNull
     public Notification addToEventLog() {
         NOTIFICATION_GROUP.createNotification("", message, type.toNotificationType(), notificationListener).notify(project);
         return this;
     }
 
-    private void openHyperlink(HyperlinkEvent hyperlinkEvent) {
+    private void openHyperlink(@NotNull HyperlinkEvent hyperlinkEvent) {
         if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
             BrowserUtil.launchBrowser(hyperlinkEvent.getURL().toExternalForm());
         }

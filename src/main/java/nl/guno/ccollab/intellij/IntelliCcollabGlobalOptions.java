@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.smartbear.beans.IGlobalOptions;
+import org.jetbrains.annotations.NotNull;
 
 public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 
@@ -30,7 +31,7 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
                 || StringUtils.isEmpty(component.getPassword());
     }
 
-    @Override
+    @Override @NotNull
     public URL getUrl() {
         try {
             return new URL(component.getServerURL());

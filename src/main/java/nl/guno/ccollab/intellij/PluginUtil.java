@@ -13,6 +13,7 @@ import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 final class PluginUtil {
@@ -21,11 +22,12 @@ final class PluginUtil {
     }
 
 	@Nullable
-    private static VirtualFile[] getCurrentVirtualFiles(DataContext dataContext) {
+    private static VirtualFile[] getCurrentVirtualFiles(@NotNull DataContext dataContext) {
         return DataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
     }
 
-    public static File[] getCurrentFiles(DataContext dataContext) {
+    @NotNull
+    public static File[] getCurrentFiles(@NotNull DataContext dataContext) {
         VirtualFile[] virtualFiles = getCurrentVirtualFiles(dataContext);
 
         if (virtualFiles == null) {
@@ -39,7 +41,8 @@ final class PluginUtil {
         return files;
     }
 
-    public static File[] getSelectedFiles(AnActionEvent actionEvent) {
+    @NotNull
+    public static File[] getSelectedFiles(@NotNull AnActionEvent actionEvent) {
         VcsContext vcsContext = VcsContextFactory.SERVICE.getInstance().createContextOn(actionEvent);
         Change[] changes = vcsContext.getSelectedChanges();
         if (changes == null) {
