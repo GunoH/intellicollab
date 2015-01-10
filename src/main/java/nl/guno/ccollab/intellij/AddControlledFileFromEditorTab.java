@@ -8,8 +8,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 
 public class AddControlledFileFromEditorTab extends AddControlledFileAction {
 
-    @Override
-    protected File[] getCurrentlySelectedFiles(AnActionEvent event) {
+    @Override @NotNull
+    protected File[] getCurrentlySelectedFiles(@NotNull AnActionEvent event) {
         return PluginUtil.getCurrentFiles(event.getDataContext());
     }
 

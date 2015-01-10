@@ -82,12 +82,12 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
         this.password = password;
     }
 
-    @Override
+    @Override @NotNull
     public String getDisplayName() {
         return "IntelliCcollab";
     }
 
-    @Override
+    @Override @Nullable
     public String getHelpTopic() {
         return null;
     }
