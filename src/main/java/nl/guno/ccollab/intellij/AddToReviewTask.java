@@ -2,9 +2,6 @@ package nl.guno.ccollab.intellij;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jetbrains.annotations.NotNull;
@@ -24,11 +21,9 @@ import com.smartbear.ccollab.datamodel.Scm;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.scm.IScmClientConfiguration;
 import com.smartbear.scm.IScmLocalCheckout;
-import com.smartbear.scm.IScmSystem;
 import com.smartbear.scm.ScmChangeset;
 import com.smartbear.scm.ScmConfigurationException;
 import com.smartbear.scm.ScmUtils;
-import com.smartbear.scm.impl.concurrentvs.CvsSystem;
 import com.smartbear.scm.impl.subversion.SubversionSystem;
 import nl.guno.ccollab.intellij.ui.Notification;
 
@@ -45,9 +40,6 @@ class AddToReviewTask extends Task.Backgroundable {
 
     private boolean success;
     private String errorMessage;
-
-    public static final List<IScmSystem> SCMS =
-            new ArrayList<IScmSystem>(Arrays.asList(new IScmSystem[]{SubversionSystem.INSTANCE, CvsSystem.INSTANCE}));
 
     private final IntelliCcollabApplicationComponent component =
             ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
@@ -98,7 +90,7 @@ class AddToReviewTask extends Task.Backgroundable {
                 // We assume the local SCM is already configured properly.
                 logger.debug("Loading SCM File object...");
                 clientConfig = ScmUtils.requireScm(file, AddControlledFileAction.scmOptions, NullAskUser.INSTANCE, 
-                        new NullProgressMonitor(), SCMS);
+                        new NullProgressMonitor(), SubversionSystem.INSTANCE);
                 scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
                 if (scmFile != null) {
                     changeset.addLocalCheckout(scmFile, true, new NullProgressMonitor());
