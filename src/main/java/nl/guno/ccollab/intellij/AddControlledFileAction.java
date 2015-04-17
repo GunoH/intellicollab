@@ -28,12 +28,11 @@ import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.scm.ScmConfigurationException;
+import nl.guno.ccollab.intellij.Environment.SVNNotAvailableException;
+import nl.guno.ccollab.intellij.Environment.SVNWrongVersionException;
 import nl.guno.ccollab.intellij.ui.CreateReviewDialog;
 import nl.guno.ccollab.intellij.ui.FileAndReviewSelector;
 import nl.guno.ccollab.intellij.ui.Notification;
-
-import nl.guno.ccollab.intellij.Environment.SVNNotAvailableException;
-import nl.guno.ccollab.intellij.Environment.SVNWrongVersionException;
 
 public class AddControlledFileAction extends IntelliCcollabAction {
 
@@ -118,7 +117,18 @@ public class AddControlledFileAction extends IntelliCcollabAction {
                 return;
             }
 
-            FileAndReviewSelector fileAndReviewSelector = new FileAndReviewSelector(fileList, reviews, project);
+            String changesetName = PluginUtil.getSelectedChangesetName(event);
+            if (changesetName == null) {
+                // No changeset selected. Use changeset the first selected file is part of.
+                changesetName = PluginUtil.getChangesetNameOfFirstSelectedFile(event);
+            }
+            if (changesetName == null) {
+                // The selected file is not in a changeset. Use the active changeset.
+                changesetName = PluginUtil.getActiveChangesetName(event);
+            }
+
+            FileAndReviewSelector fileAndReviewSelector = new FileAndReviewSelector(fileList, reviews, project,
+                    changesetName);
             fileAndReviewSelector.pack();
             fileAndReviewSelector.show();
 
