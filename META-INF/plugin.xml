@@ -6,10 +6,11 @@
     <p>Needs Subversion 1.6 client to be on the PATH</p>
     ]]>
     </description>
-    <version>0.20</version>
+    <version>0.21pre</version>
     <vendor email="idea@guno.nl">Guno Heitman</vendor>
     <change-notes><![CDATA[
         <ul>
+            <li>v0.21: Reviews are now pre-selected on uploading changes, based on changeset name.</li>
             <li>v0.20: Removed CVS support, fixed error when uploading new directory.</li>
             <li>v0.19: Added check for correct CVS version, added Subversion (v1.6) support.</li>
             <li>v0.18: Added checks for availability of server and CVS executable.</li>

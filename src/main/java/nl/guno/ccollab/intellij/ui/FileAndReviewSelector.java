@@ -38,8 +38,10 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
 
     private final List<Review> reviewList;
     private DefaultComboBoxModel reviewComboBoxModel;
+    private String preselectedReviewName;
 
-    public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, @NotNull Review[] reviewList, Project project) {
+    public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, @NotNull Review[] reviewList, Project project,
+                                 String preselectedReviewName) {
 
         super(project);
 
@@ -50,6 +52,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
 
         this.reviewList = new ArrayList<Review>();
         this.reviewList.addAll(Arrays.asList(reviewList));
+        this.preselectedReviewName = preselectedReviewName;
 
         // Sort the list of reviews in descending order of last activity date.
         Collections.sort(this.reviewList, new Comparator<Review>() {
@@ -112,7 +115,11 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
         reviewComboBoxModel.removeAllElements();
         for (Review review : reviewList) {
             reviewComboBoxModel.addElement(review);
-        }
+
+            if (preselectedReviewName != null && review.getTitle().equals(preselectedReviewName)) {
+                reviewComboBoxModel.setSelectedItem(review);
+            }
+         }
     }
 
     JCheckBox createCheckBox(File file, boolean checked) {
