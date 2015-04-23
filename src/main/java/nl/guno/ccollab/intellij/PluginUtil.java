@@ -1,26 +1,19 @@
 package nl.guno.ccollab.intellij;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.vcs.actions.VcsContext;
 import com.intellij.openapi.vcs.actions.VcsContextFactory;
-import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ChangeList;
-import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.changes.LocalChangeList;
+import com.intellij.openapi.vcs.changes.*;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 final class PluginUtil {
 
@@ -99,6 +92,11 @@ final class PluginUtil {
         }
 
         ChangeList changeList = ChangeListManager.getInstance(actionEvent.getProject()).getChangeList(changes[0]);
+
+        if (changeList == null) {
+            return null;
+        }
+
         return changeList.getName();
     }
 
