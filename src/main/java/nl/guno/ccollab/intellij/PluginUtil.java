@@ -3,6 +3,7 @@ package nl.guno.ccollab.intellij;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.actions.VcsContext;
 import com.intellij.openapi.vcs.actions.VcsContextFactory;
 import com.intellij.openapi.vcs.changes.*;
@@ -101,9 +102,9 @@ final class PluginUtil {
     }
 
     @Nullable
-    public static String getActiveChangesetName(@NotNull AnActionEvent actionEvent) {
+    public static String getActiveChangesetName(Project project) {
 
-        for (ChangeList changeList : ChangeListManager.getInstance(actionEvent.getProject()).getChangeLists()) {
+        for (ChangeList changeList : ChangeListManager.getInstance(project).getChangeLists()) {
             if (changeList instanceof LocalChangeList && ((LocalChangeList)changeList).isDefault()) {
                 return changeList.getName();
             }
