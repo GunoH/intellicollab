@@ -104,7 +104,7 @@ public class CreateReviewDialog extends DialogWrapper {
     private static final int MAXLENGTH_RNMIGRATIEPAD = 4000;
 
     public CreateReviewDialog(FetchMetadataTask fetchMetadataTask, User[] userList, List<GroupDescription> groupList,
-                              User currentUser, Project project) {
+                              User currentUser, Project project, String reviewTitle) {
 
         super(project);
 
@@ -125,6 +125,8 @@ public class CreateReviewDialog extends DialogWrapper {
         authorComboBoxModel.setSelectedItem(currentUser);
 
         prepareUI(fetchMetadataTask);
+
+        titleTextField.setText(reviewTitle);
     }
 
     @Nullable
