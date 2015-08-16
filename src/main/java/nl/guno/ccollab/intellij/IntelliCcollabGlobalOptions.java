@@ -4,10 +4,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.smartbear.beans.IGlobalOptions;
-import org.jetbrains.annotations.NotNull;
 
 public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 

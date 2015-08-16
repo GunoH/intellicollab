@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.options.Configurable;
@@ -15,7 +16,6 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizable;
 import com.intellij.openapi.util.WriteExternalException;
 import nl.guno.ccollab.intellij.ui.IntelliCcollabConfigurationForm;
-import org.jetbrains.annotations.Nullable;
 
 public class IntelliCcollabApplicationComponent implements ApplicationComponent, Configurable, JDOMExternalizable {
     private IntelliCcollabConfigurationForm form;

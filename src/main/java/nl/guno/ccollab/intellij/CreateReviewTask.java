@@ -12,15 +12,7 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
-import com.smartbear.ccollab.datamodel.GroupDescription;
-import com.smartbear.ccollab.datamodel.IDropDownItem;
-import com.smartbear.ccollab.datamodel.MetaDataDescription;
-import com.smartbear.ccollab.datamodel.MetaDataSelectItem;
-import com.smartbear.ccollab.datamodel.Review;
-import com.smartbear.ccollab.datamodel.ReviewAccess;
-import com.smartbear.ccollab.datamodel.ReviewParticipant;
-import com.smartbear.ccollab.datamodel.Role;
-import com.smartbear.ccollab.datamodel.User;
+import com.smartbear.ccollab.datamodel.*;
 import nl.guno.ccollab.intellij.ui.Notification;
 
 public class CreateReviewTask extends Task.Modal {

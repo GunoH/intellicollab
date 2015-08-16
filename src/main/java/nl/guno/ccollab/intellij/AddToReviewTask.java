@@ -14,16 +14,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.NullAskUser;
-import com.smartbear.ccollab.datamodel.Changelist;
-import com.smartbear.ccollab.datamodel.Engine;
-import com.smartbear.ccollab.datamodel.Review;
-import com.smartbear.ccollab.datamodel.Scm;
-import com.smartbear.ccollab.datamodel.User;
-import com.smartbear.scm.IScmClientConfiguration;
-import com.smartbear.scm.IScmLocalCheckout;
-import com.smartbear.scm.ScmChangeset;
-import com.smartbear.scm.ScmConfigurationException;
-import com.smartbear.scm.ScmUtils;
+import com.smartbear.ccollab.datamodel.*;
+import com.smartbear.scm.*;
 import com.smartbear.scm.impl.subversion.SubversionSystem;
 import nl.guno.ccollab.intellij.ui.Notification;
 
