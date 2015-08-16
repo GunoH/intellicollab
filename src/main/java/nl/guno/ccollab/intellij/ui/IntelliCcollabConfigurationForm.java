@@ -14,6 +14,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
@@ -39,7 +40,7 @@ public class IntelliCcollabConfigurationForm {
     public IntelliCcollabConfigurationForm() {
         autofillButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(@NotNull ActionEvent e) {
                 try {
                     autofill();
                 } catch (Exception ex) {

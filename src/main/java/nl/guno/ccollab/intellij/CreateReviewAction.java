@@ -113,9 +113,6 @@ public class CreateReviewAction extends IntelliCcollabAction {
 			logger.warn(e);
 			new Notification(project, MessageResources.message("action.createReview.ioErrorOccurred.text"),
 					MessageType.ERROR).showBalloon();
-		} catch (InterruptedException e) {
-			new Notification(project, MessageResources.message("action.createReview.errorOccurred.text"),
-					MessageType.ERROR).showBalloon();
 		} finally {
 			finished();
 		}
