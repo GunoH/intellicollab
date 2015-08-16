@@ -8,7 +8,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
@@ -29,7 +29,7 @@ public class CreateReviewAction extends IntelliCcollabAction {
 
 	@Override
 	public void actionPerformed(@NotNull AnActionEvent event) {
-		Project project = event.getData(LangDataKeys.PROJECT);
+		Project project = event.getData(CommonDataKeys.PROJECT);
 		if (project == null) {
 			logger.error("project is null", new Throwable());
 			return;
