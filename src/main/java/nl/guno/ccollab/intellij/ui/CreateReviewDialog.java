@@ -112,10 +112,10 @@ public class CreateReviewDialog extends DialogWrapper {
 
         IDropDownItem[] bugzillaInstantieList = fetchMetadataTask.getBugzillaInstantie().getDropDownItems(true);
 
-        this.userList = new ArrayList<User>();
+        this.userList = new ArrayList<>();
         this.userList.addAll(Arrays.asList(userList));
 
-        this.bugzillaInstantieList = new ArrayList<IDropDownItem>();
+        this.bugzillaInstantieList = new ArrayList<>();
         this.bugzillaInstantieList.addAll(Arrays.asList(bugzillaInstantieList));
 
         this.groupList = groupList;
@@ -170,21 +170,21 @@ public class CreateReviewDialog extends DialogWrapper {
     /** Makes sure tab and shift-tab move the focus instead of inserting tab characters. */
     private void setTabBehaviorOnTextAreas() {
         overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
         overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnFOTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnFOTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnTOTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnTOTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
     }
 
     private void setToolTipText(JComponent component, String text) {
@@ -217,7 +217,7 @@ public class CreateReviewDialog extends DialogWrapper {
 
         bugzillaInstantieComboBoxModel = new DefaultComboBoxModel();
         bugzillaInstantieComboBox = new ComboBox(bugzillaInstantieComboBoxModel);
-        bugzillaInstantieComboBox.setRenderer(new MyListCellRenderer<IDropDownItem>());
+        bugzillaInstantieComboBox.setRenderer(new MyListCellRenderer<>());
         bugzillaInstantieComboBox.setKeySelectionManager(new MyKeySelManager());
 
         reviewAccessComboBoxModel = new DefaultComboBoxModel();

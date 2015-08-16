@@ -50,7 +50,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
 
         initialFileList = fileList;
 
-        this.reviewList = new ArrayList<Review>();
+        this.reviewList = new ArrayList<>();
         this.reviewList.addAll(Arrays.asList(reviewList));
         this.preselectedReviewName = preselectedReviewName;
 
@@ -102,7 +102,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
     }
 
     void reset() {
-        workingFileList = new ArrayList<Pair<File, Boolean>>(initialFileList);
+        workingFileList = new ArrayList<>(initialFileList);
         update();
     }
 
@@ -133,7 +133,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
     }
 
     public File[] retrieveSelectedFiles() {
-        List<File> result = new ArrayList<File>();
+        List<File> result = new ArrayList<>();
         for (Pair<File, Boolean> pair : workingFileList) {
             if (pair.second) {
                 result.add(pair.first);
