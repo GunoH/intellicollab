@@ -42,7 +42,7 @@ abstract class IntelliCcollabAction extends AnAction {
     private static final IntelliCcollabApplicationComponent component =
             ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
 
-    static boolean init(final Project project) throws CollabClientException, IOException, InterruptedException {
+    static boolean init(final Project project) throws CollabClientException, IOException {
 
 	    if (!new Environment().checkConnection()) {
 		    new Notification(project, MessageResources.message("action.error.serverNotAvailable.text"),

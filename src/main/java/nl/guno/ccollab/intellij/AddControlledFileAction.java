@@ -180,9 +180,6 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             logger.warn(e);
             new Notification(project, MessageResources.message("action.addControlledFile.ioErrorOccurred.text"),
                     MessageType.ERROR).showBalloon();
-        } catch (InterruptedException e) {
-	        new Notification(project, MessageResources.message("action.addControlledFile.errorOccurred.text"),
-			        MessageType.ERROR).showBalloon();
         } finally {
             finished();
         }

@@ -17,11 +17,11 @@ class Environment {
 
     private String output;
 
-    public boolean checkConnection() throws InterruptedException {
+    public boolean checkConnection() {
 		return exec("ping -n 1 " + HOST);
 	}
 
-    public void checkSVNExecutable() throws InterruptedException, SVNWrongVersionException, SVNNotAvailableException {
+    public void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException {
         if (!exec("svn --version")) {
             throw new SVNNotAvailableException();
         }
