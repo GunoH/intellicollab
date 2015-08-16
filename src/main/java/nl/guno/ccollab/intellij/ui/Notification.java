@@ -21,20 +21,9 @@ public class Notification {
     private final String message;
     private final MessageType type;
     
-    private HyperlinkListener hyperlinkListener = new HyperlinkListener() {
-        @Override
-        public void hyperlinkUpdate(HyperlinkEvent e) {
-            openHyperlink(e);
-        }
-    };
+    private HyperlinkListener hyperlinkListener = this::openHyperlink;
 
-    private NotificationListener notificationListener = new NotificationListener() {
-        @Override
-        public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification, 
-                                    @NotNull HyperlinkEvent hyperlinkEvent) {
-            openHyperlink(hyperlinkEvent);
-        }
-    };
+    private NotificationListener notificationListener = (notification, hyperlinkEvent) -> openHyperlink(hyperlinkEvent);
     
     public Notification(Project project, String message, MessageType type) {
         this.project = project;

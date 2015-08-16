@@ -5,16 +5,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-
 import javax.swing.*;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.ComboBox;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
@@ -55,12 +53,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
         this.preselectedReviewName = preselectedReviewName;
 
         // Sort the list of reviews in descending order of last activity date.
-        Collections.sort(this.reviewList, new Comparator<Review>() {
-            @Override
-            public int compare(@NotNull Review r1, @NotNull Review r2) {
-                return r2.getCreationDate().compareTo(r1.getCreationDate());
-            }
-        });
+        Collections.sort(this.reviewList, (r1, r2) -> r2.getCreationDate().compareTo(r1.getCreationDate()));
 
         reset();
 
@@ -139,7 +132,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
                 result.add(pair.first);
             }
         }
-        
+
         return result.toArray(new File[result.size()]);
     }
 

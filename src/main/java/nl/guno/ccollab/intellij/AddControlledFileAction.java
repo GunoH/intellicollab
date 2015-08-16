@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -73,11 +72,8 @@ public class AddControlledFileAction extends IntelliCcollabAction {
             }
 
             // Save all changes to disk.
-            ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                @Override
-                public void run() {
-                    FileDocumentManager.getInstance().saveAllDocuments();
-                }
+            ApplicationManager.getApplication().runWriteAction(() -> {
+                FileDocumentManager.getInstance().saveAllDocuments();
             });
 
             // Retrieve the current file(s)
@@ -102,15 +98,12 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 			            project,
 			            MessageResources.message("task.addFilesToReview.noReviews.text"),
 			            MessageType.WARNING)
-			            .setHyperlinkListener(new HyperlinkListener() {
-				            @Override
-				            public void hyperlinkUpdate(@NotNull HyperlinkEvent e) {
-					            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						            // Open create review dialog
-						            new CreateReviewAction().invoke(project);
-					            }
-				            }
-			            })
+			            .setHyperlinkListener(e -> {
+                            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                                // Open create review dialog
+                                new CreateReviewAction().invoke(project);
+                            }
+                        })
 			            .showBalloon();
 
 
