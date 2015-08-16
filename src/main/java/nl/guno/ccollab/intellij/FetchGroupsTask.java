@@ -2,7 +2,6 @@ package nl.guno.ccollab.intellij;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -50,12 +49,7 @@ class FetchGroupsTask extends Task.Modal {
             }
 
             // Sort groups.
-            Collections.sort(groups, new Comparator<GroupDescription>() {
-                @Override
-                public int compare(@NotNull GroupDescription o1, @NotNull GroupDescription o2) {
-                    return o1.getDisplayName().compareTo(o2.getDisplayName());
-                }
-            });
+            Collections.sort(groups, (o1, o2) -> o1.getDisplayName().compareTo(o2.getDisplayName()));
 
         } catch (DataModelException e) {
             logger.warn("Error when retrieving groups.", e);

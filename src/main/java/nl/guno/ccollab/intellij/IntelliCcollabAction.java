@@ -61,14 +61,11 @@ abstract class IntelliCcollabAction extends AnAction {
 
         if (globalOptions.settingsIncomplete()) {
             new Notification(project, MessageResources.message("configuration.error.mandatorySettingsMissing.text"),
-                    MessageType.ERROR).setHyperlinkListener(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        openSettings(project);
-                    }
-                }
-            }).showBalloon().addToEventLog();
+                    MessageType.ERROR).setHyperlinkListener(e -> {
+                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            openSettings(project);
+                        }
+                    }).showBalloon().addToEventLog();
             return false;
         }
 
@@ -84,14 +81,11 @@ abstract class IntelliCcollabAction extends AnAction {
         if (!loginTask.success()) {
             if (loginTask.authenticationErrorOccured()) {
                 new Notification(project, MessageResources.message("task.login.authenticationError.text"),
-                        MessageType.ERROR).setHyperlinkListener(new HyperlinkListener() {
-                    @Override
-                    public void hyperlinkUpdate(HyperlinkEvent e) {
-                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                            openSettings(project);
-                        }
-                    }
-                }).showBalloon().addToEventLog();
+                        MessageType.ERROR).setHyperlinkListener(e -> {
+                            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                                openSettings(project);
+                            }
+                        }).showBalloon().addToEventLog();
             }
 
             return false;
