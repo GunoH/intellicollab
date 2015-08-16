@@ -1,5 +1,9 @@
 package nl.guno.ccollab.intellij;
 
+import java.io.IOException;
+
+import javax.swing.event.HyperlinkEvent;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.ShowSettingsUtil;
@@ -15,10 +19,6 @@ import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.collections.Pair;
 import nl.guno.ccollab.intellij.ui.Notification;
-
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import java.io.IOException;
 
 abstract class IntelliCcollabAction extends AnAction {
 
