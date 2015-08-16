@@ -52,7 +52,7 @@ class FetchGroupsTask extends Task.Modal {
             // Sort groups.
             Collections.sort(groups, new Comparator<GroupDescription>() {
                 @Override
-                public int compare(GroupDescription o1, GroupDescription o2) {
+                public int compare(@NotNull GroupDescription o1, @NotNull GroupDescription o2) {
                     return o1.getDisplayName().compareTo(o2.getDisplayName());
                 }
             });

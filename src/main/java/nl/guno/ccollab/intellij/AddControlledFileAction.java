@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.intellij.history.LocalHistory;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -43,7 +43,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
     public void actionPerformed(@NotNull AnActionEvent event) {
 
         try {
-			project = event.getData(LangDataKeys.PROJECT);
+			project = event.getData(CommonDataKeys.PROJECT);
 
             if (project == null) {
                 logger.error("project is null", new Throwable());
@@ -199,7 +199,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
      */
     private void attachControlledFiles(@NotNull AnActionEvent event, final Review review, final File... files) {
 
-		project = event.getData(LangDataKeys.PROJECT);
+		project = event.getData(CommonDataKeys.PROJECT);
 
         if (project == null) {
             logger.error("project is null", new Throwable());
@@ -212,7 +212,7 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 
     @Override
     public void update(@NotNull AnActionEvent event) {
-		project = event.getData(LangDataKeys.PROJECT);
+		project = event.getData(CommonDataKeys.PROJECT);
         Change[] changes = event.getData(VcsDataKeys.CHANGES);
 
         boolean enabled = false;
