@@ -3,8 +3,11 @@ package nl.guno.ccollab.intellij.ui;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 
@@ -24,6 +27,9 @@ import nl.guno.ccollab.intellij.FetchMetadataTask;
 import nl.guno.ccollab.intellij.MessageResources;
 
 public class CreateReviewDialog extends DialogWrapper {
+
+    private static final String PATTERN_BUGNUMBER = ".*[bB]ug[zZ]?i?l?l?a? #?([0-9]*).*";
+
     private JComboBox authorComboBox;
     private JComboBox reviewerComboBox;
     private JComboBox observerComboBox;
@@ -127,6 +133,14 @@ public class CreateReviewDialog extends DialogWrapper {
         prepareUI(fetchMetadataTask);
 
         titleTextField.setText(reviewTitle);
+
+
+        Matcher matcher = Pattern.compile(PATTERN_BUGNUMBER).matcher(reviewTitle);
+        if (matcher.matches()) {
+            bugzillaNummerTextField.setText(matcher.group(1));
+            // By default, select the first entry: Bugzilla1
+            bugzillaInstantieComboBoxModel.setSelectedItem(bugzillaInstantieList[1]);
+        }
     }
 
     @Nullable
@@ -170,21 +184,21 @@ public class CreateReviewDialog extends DialogWrapper {
     /** Makes sure tab and shift-tab move the focus instead of inserting tab characters. */
     private void setTabBehaviorOnTextAreas() {
         overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
         overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnFOTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnFOTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnTOTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnTOTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Arrays.asList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
     }
 
     private void setToolTipText(JComponent component, String text) {
