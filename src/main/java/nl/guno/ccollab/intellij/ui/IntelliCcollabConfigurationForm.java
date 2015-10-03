@@ -1,27 +1,13 @@
 package nl.guno.ccollab.intellij.ui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.ui.Messages;
-import com.smartbear.CollabClientException;
-import com.smartbear.beans.ConfigUtils;
-import com.smartbear.beans.IGlobalOptions;
-import com.smartbear.beans.IScmOptions;
-import com.smartbear.collections.Pair;
 import nl.guno.ccollab.intellij.IntelliCcollabApplicationComponent;
 import nl.guno.ccollab.intellij.MessageResources;
 
@@ -32,46 +18,7 @@ public class IntelliCcollabConfigurationForm {
     private JTextField proxyHostField;
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JButton autofillButton;
-
-    private static final Logger logger = Logger.getInstance(IntelliCcollabConfigurationForm.class.getName());
-
-    public IntelliCcollabConfigurationForm() {
-        autofillButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    autofill();
-                } catch (Exception ex) {
-                    logger.error("Exception when reading metadata from filesystem. ", ex);
-                    Messages.showErrorDialog(MessageResources.message("configuration.error.couldNotReadMetadata.text"),
-                            MessageResources.message("configuration.error.couldNotReadMetadata.title"));
-                }
-            }
-        });
-    }
-
-    /**
-     * Fills the preferences with the values retrieved from the filesystem metadata.
-     */
-    private void autofill() throws IOException, CollabClientException {
-        Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
-        IGlobalOptions options = configOptions.getA();
-
-        if (options == null) {
-            return;
-        }
-
-        if (options.getUrl() != null) {
-            urlField.setText(options.getUrl().toString());
-        }
-        proxyHostField.setText(options.getServerProxyHost());
-        proxyPortField.setText(options.getServerProxyPort());
-        usernameField.setText(options.getUser());
-        passwordField.setText(options.getPassword());
-    }
-
-
+    
     /**
      * Method return root component of form.
      */
