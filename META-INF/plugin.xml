@@ -6,7 +6,7 @@
     <p>Needs Subversion 1.6 client to be on the PATH</p>
     ]]>
     </description>
-    <version>0.22pre</version>
+    <version>0.22</version>
     <vendor email="idea@guno.nl">Guno Heitman</vendor>
     <change-notes><![CDATA[
         <ul>
