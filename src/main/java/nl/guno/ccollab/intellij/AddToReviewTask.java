@@ -147,7 +147,7 @@ class AddToReviewTask extends Task.Backgroundable {
             new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
                     files.length, review.getId().toString(), review.getTitle(), component.getServerURL()), MessageType.INFO).showBalloon().addToEventLog();
         } else if (errorMessage != null) {
-            new Notification(project, errorMessage, MessageType.WARNING).showBalloon();
+            new Notification(project, errorMessage, MessageType.WARNING).showBalloon().addToEventLog();
         }
     }
 
