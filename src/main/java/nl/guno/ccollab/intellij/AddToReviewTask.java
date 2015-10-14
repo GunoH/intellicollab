@@ -98,6 +98,7 @@ class AddToReviewTask extends Task.Backgroundable {
             }
 
             if (scmFile == null) {
+                errorMessage = MessageResources.message("task.addFilesToReview.noFilesSelected.text");
                 return;
             }
 
@@ -145,8 +146,8 @@ class AddToReviewTask extends Task.Backgroundable {
         if (success) {
             new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
                     files.length, review.getId().toString(), review.getTitle(), component.getServerURL()), MessageType.INFO).showBalloon().addToEventLog();
-        } else {
-            new Notification(project, errorMessage, MessageType.ERROR).showBalloon();
+        } else if (errorMessage != null) {
+            new Notification(project, errorMessage, MessageType.WARNING).showBalloon();
         }
     }
 
