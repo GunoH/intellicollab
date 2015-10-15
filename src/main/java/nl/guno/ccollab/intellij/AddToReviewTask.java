@@ -98,7 +98,7 @@ class AddToReviewTask extends Task.Backgroundable {
             }
 
             if (scmFile == null) {
-                errorMessage = MessageResources.message("task.addFilesToReview.noFilesSelected.text");
+                errorMessage = MessageResources.message("task.addFilesToReview.noFilesCouldBeAdded.text");
                 return;
             }
 
