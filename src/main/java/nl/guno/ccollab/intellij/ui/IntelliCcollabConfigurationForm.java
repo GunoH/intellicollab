@@ -19,9 +19,6 @@ public class IntelliCcollabConfigurationForm {
     private JTextField usernameField;
     private JPasswordField passwordField;
     
-    /**
-     * Method return root component of form.
-     */
     public JComponent getRootComponent() {
         return rootComponent;
     }

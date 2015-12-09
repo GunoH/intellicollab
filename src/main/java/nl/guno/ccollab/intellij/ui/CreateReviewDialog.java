@@ -71,42 +71,42 @@ public class CreateReviewDialog extends DialogWrapper {
     private DefaultComboBoxModel reviewAccessComboBoxModel;
 
     /**
-     * Lijst met gebruikers waar uit gekozen kan worden in de userinterface.
+     * Users available in user interface.
      */
     private final List<User> userList;
 
     /**
-     * Lijst met bugzillaInstanties waar uit gekozen kan worden in de userinterface.
+     * Bugzilla instances available in user interface.
      */
     private final List<IDropDownItem> bugzillaInstantieList;
 
     /**
-     * Lijst met groepen waar uit gekozen kan worden in de userinterface.
+     * Groups available in user interface.
      */
     private final List<GroupDescription> groupList;
 
-    /** Maximale lengte van het 'Overview' veld. */
+    /** Max length of 'Overview' field. */
     private static final int MAXLENGTH_OVERVIEW = 4000;
 
-    /** Maximale lengte van het 'Title' veld. */
+    /** Max length of 'Title' field. */
     private static final int MAXLENGTH_TITLE = 255;
 
-    /** Maximale lengte van het 'Bugzillanummer' veld. */
+    /** Max length of 'Bugzillanummer' field. */
     private static final int MAXLENGTH_BUGZILLANUMMER = 255;
 
-    /** Maximale lengte van het 'FO' veld. */
+    /** Max length of 'FO' field. */
     private static final int MAXLENGTH_FO = 255;
 
-    /** Maximale lengte van het 'TO' veld. */
+    /** Max length of 'TO' field. */
     private static final int MAXLENGTH_TO = 255;
 
-    /** Maximale lengte van het 'Relese notes: FO' veld. */
+    /** Max length of 'Relese notes: FO' field. */
     private static final int MAXLENGTH_RNFO = 4000;
 
-    /** Maximale lengte van het 'Release notes: TO' veld. */
+    /** Max length of 'Release notes: TO' field. */
     private static final int MAXLENGTH_RNTO = 4000;
 
-    /** Maximale lengte van het 'Release notes: Migratiepad' veld. */
+    /** Max length of 'Release notes: Migratiepad' field. */
     private static final int MAXLENGTH_RNMIGRATIEPAD = 4000;
 
     public CreateReviewDialog(FetchMetadataTask fetchMetadataTask, User[] userList, List<GroupDescription> groupList,
