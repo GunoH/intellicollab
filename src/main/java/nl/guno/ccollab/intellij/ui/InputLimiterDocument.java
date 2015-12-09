@@ -5,7 +5,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 /**
- * Use this class to limit the length of a JTextComponent.
+ * Limits the length of a JTextComponent.
  */
 class InputLimiterDocument extends PlainDocument {
     private final int limit;
