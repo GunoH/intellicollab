@@ -2,6 +2,7 @@ package nl.guno.collab.intellij;
 
 import java.util.Random;
 
+import com.smartbear.CollabClientException;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.diagnostic.Logger;
@@ -72,6 +73,10 @@ class LoginTask extends Task.Modal {
                     Thread.currentThread().interrupt();
                     return;
                 }
+            } catch (CollabClientException e) {
+                // todo handle exception
+                e.printStackTrace();
+                return;
             }
             // increase backoff exponentially
             backoff *= 2;

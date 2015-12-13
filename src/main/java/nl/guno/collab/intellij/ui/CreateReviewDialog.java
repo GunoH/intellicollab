@@ -2,7 +2,6 @@ package nl.guno.collab.intellij.ui;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +10,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.*;
 
+import com.smartbear.ccollab.datamodel.client.IDropDownItem;
+import com.smartbear.ccollab.datamodel.client.ReviewAccess;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,8 +21,6 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.ValidationInfo;
 import com.intellij.ui.ListCellRendererWrapper;
 import com.smartbear.ccollab.datamodel.GroupDescription;
-import com.smartbear.ccollab.datamodel.IDropDownItem;
-import com.smartbear.ccollab.datamodel.ReviewAccess;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.FetchMetadataTask;
 import nl.guno.collab.intellij.MessageResources;
@@ -109,20 +108,20 @@ public class CreateReviewDialog extends DialogWrapper {
     /** Max length of 'Release notes: Migratiepad' field. */
     private static final int MAXLENGTH_RNMIGRATIEPAD = 4000;
 
-    public CreateReviewDialog(FetchMetadataTask fetchMetadataTask, User[] userList, List<GroupDescription> groupList,
+    public CreateReviewDialog(FetchMetadataTask fetchMetadataTask, List<User> userList, List<GroupDescription> groupList,
                               User currentUser, Project project, String reviewTitle) {
 
         super(project);
 
         init();
 
-        IDropDownItem[] bugzillaInstantieList = fetchMetadataTask.getBugzillaInstantie().getDropDownItems(true);
+        List<? extends IDropDownItem> bugzillaInstantieList = fetchMetadataTask.getBugzillaInstantie().getDropDownItems(true);
 
         this.userList = new ArrayList<User>();
-        this.userList.addAll(Arrays.asList(userList));
+        this.userList.addAll(userList);
 
         this.bugzillaInstantieList = new ArrayList<IDropDownItem>();
-        this.bugzillaInstantieList.addAll(Arrays.asList(bugzillaInstantieList));
+        this.bugzillaInstantieList.addAll(bugzillaInstantieList);
 
         this.groupList = groupList;
 
@@ -139,7 +138,7 @@ public class CreateReviewDialog extends DialogWrapper {
         if (matcher.matches()) {
             bugzillaNummerTextField.setText(matcher.group(1));
             // By default, select the first entry: Bugzilla1
-            bugzillaInstantieComboBoxModel.setSelectedItem(bugzillaInstantieList[1]);
+            bugzillaInstantieComboBoxModel.setSelectedItem(bugzillaInstantieList.get(1));
         }
     }
 

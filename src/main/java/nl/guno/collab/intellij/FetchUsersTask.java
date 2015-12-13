@@ -11,6 +11,8 @@ import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.ui.Notification;
 
+import java.util.List;
+
 class FetchUsersTask extends Task.Modal {
 
     private static final Logger logger = Logger.getInstance(FetchUsersTask.class.getName());
@@ -20,7 +22,7 @@ class FetchUsersTask extends Task.Modal {
     private final Project project;
     private final User user;
 
-    private User[] users;
+    private List<User> users;
 
     public FetchUsersTask(Project project, User user) {
         super(project, MessageResources.message("task.createReview.title"), false);
@@ -52,7 +54,7 @@ class FetchUsersTask extends Task.Modal {
         }
     }
 
-    public User[] getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 }

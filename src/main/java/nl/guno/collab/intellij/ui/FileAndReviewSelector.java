@@ -37,7 +37,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
     private DefaultComboBoxModel reviewComboBoxModel;
     private String preselectedReviewName;
 
-    public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, @NotNull Review[] reviewList, Project project,
+    public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, @NotNull List<Review> reviewList, Project project,
                                  String preselectedReviewName) {
 
         super(project);
@@ -48,7 +48,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
         initialFileList = fileList;
 
         this.reviewList = new ArrayList<Review>();
-        this.reviewList.addAll(Arrays.asList(reviewList));
+        this.reviewList.addAll(reviewList);
         this.preselectedReviewName = preselectedReviewName;
 
         // Sort the list of reviews in descending order of last activity date.

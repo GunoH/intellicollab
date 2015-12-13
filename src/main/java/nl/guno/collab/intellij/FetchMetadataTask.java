@@ -44,14 +44,14 @@ public class FetchMetadataTask extends Task.Modal {
 
         try {
             // Retrieve all metadata from the collaborator server
-            overview = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Overview")[0];
-            bugzillaInstantie = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzilla-instantie")[0];
-            bugzillanummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer")[0];
-            fo = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "FO")[0];
-            to = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "TO / Werkplan")[0];
-            rnFO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Functionele omschrijving")[0];
-            rnTO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Technische omschrijving")[0];
-            rnMigratiePad = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Migratiepad")[0];
+            overview = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Overview").get(0);
+            bugzillaInstantie = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzilla-instantie").get(0);
+            bugzillanummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer").get(0);
+            fo = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "FO").get(0);
+            to = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "TO / Werkplan").get(0);
+            rnFO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Functionele omschrijving").get(0);
+            rnTO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Technische omschrijving").get(0);
+            rnMigratiePad = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Migratiepad").get(0);
         } catch (DataModelException e) {
             logger.warn("Error when retrieving metadata.", e);
             return;
