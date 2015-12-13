@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/IntelliCcollab.iml" filepath="$PROJECT_DIR$/IntelliCcollab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IntelliCollab.iml" filepath="$PROJECT_DIR$/IntelliCollab.iml" />
     </modules>
   </component>
 </project>
