@@ -1,9 +1,12 @@
 package nl.guno.collab.intellij;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.smartbear.ccollab.datamodel.client.IDropDownItem;
+import com.smartbear.ccollab.datamodel.client.ReviewAccess;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.application.ApplicationManager;
@@ -13,12 +16,9 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.ccollab.datamodel.GroupDescription;
-import com.smartbear.ccollab.datamodel.IDropDownItem;
 import com.smartbear.ccollab.datamodel.MetaDataDescription;
 import com.smartbear.ccollab.datamodel.MetaDataSelectItem;
 import com.smartbear.ccollab.datamodel.Review;
-import com.smartbear.ccollab.datamodel.ReviewAccess;
-import com.smartbear.ccollab.datamodel.ReviewParticipant;
 import com.smartbear.ccollab.datamodel.Role;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.ui.Notification;
@@ -84,16 +84,17 @@ public class CreateReviewTask extends Task.Modal {
         review.setReviewAccess(reviewAccess);
 
         String template = user.getEngine().roleStandardTemplateName();
-        Role[] roles = user.getEngine().rolesFind(template, true);
+        List<Role> roles = user.getEngine().rolesFind(template, true);
 
+        // todo add participants
         if (author != null) {
-            review.addParticipants(new ReviewParticipant(author, Role.findAuthor(roles)));
+//            review.addParticipants(new ReviewParticipant(author, Role.findAuthor(roles)));
         }
         if (reviewer != null) {
-            review.addParticipants(new ReviewParticipant(reviewer, Role.findReviewer(roles)));
+//            review.addParticipants(new ReviewParticipant(reviewer, Role.findReviewer(roles)));
         }
         if (observer != null) {
-            review.addParticipants(new ReviewParticipant(observer, Role.findObserver(roles)));
+//            review.addParticipants(new ReviewParticipant(observer, Role.findObserver(roles)));
         }
 
         if (metadata != null) {

@@ -62,6 +62,11 @@ public class IntelliCollabGlobalOptions implements IGlobalOptions {
     }
 
     @Override
+    public String getProfile() {
+        return wrappedOptions.getProfile();
+    }
+
+    @Override
     public Boolean isNoBrowser() {
         return wrappedOptions.isNoBrowser();
     }
@@ -92,12 +97,27 @@ public class IntelliCollabGlobalOptions implements IGlobalOptions {
     }
 
     @Override
-    public String getBrowser() {
-        return wrappedOptions.getBrowser();
+    public Boolean isUserProvidedAuth() {
+        return wrappedOptions.isUserProvidedAuth();
     }
 
     @Override
-    public Boolean isForceNewBrowser() {
-        return wrappedOptions.isForceNewBrowser();
+    public void setUserProvidedAuth(Boolean userProvidedAuth) {
+wrappedOptions.setUserProvidedAuth(userProvidedAuth);
+    }
+
+    @Override
+    public Boolean isDebug() {
+        return wrappedOptions.isDebug();
+    }
+
+    @Override
+    public Boolean isUseJsonApi() {
+        return wrappedOptions.isUseJsonApi();
+    }
+
+    @Override
+    public Boolean isUseLegacyApi() {
+        return wrappedOptions.isUseLegacyApi();
     }
 }

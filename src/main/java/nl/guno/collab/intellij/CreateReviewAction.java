@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.smartbear.ccollab.datamodel.client.ReviewAccess;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -16,7 +17,6 @@ import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.MetaDataDescription;
-import com.smartbear.ccollab.datamodel.ReviewAccess;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.scm.ScmConfigurationException;
 import nl.guno.collab.intellij.ui.CreateReviewDialog;
@@ -53,7 +53,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 			FetchUsersTask fetchUsersTask = new FetchUsersTask(project, user);
 			fetchUsersTask.queue();
 
-			User[] users = fetchUsersTask.getUsers();
+			List<User> users = fetchUsersTask.getUsers();
 
 			// Retrieve the available groups
 			FetchGroupsTask fetchGroupsTask = new FetchGroupsTask(project, user);

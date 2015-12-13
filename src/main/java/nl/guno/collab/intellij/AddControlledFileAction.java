@@ -94,9 +94,9 @@ public class AddControlledFileAction extends IntelliCollabAction {
             FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, user);
             fetchReviewsTask.queue();
 
-            Review[] reviews = fetchReviewsTask.getReviews();
+            List<Review> reviews = fetchReviewsTask.getReviews();
 
-            if (reviews == null || reviews.length == 0) {
+            if (reviews == null || reviews.isEmpty()) {
                 logger.debug("No reviews found");
 	            new Notification(
 			            project,
@@ -152,16 +152,17 @@ public class AddControlledFileAction extends IntelliCollabAction {
 
             if (selectedReviewId != null) {
                 // Retrieve the selected review.
-                Review review = engine.reviewById(selectedReviewId);
+                // todo: Add files to review.
+//                Review review = engine.reviewById(selectedReviewId);
 
                 // Add the current file to the selected review.
-                attachControlledFiles(event, review, files);
+//                attachControlledFiles(event, review, files);
 	            
 	            // Add a label to the local history.
-	            LocalHistory.getInstance().putSystemLabel(project, 
-			            MessageResources.message("localhistory.label.filesuploaded", 
-					            review.getId().toString(), 
-					            review.getTitle())); 
+//	            LocalHistory.getInstance().putSystemLabel(project,
+//			            MessageResources.message("localhistory.label.filesuploaded",
+//					            review.getId().toString(),
+//					            review.getTitle()));
             }
         } catch (CollabClientServerConnectivityException e) {
             logger.warn(e);

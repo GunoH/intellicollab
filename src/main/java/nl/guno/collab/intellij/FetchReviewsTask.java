@@ -12,6 +12,8 @@ import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.ui.Notification;
 
+import java.util.List;
+
 class FetchReviewsTask extends Task.Modal {
 
     private static final Logger logger = Logger.getInstance(FetchReviewsTask.class.getName());
@@ -21,7 +23,7 @@ class FetchReviewsTask extends Task.Modal {
     private final Project project;
     private final User user;
 
-    private Review[] reviews;
+    private List<Review> reviews;
 
     public FetchReviewsTask(Project project, User user) {
         super(project, MessageResources.message("task.selectReview.title"), false);
@@ -53,7 +55,7 @@ class FetchReviewsTask extends Task.Modal {
         }
     }
 
-    public Review[] getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 }
