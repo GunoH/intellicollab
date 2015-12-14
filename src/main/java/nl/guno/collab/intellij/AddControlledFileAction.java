@@ -148,16 +148,11 @@ public class AddControlledFileAction extends IntelliCollabAction {
                 return;
             }
 
-            Integer selectedReviewId = fileAndReviewSelector.getSelectedReviewId();
-
-            if (selectedReviewId != null) {
-                // Retrieve the selected review.
-                // todo: Add files to review.
-//                Review review = engine.reviewById(selectedReviewId);
-
+            Review selectedReview = fileAndReviewSelector.getSelectedReview();
+            if (selectedReview != null) {
                 // Add the current file to the selected review.
-//                attachControlledFiles(event, review, files);
-	            
+                attachControlledFiles(event, selectedReview, files);
+
 	            // Add a label to the local history.
 //	            LocalHistory.getInstance().putSystemLabel(project,
 //			            MessageResources.message("localhistory.label.filesuploaded",
