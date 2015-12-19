@@ -74,8 +74,7 @@ class LoginTask extends Task.Modal {
                     return;
                 }
             } catch (CollabClientException e) {
-                // todo handle exception
-                e.printStackTrace();
+                logger.error("Exception when trying to log in.", e);
                 return;
             }
             // increase backoff exponentially
