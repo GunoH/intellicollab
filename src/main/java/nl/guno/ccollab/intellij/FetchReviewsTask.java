@@ -12,7 +12,7 @@ import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-class FetchReviewsTask extends Task.Modal {
+class FetchReviewsTask extends Task.Backgroundable {
 
     private static final Logger logger = Logger.getInstance(FetchReviewsTask.class.getName());
 

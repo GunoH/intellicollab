@@ -17,7 +17,7 @@ import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-class FetchGroupsTask extends Task.Modal {
+class FetchGroupsTask extends Task.Backgroundable {
 
     private static final Logger logger = Logger.getInstance(FetchGroupsTask.class.getName());
 

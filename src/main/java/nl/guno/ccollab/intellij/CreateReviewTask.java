@@ -23,7 +23,7 @@ import com.smartbear.ccollab.datamodel.Role;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-public class CreateReviewTask extends Task.Modal {
+public class CreateReviewTask extends Task.Backgroundable {
 
     private static final Logger logger = Logger.getInstance(CreateReviewTask.class.getName());
 
@@ -139,5 +139,10 @@ public class CreateReviewTask extends Task.Modal {
                     MessageResources.message("task.createReview.errorOccurred.text"),
                     MessageType.ERROR).showBalloon();
         }
+    }
+
+    @Override
+    public boolean shouldStartInBackground() {
+        return false;
     }
 }
