@@ -22,8 +22,11 @@ public class IntelliCcollabApplicationComponent implements ApplicationComponent,
     
     /* The settings themselves; these need to be public for IntelliJ to save them. */
     
+    @SuppressWarnings("AccessCanBeTightened")
     public String serverURL;
+    @SuppressWarnings("AccessCanBeTightened")
     public String username;
+    @SuppressWarnings("AccessCanBeTightened")
     public String password;
 
     @Override
