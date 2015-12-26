@@ -38,11 +38,11 @@
     <idea-version since-build="111.69"/>
     <application-components>
         <component>
-            <implementation-class>nl.guno.ccollab.intellij.IntelliCcollabApplicationComponent</implementation-class>
+            <implementation-class>nl.guno.ccollab.intellij.IntelliCcollabSettings</implementation-class>
         </component>
     </application-components>
     <extensions defaultExtensionNs="com.intellij">
-        <applicationConfigurable groupId="tools" instance="nl.guno.ccollab.intellij.IntelliCcollabApplicationComponent"
+        <applicationConfigurable groupId="tools" instance="nl.guno.ccollab.intellij.IntelliCcollabSettings"
                                  id="tools.intelliccollab" key="settings.intelliccollab.name"
                                  bundle="nl.guno.ccollab.intellij.MessageResources"/>
     </extensions>

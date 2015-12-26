@@ -13,8 +13,8 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 
     private final IGlobalOptions wrappedOptions;
 
-    private final IntelliCcollabApplicationComponent component =
-            ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
+    private final IntelliCcollabSettings component =
+            ApplicationManager.getApplication().getComponent(IntelliCcollabSettings.class);
 
     public IntelliCcollabGlobalOptions(IGlobalOptions wrappedOptions) {
         this.wrappedOptions = wrappedOptions;

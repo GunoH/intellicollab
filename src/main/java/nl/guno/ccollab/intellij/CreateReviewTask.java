@@ -42,8 +42,8 @@ public class CreateReviewTask extends Task.Backgroundable {
 
     private Review review;
 
-    private final IntelliCcollabApplicationComponent component =
-            ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
+    private final IntelliCcollabSettings component =
+            ApplicationManager.getApplication().getComponent(IntelliCcollabSettings.class);
 
     public CreateReviewTask(Project project, User user, GroupDescription group, String reviewTitle,
                             boolean uploadRestricted, ReviewAccess reviewAccess, User author, User reviewer,

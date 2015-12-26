@@ -39,8 +39,8 @@ abstract class IntelliCcollabAction extends AnAction {
      */
     static User user;
 
-    private static final IntelliCcollabApplicationComponent component =
-            ApplicationManager.getApplication().getComponent(IntelliCcollabApplicationComponent.class);
+    private static final IntelliCcollabSettings component =
+            ApplicationManager.getApplication().getComponent(IntelliCcollabSettings.class);
 
     static boolean init(final Project project) throws CollabClientException, IOException, InterruptedException {
 
