@@ -140,8 +140,8 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
         return result.toArray(new File[result.size()]);
     }
 
-    public Integer getSelectedReviewId() {
-        return ((Review)reviewComboBox.getSelectedItem()).getId();
+    public Review getSelectedReview() {
+        return (Review)reviewComboBox.getSelectedItem();
     }
 }
 
