@@ -12,7 +12,10 @@ import java.io.IOException;
 class Environment {
 
 	private static final int EXIT_STATUS_SUCCESS = 0;
-	private static final String HOST = "codecollaborator.quinity.net";
+
+    // TODO: Shouldn't we use the user-defined host? (from IntelliCollabConfigurationForm).
+//	private static final String HOST = "codecollaborator.quinity.net";
+	private static final String HOST = "127.0.0.1";
     static final String REQUIRED_SVN_VERSION = "1.6";
 
     private String output;
