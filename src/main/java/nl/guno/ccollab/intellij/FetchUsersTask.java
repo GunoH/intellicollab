@@ -11,7 +11,7 @@ import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-class FetchUsersTask extends Task.Backgroundable {
+class FetchUsersTask extends Task.Modal {
 
     private static final Logger logger = Logger.getInstance(FetchUsersTask.class.getName());
 
