@@ -102,16 +102,15 @@ public class AddControlledFileAction extends IntelliCcollabAction {
 			            project,
 			            MessageResources.message("task.addFilesToReview.noReviews.text"),
 			            MessageType.WARNING)
-			            .setHyperlinkListener(new HyperlinkListener() {
-				            @Override
-				            public void hyperlinkUpdate(@NotNull HyperlinkEvent e) {
-					            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						            // Open create review dialog
-						            new CreateReviewAction().invoke(project);
-					            }
-				            }
-			            })
-			            .showBalloon();
+			            .showBalloon(new HyperlinkListener() {
+                            @Override
+                            public void hyperlinkUpdate(HyperlinkEvent e) {
+                                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                                    // Open create review dialog
+                                    new CreateReviewAction().invoke(project);
+                                }
+                            }
+                        });
 
 
                 return;

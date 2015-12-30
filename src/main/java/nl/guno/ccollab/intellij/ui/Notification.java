@@ -1,11 +1,9 @@
 package nl.guno.ccollab.intellij.ui;
 
-import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.intellij.ide.BrowserUtil;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationListener;
 import com.intellij.openapi.project.Project;
@@ -21,21 +19,6 @@ public class Notification {
     private final String message;
     private final MessageType type;
     
-    private HyperlinkListener hyperlinkListener = new HyperlinkListener() {
-        @Override
-        public void hyperlinkUpdate(HyperlinkEvent e) {
-            openHyperlink(e);
-        }
-    };
-
-    private NotificationListener notificationListener = new NotificationListener() {
-        @Override
-        public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification, 
-                                    @NotNull HyperlinkEvent hyperlinkEvent) {
-            openHyperlink(hyperlinkEvent);
-        }
-    };
-    
     public Notification(Project project, String message, MessageType type) {
         this.project = project;
         this.message = message;
@@ -44,6 +27,12 @@ public class Notification {
 
     @NotNull
     public Notification showBalloon() {
+        ToolWindowManager.getInstance(project).notifyByBalloon(ChangesViewContentManager.TOOLWINDOW_ID, type, message);
+        return this;
+    }
+
+    @NotNull
+    public Notification showBalloon(@NotNull HyperlinkListener hyperlinkListener) {
         ToolWindowManager.getInstance(project).notifyByBalloon(ChangesViewContentManager.TOOLWINDOW_ID, type, message, 
                 null, hyperlinkListener);
         return this;
@@ -51,18 +40,13 @@ public class Notification {
 
     @NotNull
     public Notification addToEventLog() {
-        NOTIFICATION_GROUP.createNotification("", message, type.toNotificationType(), notificationListener).notify(project);
+        NOTIFICATION_GROUP.createNotification(message, type.toNotificationType()).notify(project);
         return this;
     }
 
-    private void openHyperlink(@NotNull HyperlinkEvent hyperlinkEvent) {
-        if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-            BrowserUtil.launchBrowser(hyperlinkEvent.getURL().toExternalForm());
-        }
-    }
-
-    public Notification setHyperlinkListener(HyperlinkListener hyperlinkListener) {
-        this.hyperlinkListener = hyperlinkListener;
+    @NotNull
+    public Notification addToEventLog(@NotNull NotificationListener notificationListener) {
+        NOTIFICATION_GROUP.createNotification("", message, type.toNotificationType(), notificationListener).notify(project);
         return this;
     }
 }

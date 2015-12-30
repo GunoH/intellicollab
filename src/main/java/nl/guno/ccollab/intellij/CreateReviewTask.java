@@ -4,8 +4,13 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
 import org.jetbrains.annotations.NotNull;
 
+import com.intellij.ide.BrowserUtil;
+import com.intellij.notification.NotificationListener;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -131,7 +136,18 @@ public class CreateReviewTask extends Task.Backgroundable {
             new Notification(
                     project,
                     MessageResources.message("task.createReview.reviewCreated.text", review.getId().toString(), review.getTitle(), component.getServerURL()),
-                    MessageType.INFO).showBalloon().addToEventLog();
+                    MessageType.INFO).showBalloon(new HyperlinkListener() {
+                @Override
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    BrowserUtil.browse(e.getURL().toExternalForm());
+                }
+            }).addToEventLog(new NotificationListener() {
+                @Override
+                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification, 
+                                            @NotNull HyperlinkEvent hyperlinkEvent) {
+                    BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                }
+            });
             
         } else {
             new Notification(
