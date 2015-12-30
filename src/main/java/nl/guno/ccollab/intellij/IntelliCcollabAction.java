@@ -83,23 +83,20 @@ abstract class IntelliCcollabAction extends AnAction {
 
         if (!loginTask.success()) {
             
-            String errorMessage;
             if (loginTask.authenticationErrorOccured()) {
-                errorMessage = MessageResources.message("task.login.authenticationError.text");
-            } else {
-                errorMessage = MessageResources.message("task.login.unknowError.text");
-            }
-
-            new Notification(project, errorMessage,
-                    MessageType.ERROR).setHyperlinkListener(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        openSettings(project);
+                new Notification(project, MessageResources.message("task.login.authenticationError.text"),
+                        MessageType.ERROR).setHyperlinkListener(new HyperlinkListener() {
+                    @Override
+                    public void hyperlinkUpdate(HyperlinkEvent e) {
+                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            openSettings(project);
+                        }
                     }
-                }
-            }).showBalloon().addToEventLog();
-
+                }).showBalloon().addToEventLog();
+            } else {
+                new Notification(project, MessageResources.message("task.login.unknowError.text"),
+                        MessageType.ERROR).showBalloon().addToEventLog();
+            }
 
             return false;
         }
