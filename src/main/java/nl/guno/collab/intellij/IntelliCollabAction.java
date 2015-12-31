@@ -75,7 +75,7 @@ abstract class IntelliCollabAction extends AnAction {
         scmOptions = configOptions.getB();
 
         //initialize client interface
-        ICollabClientInterface clientInterface = new CommandLineClient(globalOptions);
+        ICollabClientInterface clientInterface = new IntelliCollabClient(globalOptions);
 
         //connect to server and log in (throws exception if authentication fails, can't find server, etc...)
         LoginTask loginTask = new LoginTask(project, globalOptions, clientInterface);
