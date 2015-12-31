@@ -113,11 +113,11 @@ wrappedOptions.setUserProvidedAuth(userProvidedAuth);
 
     @Override
     public Boolean isUseJsonApi() {
-        return wrappedOptions.isUseJsonApi();
+        return Boolean.FALSE;
     }
 
     @Override
     public Boolean isUseLegacyApi() {
-        return wrappedOptions.isUseLegacyApi();
+        return Boolean.TRUE;
     }
 }
