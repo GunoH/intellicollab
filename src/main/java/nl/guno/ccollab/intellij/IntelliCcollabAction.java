@@ -48,17 +48,6 @@ abstract class IntelliCcollabAction extends AnAction {
 
     static boolean init(final Project project) throws CollabClientException, IOException, InterruptedException {
 
-	    if (!new Environment().checkConnection()) {
-		    new Notification(project, MessageResources.message("action.error.serverNotAvailable.text"),
-				    MessageType.ERROR).showBalloon().addToEventLog();
-		    return false;
-	    }
-
-        // If we've already initialized, don't do it again.
-        if ( engine != null ) {
-            return true;
-        }
-
         //load options from config files
         Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
         IntelliCcollabGlobalOptions globalOptions = new IntelliCcollabGlobalOptions(configOptions.getA());
@@ -82,6 +71,17 @@ abstract class IntelliCcollabAction extends AnAction {
                 }
             });
             return false;
+        }
+
+        if (!new Environment().checkConnection()) {
+            new Notification(project, MessageResources.message("action.error.serverNotAvailable.text"),
+                    MessageType.ERROR).showBalloon().addToEventLog();
+            return false;
+        }
+
+        // If we've already initialized, don't do it again.
+        if ( engine != null ) {
+            return true;
         }
 
         scmOptions = configOptions.getB();

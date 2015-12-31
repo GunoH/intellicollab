@@ -15,8 +15,12 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 final class PluginUtil {
+
+    private static final Pattern urlPattern = Pattern.compile("https?://([^/:]*):?.*");
 
     private PluginUtil() {
     }
@@ -111,5 +115,15 @@ final class PluginUtil {
         }
 
         return null;
+    }
+    
+    @Nullable
+    public static String extractHostFromUrl(@NotNull String url) {
+        Matcher matcher = urlPattern.matcher(url);
+        if (!matcher.matches()) {
+            return null;
+        }
+        
+        return  matcher.group(1);
     }
 }
