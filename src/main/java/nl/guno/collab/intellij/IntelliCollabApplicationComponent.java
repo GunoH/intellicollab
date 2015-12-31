@@ -84,7 +84,7 @@ public class IntelliCollabApplicationComponent implements ApplicationComponent, 
 
     @Override @NotNull
     public String getDisplayName() {
-        return "IntelliCcollab";
+        return "IntelliCollab";
     }
 
     @Override @Nullable

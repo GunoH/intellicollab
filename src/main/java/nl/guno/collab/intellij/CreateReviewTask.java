@@ -1,5 +1,6 @@
 package nl.guno.collab.intellij;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -85,17 +86,19 @@ public class CreateReviewTask extends Task.Modal {
 
         String template = user.getEngine().roleStandardTemplateName();
         List<Role> roles = user.getEngine().rolesFind(template, true);
-
-        // todo add participants
+        List<Review.AssignmentInfo> assignments = new ArrayList<>();
+        
         if (author != null) {
-//            review.addParticipants(new ReviewParticipant(author, Role.findAuthor(roles)));
+            assignments.add(new Review.AssignmentInfo(author, Role.findAuthor(roles)));
         }
         if (reviewer != null) {
-//            review.addParticipants(new ReviewParticipant(reviewer, Role.findReviewer(roles)));
+            assignments.add(new Review.AssignmentInfo(reviewer, Role.findReviewer(roles)));
         }
         if (observer != null) {
-//            review.addParticipants(new ReviewParticipant(observer, Role.findObserver(roles)));
+            assignments.add(new Review.AssignmentInfo(observer, Role.findObserver(roles)));
         }
+        
+        review.setAssignments(assignments);
 
         if (metadata != null) {
             for (Map.Entry<MetaDataDescription, Object> entry : metadata.entrySet()) {
