@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 final class PluginUtil {
 
-    private static final Pattern urlPattern = Pattern.compile("https?://([^/:]*):?.*");
+    private static final Pattern urlPattern = Pattern.compile("https?://([^/:\\?&]*):?.*");
 
     private PluginUtil() {
     }
