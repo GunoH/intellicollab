@@ -154,10 +154,10 @@ public class AddControlledFileAction extends IntelliCollabAction {
                 attachControlledFiles(event, selectedReview, files);
 
 	            // Add a label to the local history.
-//	            LocalHistory.getInstance().putSystemLabel(project,
-//			            MessageResources.message("localhistory.label.filesuploaded",
-//					            review.getId().toString(),
-//					            review.getTitle()));
+                LocalHistory.getInstance().putSystemLabel(project,
+                        MessageResources.message("localhistory.label.filesuploaded",
+                                selectedReview.getId().toString(),
+                                selectedReview.getTitle()));
             }
         } catch (CollabClientServerConnectivityException e) {
             logger.warn(e);
