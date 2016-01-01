@@ -22,11 +22,11 @@ class Environment {
             ApplicationManager.getApplication().getComponent(IntelliCcollabSettings.class);
     
             
-    public boolean checkConnection() throws InterruptedException {
+    public boolean checkConnection() {
         return exec("ping -n 1 " + PluginUtil.extractHostFromUrl(component.getServerURL()));
 	}
 
-    public void checkSVNExecutable() throws InterruptedException, SVNWrongVersionException, SVNNotAvailableException {
+    public void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException {
         if (!exec("svn --version")) {
             throw new SVNNotAvailableException();
         }
