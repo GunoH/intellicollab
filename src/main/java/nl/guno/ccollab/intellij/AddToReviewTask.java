@@ -3,9 +3,14 @@ package nl.guno.ccollab.intellij;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
+import com.intellij.ide.BrowserUtil;
+import com.intellij.notification.NotificationListener;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -145,7 +150,19 @@ class AddToReviewTask extends Task.Backgroundable {
     public void onSuccess() {
         if (success) {
             new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                    files.length, review.getId().toString(), review.getTitle(), component.getServerURL()), MessageType.INFO).showBalloon().addToEventLog();
+                    files.length, review.getId().toString(), review.getTitle(), component.getServerURL()), MessageType.INFO)
+                    .showBalloon(new HyperlinkListener() {
+                        @Override
+                        public void hyperlinkUpdate(HyperlinkEvent e) {
+                            BrowserUtil.browse(e.getURL().toExternalForm());
+                        }
+                    }).addToEventLog(new NotificationListener() {
+                @Override
+                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
+                                            @NotNull HyperlinkEvent hyperlinkEvent) {
+                    BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                }
+            });
         } else if (errorMessage != null) {
             new Notification(project, errorMessage, MessageType.WARNING).showBalloon().addToEventLog();
         }
@@ -156,7 +173,18 @@ class AddToReviewTask extends Task.Backgroundable {
         if (success) {
             new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
                     files.length, review.getId().toString(), review.getTitle(), component.getServerURL()),
-                    MessageType.INFO).showBalloon().addToEventLog();
+                    MessageType.INFO).showBalloon(new HyperlinkListener() {
+                @Override
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    BrowserUtil.browse(e.getURL().toExternalForm());
+                }
+            }).addToEventLog(new NotificationListener() {
+                @Override
+                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
+                                            @NotNull HyperlinkEvent hyperlinkEvent) {
+                    BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                }
+            });
         } else {
             new Notification(project, MessageResources.message("task.addFilesToReview.cancelled.text"),
                     MessageType.ERROR).showBalloon();
