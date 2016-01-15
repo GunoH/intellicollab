@@ -149,42 +149,38 @@ class AddToReviewTask extends Task.Backgroundable {
     @Override
     public void onSuccess() {
         if (success) {
-            new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                    files.length, review.getId().toString(), review.getTitle(), component.getServerURL()), MessageType.INFO)
-                    .showBalloon(new HyperlinkListener() {
-                        @Override
-                        public void hyperlinkUpdate(HyperlinkEvent e) {
-                            BrowserUtil.browse(e.getURL().toExternalForm());
-                        }
-                    }).addToEventLog(new NotificationListener() {
-                @Override
-                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
-                                            @NotNull HyperlinkEvent hyperlinkEvent) {
-                    BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
-                }
-            });
+            showNotification();
         } else if (errorMessage != null) {
             new Notification(project, errorMessage, MessageType.WARNING).showBalloon().addToEventLog();
         }
     }
 
+    @NotNull
+    private Notification showNotification() {
+        return new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
+                files.length, review.getId().toString(), review.getTitle(), component.getServerURL()), MessageType.INFO)
+                .showBalloon(new HyperlinkListener() {
+                    @Override
+                    public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
+                        if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                        }
+                    }
+                }).addToEventLog(new NotificationListener() {
+            @Override
+            public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
+                                        @NotNull HyperlinkEvent hyperlinkEvent) {
+                if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                    BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                }
+            }
+        });
+    }
+
     @Override
     public void onCancel() {
         if (success) {
-            new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                    files.length, review.getId().toString(), review.getTitle(), component.getServerURL()),
-                    MessageType.INFO).showBalloon(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    BrowserUtil.browse(e.getURL().toExternalForm());
-                }
-            }).addToEventLog(new NotificationListener() {
-                @Override
-                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
-                                            @NotNull HyperlinkEvent hyperlinkEvent) {
-                    BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
-                }
-            });
+            showNotification();
         } else {
             new Notification(project, MessageResources.message("task.addFilesToReview.cancelled.text"),
                     MessageType.ERROR).showBalloon();

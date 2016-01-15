@@ -145,7 +145,9 @@ public class CreateReviewTask extends Task.Backgroundable {
                 @Override
                 public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification, 
                                             @NotNull HyperlinkEvent hyperlinkEvent) {
-                    BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                    }
                 }
             });
             
