@@ -1,4 +1,4 @@
-<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <idea-plugin url="https://guno.nl/confluence/display/IC">
     <name>IntelliCcollab</name>
     <description><![CDATA[
@@ -36,11 +36,13 @@
         ]]>
     </change-notes>
     <idea-version since-build="111.69"/>
-    <application-components>
-        <component>
-            <implementation-class>nl.guno.ccollab.intellij.IntelliCcollabSettings</implementation-class>
-        </component>
-    </application-components>
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceInterface="nl.guno.ccollab.intellij.settings.IntelliCcollabSettings"
+                            serviceImplementation="nl.guno.ccollab.intellij.settings.IntelliCcollabSettings"/>
+        <projectConfigurable groupId="tools" instance="nl.guno.ccollab.intellij.settings.IntelliCcollabSettingsConfigurable" id="intelliccollab"
+                             key="configuration.key" bundle="nl.guno.ccollab.intellij.MessageResources"/>
+    </extensions>
+
     <actions>
         <group>
             <separator/>
