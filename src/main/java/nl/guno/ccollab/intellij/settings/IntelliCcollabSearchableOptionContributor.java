@@ -11,11 +11,11 @@ public class IntelliCcollabSearchableOptionContributor extends SearchableOptionC
     public void processOptions(@NotNull SearchableOptionProcessor processor) {
         final String configurableId = "nl.guno.ccollab.intellij.settings.IntelliCcollabSettingsConfigurable";
         final String displayName = MessageResources.message("configuration.key");
-        processor.addOptions("Code Collaborator URL", null, "IntelliCcollab options",
+        processor.addOptions(MessageResources.message("configuration.serverURL.label"), null, "IntelliCcollab options",
                 configurableId, displayName, true);
-        processor.addOptions("Username", null, "IntelliCcollab options",
+        processor.addOptions(MessageResources.message("configuration.username.label"), null, "IntelliCcollab options",
                 configurableId, displayName, true);
-        processor.addOptions("Password", null, "IntelliCcollab options",
+        processor.addOptions(MessageResources.message("configuration.password.label"), null, "IntelliCcollab options",
                 configurableId, displayName, true);
     }
 }
