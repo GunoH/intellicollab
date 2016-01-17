@@ -6,14 +6,8 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.intellij.ide.passwordSafe.PasswordSafe;
-import com.intellij.ide.passwordSafe.PasswordSafeException;
-import com.intellij.openapi.components.*;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
-import com.intellij.openapi.util.text.StringUtil;
-import nl.guno.ccollab.intellij.MessageResources;
 
 public class IntelliCcollabSettingsConfigurable implements SearchableConfigurable {
 
@@ -60,12 +54,14 @@ public class IntelliCcollabSettingsConfigurable implements SearchableConfigurabl
         return mySettingsPane != null && mySettingsPane.isModified();
     }
 
+    @Override
     public void apply() throws ConfigurationException {
         if (mySettingsPane != null) {
             mySettingsPane.apply();
         }
     }
 
+    @Override
     public void reset() {
         if (mySettingsPane != null) {
             mySettingsPane.reset();
