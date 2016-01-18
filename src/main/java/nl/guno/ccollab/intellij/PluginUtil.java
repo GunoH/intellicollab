@@ -31,7 +31,7 @@ final class PluginUtil {
     }
 
     @NotNull
-    public static File[] getCurrentFiles(@NotNull DataContext dataContext) {
+    static File[] getCurrentFiles(@NotNull DataContext dataContext) {
         VirtualFile[] virtualFiles = getCurrentVirtualFiles(dataContext);
 
         if (virtualFiles == null) {
@@ -46,7 +46,7 @@ final class PluginUtil {
     }
 
     @NotNull
-    public static File[] getSelectedFiles(@NotNull AnActionEvent actionEvent) {
+    static File[] getSelectedFiles(@NotNull AnActionEvent actionEvent) {
         VcsContext vcsContext = VcsContextFactory.SERVICE.getInstance().createContextOn(actionEvent);
         Change[] changes = vcsContext.getSelectedChanges();
         if (changes == null) {
@@ -74,7 +74,7 @@ final class PluginUtil {
     }
 
     @Nullable
-    public static String getSelectedChangesetName(@NotNull AnActionEvent actionEvent) {
+    static String getSelectedChangesetName(@NotNull AnActionEvent actionEvent) {
 
         VcsContext vcsContext = VcsContextFactory.SERVICE.getInstance().createContextOn(actionEvent);
         ChangeList[] changeLists = vcsContext.getSelectedChangeLists();
@@ -87,7 +87,7 @@ final class PluginUtil {
     }
 
     @Nullable
-    public static String getChangesetNameOfFirstSelectedFile(@NotNull AnActionEvent actionEvent) {
+    static String getChangesetNameOfFirstSelectedFile(@NotNull AnActionEvent actionEvent) {
 
         VcsContext vcsContext = VcsContextFactory.SERVICE.getInstance().createContextOn(actionEvent);
         Change[] changes = vcsContext.getSelectedChanges();
@@ -106,7 +106,7 @@ final class PluginUtil {
     }
 
     @Nullable
-    public static String getActiveChangesetName(Project project) {
+    static String getActiveChangesetName(Project project) {
 
         for (ChangeList changeList : ChangeListManager.getInstance(project).getChangeLists()) {
             if (changeList instanceof LocalChangeList && ((LocalChangeList)changeList).isDefault()) {
@@ -118,7 +118,7 @@ final class PluginUtil {
     }
     
     @Nullable
-    public static String extractHostFromUrl(@NotNull String url) {
+    static String extractHostFromUrl(@NotNull String url) {
         Matcher matcher = urlPattern.matcher(url);
         if (!matcher.matches()) {
             return null;

@@ -20,7 +20,7 @@ import com.smartbear.ccollab.datamodel.*;
 import nl.guno.ccollab.intellij.settings.IntelliCcollabSettings;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-public class CreateReviewTask extends Task.Backgroundable {
+class CreateReviewTask extends Task.Backgroundable {
 
     private static final Logger logger = Logger.getInstance(CreateReviewTask.class.getName());
 
@@ -39,9 +39,9 @@ public class CreateReviewTask extends Task.Backgroundable {
 
     private Review review;
 
-    public CreateReviewTask(Project project, User user, GroupDescription group, String reviewTitle,
-                            boolean uploadRestricted, ReviewAccess reviewAccess, User author, User reviewer,
-                            User observer, Map<MetaDataDescription, Object> metadata) {
+    CreateReviewTask(Project project, User user, GroupDescription group, String reviewTitle,
+                     boolean uploadRestricted, ReviewAccess reviewAccess, User author, User reviewer,
+                     User observer, Map<MetaDataDescription, Object> metadata) {
         super(project, MessageResources.message("task.createReview.title"), false);
 
         this.project = project;

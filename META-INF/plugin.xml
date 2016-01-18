@@ -80,7 +80,7 @@
         </group>
         <group>
             <separator/>
-            <action id="nl.guno.ccollab.intellij.CreateReviewTask"
+            <action id="nl.guno.ccollab.intellij.CreateReviewAction"
                     class="nl.guno.ccollab.intellij.CreateReviewAction"
                     text="Create _new review..."
                     description="Creates a new Code Collaborator review"
