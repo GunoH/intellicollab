@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Gradle: com.jetbrains:tools:14.1.6">
     <CLASSES>
-      <root url="jar://C:/Apps/Java/jdk1.8.0_65/lib/tools.jar!/" />
+      <root url="jar:///$JAVA_HOME/lib/tools.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
