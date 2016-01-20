@@ -9,7 +9,7 @@ import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.jetbrains.annotations.NotNull;
 
-import com.intellij.openapi.application.ApplicationManager;
+import nl.guno.ccollab.intellij.settings.IntelliCcollabSettings;
 
 class Environment {
 
@@ -18,12 +18,8 @@ class Environment {
 
     private String output;
 
-    private final IntelliCcollabSettings component =
-            ApplicationManager.getApplication().getComponent(IntelliCcollabSettings.class);
-    
-            
     public boolean checkConnection() {
-        return exec("ping -n 1 " + PluginUtil.extractHostFromUrl(component.getServerURL()));
+        return exec("ping -n 1 " + PluginUtil.extractHostFromUrl(IntelliCcollabSettings.getInstance().getServerUrl()));
 	}
 
     public void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException {

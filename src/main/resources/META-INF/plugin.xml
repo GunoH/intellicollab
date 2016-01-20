@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <idea-plugin url="https://guno.nl/confluence/display/IC">
     <name>IntelliCcollab</name>
     <description><![CDATA[
@@ -36,11 +37,16 @@
     </change-notes>
     <!--See also http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html-->
     <idea-version since-build="139" until-build="143"/>
-    <application-components>
-        <component>
-            <implementation-class>nl.guno.ccollab.intellij.IntelliCcollabSettings</implementation-class>
-        </component>
-    </application-components>
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceInterface="nl.guno.ccollab.intellij.settings.IntelliCcollabSettings"
+                            serviceImplementation="nl.guno.ccollab.intellij.settings.IntelliCcollabSettings"/>
+        <projectConfigurable groupId="tools" key="configuration.key" bundle="nl.guno.ccollab.intellij.MessageResources"
+                             instance="nl.guno.ccollab.intellij.settings.IntelliCcollabSettingsConfigurable"
+                             id="nl.guno.ccollab.intellij.settings.IntelliCcollabSettingsConfigurable"/>
+        <search.optionContributor
+                implementation="nl.guno.ccollab.intellij.settings.IntelliCcollabSearchableOptionContributor"/>
+    </extensions>
+
     <actions>
         <group>
             <separator/>

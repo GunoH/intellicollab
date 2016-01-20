@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.intellij.notification.NotificationListener;
 import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
@@ -22,6 +21,7 @@ import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.User;
 import com.smartbear.collections.Pair;
+import nl.guno.ccollab.intellij.settings.IntelliCcollabSettingsConfigurable;
 import nl.guno.ccollab.intellij.ui.Notification;
 
 abstract class IntelliCcollabAction extends AnAction {
@@ -42,9 +42,6 @@ abstract class IntelliCcollabAction extends AnAction {
      * created by {@link #init(com.intellij.openapi.project.Project)}
      */
     static User user;
-
-    private static final IntelliCcollabSettings component =
-            ApplicationManager.getApplication().getComponent(IntelliCcollabSettings.class);
 
     static boolean init(final Project project) throws CollabClientException, IOException, InterruptedException {
 
@@ -142,7 +139,7 @@ abstract class IntelliCcollabAction extends AnAction {
     }
 
     private static void openSettings(Project project) {
-        ShowSettingsUtil.getInstance().editConfigurable(project, component);
+        ShowSettingsUtil.getInstance().editConfigurable(project, new IntelliCcollabSettingsConfigurable());
     }
 
     /**

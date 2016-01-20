@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.intellij.ide.BrowserUtil;
 import com.intellij.notification.NotificationListener;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
@@ -19,17 +18,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.NullAskUser;
-import com.smartbear.ccollab.datamodel.Changelist;
-import com.smartbear.ccollab.datamodel.Engine;
-import com.smartbear.ccollab.datamodel.Review;
-import com.smartbear.ccollab.datamodel.Scm;
-import com.smartbear.ccollab.datamodel.User;
-import com.smartbear.scm.IScmClientConfiguration;
-import com.smartbear.scm.IScmLocalCheckout;
-import com.smartbear.scm.ScmChangeset;
-import com.smartbear.scm.ScmConfigurationException;
-import com.smartbear.scm.ScmUtils;
+import com.smartbear.ccollab.datamodel.*;
+import com.smartbear.scm.*;
 import com.smartbear.scm.impl.subversion.SubversionSystem;
+import nl.guno.ccollab.intellij.settings.IntelliCcollabSettings;
 import nl.guno.ccollab.intellij.ui.Notification;
 
 class AddToReviewTask extends Task.Backgroundable {
@@ -45,9 +37,6 @@ class AddToReviewTask extends Task.Backgroundable {
 
     private boolean success;
     private String errorMessage;
-
-    private final IntelliCcollabSettings component =
-            ApplicationManager.getApplication().getComponent(IntelliCcollabSettings.class);
 
     public AddToReviewTask(Project project, Review review, User user, File... files) {
         super(project, MessageResources.message("task.addFilesToReview.title"), true);
@@ -158,7 +147,7 @@ class AddToReviewTask extends Task.Backgroundable {
     @NotNull
     private Notification showNotification() {
         return new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                files.length, review.getId().toString(), review.getTitle(), component.getServerURL()), MessageType.INFO)
+                files.length, review.getId().toString(), review.getTitle(), IntelliCcollabSettings.getInstance().getServerUrl()), MessageType.INFO)
                 .showBalloon(new HyperlinkListener() {
                     @Override
                     public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
