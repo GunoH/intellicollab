@@ -101,12 +101,12 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
         });
     }
 
-    void reset() {
+    private void reset() {
         workingFileList = new ArrayList<Pair<File, Boolean>>(initialFileList);
         update();
     }
 
-    void update() {
+    private void update() {
         fileListModel.clear();
         for (Pair<File, Boolean> pair : workingFileList) {
             fileListModel.addElement(createCheckBox(pair.first, pair.second));
@@ -122,7 +122,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
          }
     }
 
-    JCheckBox createCheckBox(File file, boolean checked) {
+    private JCheckBox createCheckBox(File file, boolean checked) {
         return new JCheckBox(FileUtil.toSystemDependentName(file.getPath()), checked);
     }
 

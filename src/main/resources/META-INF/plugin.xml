@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <idea-plugin url="https://guno.nl/confluence/display/IC">
     <name>IntelliCcollab</name>
+    <category>Tools Integration</category>
     <description><![CDATA[
     <h4>Code Collaborator integration</h4>
     <p>Needs Subversion 1.6 client to be on the PATH</p>
     ]]>
     </description>
     <version>0.22</version>
-    <vendor email="idea@guno.nl">Guno Heitman</vendor>
+    <vendor url="https://github.com/GunoH/intelliccollab">Guno Heitman</vendor>
     <change-notes><![CDATA[
         <ul>
             <li>v0.22: Improvements to Create Review process.</li>
@@ -81,7 +82,7 @@
         </group>
         <group>
             <separator/>
-            <action id="nl.guno.ccollab.intellij.CreateReviewTask"
+            <action id="nl.guno.ccollab.intellij.CreateReviewAction"
                     class="nl.guno.ccollab.intellij.CreateReviewAction"
                     text="Create _new review..."
                     description="Creates a new Code Collaborator review"

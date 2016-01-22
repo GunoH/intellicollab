@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 import com.smartbear.beans.IGlobalOptions;
 import nl.guno.ccollab.intellij.settings.IntelliCcollabSettings;
 
-public class IntelliCcollabGlobalOptions implements IGlobalOptions {
+class IntelliCcollabGlobalOptions implements IGlobalOptions {
 
     private final IGlobalOptions wrappedOptions;
 
-    public IntelliCcollabGlobalOptions(IGlobalOptions wrappedOptions) {
+    IntelliCcollabGlobalOptions(IGlobalOptions wrappedOptions) {
         this.wrappedOptions = wrappedOptions;
 
     }
@@ -22,7 +22,7 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
      * Indicates if any of the mandatory settings are missing.
      * @return {@code true} if any of the mandatory settings are missing, {@code false} otherwise.
      */
-    public boolean settingsIncomplete() {
+    boolean settingsIncomplete() {
         IntelliCcollabSettings settings = IntelliCcollabSettings.getInstance();
 
         return StringUtils.isEmpty(settings.getServerUrl())
