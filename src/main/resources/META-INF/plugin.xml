@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<idea-plugin url="https://guno.nl/confluence/display/IC">
+<idea-plugin url="https://github.com/GunoH/intelliccollab">
     <name>IntelliCcollab</name>
     <category>Tools Integration</category>
     <description><![CDATA[
@@ -8,7 +8,7 @@
     ]]>
     </description>
     <version>0.22</version>
-    <vendor url="https://github.com/GunoH/intelliccollab">Guno Heitman</vendor>
+    <vendor>Guno Heitman</vendor>
     <change-notes><![CDATA[
         <ul>
             <li>v0.22: Improvements to Create Review process.</li>
