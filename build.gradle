@@ -13,18 +13,18 @@ apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
 
 compileJava {
-    sourceCompatibility = 1.6
-    targetCompatibility = 1.6
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
 }
 
 intellij {
-    version '14.1.6'
+    version ideaVersion
     pluginName 'IntelliCcollab'
     updateSinceUntilBuild false
 }
 
 group 'nl.guno'
-version '0.22'
+version version
 
 repositories {
     mavenCentral ()
