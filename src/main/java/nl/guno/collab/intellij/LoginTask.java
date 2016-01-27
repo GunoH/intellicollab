@@ -18,7 +18,7 @@ import com.smartbear.ccollab.client.LoginUtils;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.ui.Notification;
 
-class LoginTask extends Task.Backgroundable {
+class LoginTask extends Task.Modal {
 
     private static final int MAX_ATTEMPTS = 1;
     private static final int BACKOFF_MILLI_SECONDS = 2000;

@@ -1,13 +1,14 @@
-<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
-<idea-plugin url="https://guno.nl/confluence/display/IC">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<idea-plugin url="https://github.com/GunoH/intelliccollab">
     <name>IntelliCcollab</name>
+    <category>Tools Integration</category>
     <description><![CDATA[
     <h4>Collaborator integration</h4>
     <p>Needs Subversion 1.6 client to be on the PATH</p>
     ]]>
     </description>
     <version>0.22</version>
-    <vendor email="idea@guno.nl">Guno Heitman</vendor>
+    <vendor>Guno Heitman</vendor>
     <change-notes><![CDATA[
         <ul>
             <li>v0.22: Improvements to Create Review process.</li>
@@ -36,11 +37,16 @@
         ]]>
     </change-notes>
     <idea-version since-build="111.69"/>
-    <application-components>
-        <component>
-            <implementation-class>nl.guno.collab.intellij.IntelliCollabSettings</implementation-class>
-        </component>
-    </application-components>
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceInterface="nl.guno.ccollab.intellij.settings.IntelliCcollabSettings"
+                            serviceImplementation="nl.guno.ccollab.intellij.settings.IntelliCcollabSettings"/>
+        <projectConfigurable groupId="tools" key="configuration.key" bundle="nl.guno.ccollab.intellij.MessageResources"
+                             instance="nl.guno.ccollab.intellij.settings.IntelliCcollabSettingsConfigurable"
+                             id="nl.guno.ccollab.intellij.settings.IntelliCcollabSettingsConfigurable"/>
+        <search.optionContributor
+                implementation="nl.guno.ccollab.intellij.settings.IntelliCcollabSearchableOptionContributor"/>
+    </extensions>
+
     <actions>
         <group>
             <separator/>
@@ -75,8 +81,8 @@
         </group>
         <group>
             <separator/>
-            <action id="nl.guno.collab.intellij.CreateReviewTask"
-                    class="nl.guno.collab.intellij.CreateReviewAction"
+            <action id="nl.guno.ccollab.intellij.CreateReviewAction"
+                    class="nl.guno.ccollab.intellij.CreateReviewAction"
                     text="Create _new review..."
                     description="Creates a new Collaborator review"
                     icon="/icons/newReview.png">
