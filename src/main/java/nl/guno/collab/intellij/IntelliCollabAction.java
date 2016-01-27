@@ -9,7 +9,6 @@ import com.smartbear.CollabClientException;
 import com.smartbear.beans.ConfigUtils;
 import com.smartbear.beans.IGlobalOptions;
 import com.smartbear.beans.IScmOptions;
-import com.smartbear.ccollab.CommandLineClient;
 import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.User;
@@ -39,8 +38,8 @@ abstract class IntelliCollabAction extends AnAction {
      */
     static User user;
 
-    private static final IntelliCcollabSettings component =
-            ApplicationManager.getApplication().getComponent(IntelliCcollabSettings.class);
+    private static final IntelliCollabSettings component =
+            ApplicationManager.getApplication().getComponent(IntelliCollabSettings.class);
 
     static boolean init(final Project project) throws CollabClientException, IOException, InterruptedException {
 

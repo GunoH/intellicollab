@@ -41,8 +41,8 @@ class AddToReviewTask extends Task.Backgroundable {
     private boolean success;
     private String errorMessage;
 
-    private final IntelliCcollabSettings component =
-            ApplicationManager.getApplication().getComponent(IntelliCcollabSettings.class);
+    private final IntelliCollabSettings component =
+            ApplicationManager.getApplication().getComponent(IntelliCollabSettings.class);
 
     public AddToReviewTask(Project project, Review review, User user, File... files) {
         super(project, MessageResources.message("task.addFilesToReview.title"), true);

@@ -6,10 +6,10 @@ import java.util.Arrays;
 
 import javax.swing.*;
 
+import nl.guno.collab.intellij.MessageResources;
 import org.apache.commons.lang.StringUtils;
 
-import nl.guno.ccollab.intellij.IntelliCcollabSettings;
-import nl.guno.ccollab.intellij.MessageResources;
+import nl.guno.collab.intellij.IntelliCollabSettings;
 
 public class IntelliCollabConfigurationForm {
     private JPanel rootComponent;
@@ -21,7 +21,7 @@ public class IntelliCollabConfigurationForm {
         return rootComponent;
     }
 
-    public void setData(IntelliCcollabSettings data) {
+    public void setData(IntelliCollabSettings data) {
         String serverUrlFromConfig = data.getServerURL();
 
         if (StringUtils.isNotEmpty(serverUrlFromConfig)) {
@@ -33,7 +33,7 @@ public class IntelliCollabConfigurationForm {
         passwordField.setText(data.getPassword());
     }
 
-    public void getData(IntelliCcollabSettings data) throws MalformedURLException {
+    public void getData(IntelliCollabSettings data) throws MalformedURLException {
         String urlText = urlField.getText();
         if (StringUtils.isNotEmpty(urlText)) {
             // Validate the URL.
@@ -55,7 +55,7 @@ public class IntelliCollabConfigurationForm {
         data.setPassword(String.valueOf(passwordField.getPassword()));
     }
 
-    public boolean isModified(IntelliCcollabSettings data) {
+    public boolean isModified(IntelliCollabSettings data) {
 
         if (data.getServerURL() == null) {
             return urlField.getText() != null;

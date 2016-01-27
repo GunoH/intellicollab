@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 public class IntelliCollabSettings implements ApplicationComponent, Configurable, JDOMExternalizable {
     private IntelliCollabConfigurationForm form;
 
-    private static final String SETTINGS_PASSWORD_KEY = "IntelliCcollab_server_password";
+    private static final String SETTINGS_PASSWORD_KEY = "IntelliCollab_server_password";
     private static final Logger LOG = Logger.getInstance(IntelliCollabSettings.class.getName());
 
     /* The settings themselves; these need to be public for IntelliJ to save them. */
