@@ -20,6 +20,7 @@ compileJava {
 intellij {
     version '14.1.6'
     pluginName 'IntelliCcollab'
+    updateSinceUntilBuild false
 }
 
 group 'nl.guno'
