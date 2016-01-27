@@ -38,7 +38,7 @@ public class CreateReviewAction extends IntelliCcollabAction {
 		invoke(project);
 	}
 
-	public void invoke(Project project) {
+	void invoke(Project project) {
 		try {
 
 			if (!init(project)) {

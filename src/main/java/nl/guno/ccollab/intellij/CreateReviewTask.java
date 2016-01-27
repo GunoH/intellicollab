@@ -4,26 +4,23 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
 import org.jetbrains.annotations.NotNull;
 
-import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.ide.BrowserUtil;
+import com.intellij.notification.NotificationListener;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
-import com.smartbear.ccollab.datamodel.GroupDescription;
-import com.smartbear.ccollab.datamodel.IDropDownItem;
-import com.smartbear.ccollab.datamodel.MetaDataDescription;
-import com.smartbear.ccollab.datamodel.MetaDataSelectItem;
-import com.smartbear.ccollab.datamodel.Review;
-import com.smartbear.ccollab.datamodel.ReviewAccess;
-import com.smartbear.ccollab.datamodel.ReviewParticipant;
-import com.smartbear.ccollab.datamodel.Role;
-import com.smartbear.ccollab.datamodel.User;
+import com.smartbear.ccollab.datamodel.*;
+import nl.guno.ccollab.intellij.settings.IntelliCcollabSettings;
 import nl.guno.ccollab.intellij.ui.Notification;
 
-public class CreateReviewTask extends Task.Backgroundable {
+class CreateReviewTask extends Task.Backgroundable {
 
     private static final Logger logger = Logger.getInstance(CreateReviewTask.class.getName());
 
@@ -42,12 +39,9 @@ public class CreateReviewTask extends Task.Backgroundable {
 
     private Review review;
 
-    private final IntelliCcollabSettings component =
-            ApplicationManager.getApplication().getComponent(IntelliCcollabSettings.class);
-
-    public CreateReviewTask(Project project, User user, GroupDescription group, String reviewTitle,
-                            boolean uploadRestricted, ReviewAccess reviewAccess, User author, User reviewer,
-                            User observer, Map<MetaDataDescription, Object> metadata) {
+    CreateReviewTask(Project project, User user, GroupDescription group, String reviewTitle,
+                     boolean uploadRestricted, ReviewAccess reviewAccess, User author, User reviewer,
+                     User observer, Map<MetaDataDescription, Object> metadata) {
         super(project, MessageResources.message("task.createReview.title"), false);
 
         this.project = project;
@@ -130,8 +124,21 @@ public class CreateReviewTask extends Task.Backgroundable {
         if (success) {
             new Notification(
                     project,
-                    MessageResources.message("task.createReview.reviewCreated.text", review.getId().toString(), review.getTitle(), component.getServerURL()),
-                    MessageType.INFO).showBalloon().addToEventLog();
+                    MessageResources.message("task.createReview.reviewCreated.text", review.getId().toString(), review.getTitle(), IntelliCcollabSettings.getInstance().getServerUrl()),
+                    MessageType.INFO).showBalloon(new HyperlinkListener() {
+                @Override
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    BrowserUtil.browse(e.getURL().toExternalForm());
+                }
+            }).addToEventLog(new NotificationListener() {
+                @Override
+                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification, 
+                                            @NotNull HyperlinkEvent hyperlinkEvent) {
+                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                    }
+                }
+            });
             
         } else {
             new Notification(

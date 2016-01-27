@@ -4,19 +4,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.lang.StringUtils;
-
-import com.intellij.openapi.application.ApplicationManager;
-import com.smartbear.beans.IGlobalOptions;
 import org.jetbrains.annotations.NotNull;
 
-public class IntelliCcollabGlobalOptions implements IGlobalOptions {
+import com.smartbear.beans.IGlobalOptions;
+import nl.guno.ccollab.intellij.settings.IntelliCcollabSettings;
+
+class IntelliCcollabGlobalOptions implements IGlobalOptions {
 
     private final IGlobalOptions wrappedOptions;
 
-    private final IntelliCcollabSettings component =
-            ApplicationManager.getApplication().getComponent(IntelliCcollabSettings.class);
-
-    public IntelliCcollabGlobalOptions(IGlobalOptions wrappedOptions) {
+    IntelliCcollabGlobalOptions(IGlobalOptions wrappedOptions) {
         this.wrappedOptions = wrappedOptions;
 
     }
@@ -25,18 +22,21 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
      * Indicates if any of the mandatory settings are missing.
      * @return {@code true} if any of the mandatory settings are missing, {@code false} otherwise.
      */
-    public boolean settingsIncomplete() {
-        return StringUtils.isEmpty(component.getServerURL())
-                || StringUtils.isEmpty(component.getUsername())
-                || StringUtils.isEmpty(component.getPassword());
+    boolean settingsIncomplete() {
+        IntelliCcollabSettings settings = IntelliCcollabSettings.getInstance();
+
+        return StringUtils.isEmpty(settings.getServerUrl())
+                || StringUtils.isEmpty(settings.getUsername())
+                || StringUtils.isEmpty(settings.getPassword());
     }
 
     @Override @NotNull
     public URL getUrl() {
+        String serverUrl = IntelliCcollabSettings.getInstance().getServerUrl();
         try {
-            return new URL(component.getServerURL());
+            return new URL(serverUrl);
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Invalid URL:" + component.getServerURL());
+            throw new RuntimeException("Invalid URL:" + serverUrl);
         }
     }
 
@@ -52,12 +52,12 @@ public class IntelliCcollabGlobalOptions implements IGlobalOptions {
 
     @Override
     public String getUser() {
-        return component.getUsername();
+        return IntelliCcollabSettings.getInstance().getUsername();
     }
 
     @Override
     public String getPassword() {
-        return component.getPassword();
+        return IntelliCcollabSettings.getInstance().getPassword();
     }
 
     @Override
