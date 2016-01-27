@@ -8,8 +8,8 @@ import javax.swing.*;
 
 import org.apache.commons.lang.StringUtils;
 
-import nl.guno.collab.intellij.IntelliCollabApplicationComponent;
-import nl.guno.collab.intellij.MessageResources;
+import nl.guno.ccollab.intellij.IntelliCcollabSettings;
+import nl.guno.ccollab.intellij.MessageResources;
 
 public class IntelliCollabConfigurationForm {
     private JPanel rootComponent;
@@ -21,7 +21,7 @@ public class IntelliCollabConfigurationForm {
         return rootComponent;
     }
 
-    public void setData(IntelliCollabApplicationComponent data) {
+    public void setData(IntelliCcollabSettings data) {
         String serverUrlFromConfig = data.getServerURL();
 
         if (StringUtils.isNotEmpty(serverUrlFromConfig)) {
@@ -33,7 +33,7 @@ public class IntelliCollabConfigurationForm {
         passwordField.setText(data.getPassword());
     }
 
-    public void getData(IntelliCollabApplicationComponent data) throws MalformedURLException {
+    public void getData(IntelliCcollabSettings data) throws MalformedURLException {
         String urlText = urlField.getText();
         if (StringUtils.isNotEmpty(urlText)) {
             // Validate the URL.
@@ -55,7 +55,7 @@ public class IntelliCollabConfigurationForm {
         data.setPassword(String.valueOf(passwordField.getPassword()));
     }
 
-    public boolean isModified(IntelliCollabApplicationComponent data) {
+    public boolean isModified(IntelliCcollabSettings data) {
 
         if (data.getServerURL() == null) {
             return urlField.getText() != null;

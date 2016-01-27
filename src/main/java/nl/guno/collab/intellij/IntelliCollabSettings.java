@@ -4,6 +4,11 @@ import java.net.MalformedURLException;
 
 import javax.swing.*;
 
+import com.intellij.ide.passwordSafe.PasswordSafe;
+import com.intellij.ide.passwordSafe.PasswordSafeException;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.text.StringUtil;
+import nl.guno.collab.intellij.ui.IntelliCollabConfigurationForm;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,20 +19,20 @@ import com.intellij.openapi.util.DefaultJDOMExternalizer;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizable;
 import com.intellij.openapi.util.WriteExternalException;
-import nl.guno.collab.intellij.ui.IntelliCollabConfigurationForm;
 import org.jetbrains.annotations.Nullable;
 
-public class IntelliCollabApplicationComponent implements ApplicationComponent, Configurable, JDOMExternalizable {
+public class IntelliCollabSettings implements ApplicationComponent, Configurable, JDOMExternalizable {
     private IntelliCollabConfigurationForm form;
-    
+
+    private static final String SETTINGS_PASSWORD_KEY = "IntelliCcollab_server_password";
+    private static final Logger LOG = Logger.getInstance(IntelliCollabSettings.class.getName());
+
     /* The settings themselves; these need to be public for IntelliJ to save them. */
     
     @SuppressWarnings("AccessCanBeTightened")
     public String serverURL;
     @SuppressWarnings("AccessCanBeTightened")
     public String username;
-    @SuppressWarnings("AccessCanBeTightened")
-    public String password;
 
     @Override
     public void initComponent() {
@@ -60,16 +65,34 @@ public class IntelliCollabApplicationComponent implements ApplicationComponent, 
     }
 
     public String getPassword() {
-        return password;
+        final String username = getUsername();
+        if (StringUtil.isEmptyOrSpaces(username)) return "";
+
+        String password;
+        try {
+            password = PasswordSafe.getInstance().getPassword(null, IntelliCollabSettings.class,
+                    SETTINGS_PASSWORD_KEY);
+        }
+        catch (PasswordSafeException e) {
+            LOG.info("Couldn't get password for key [" + SETTINGS_PASSWORD_KEY + "]", e);
+            password = "";
+        }
+
+        return StringUtil.notNullize(password);
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        try {
+            PasswordSafe.getInstance().storePassword(null, IntelliCollabSettings.class, SETTINGS_PASSWORD_KEY, password);
+        }
+        catch (PasswordSafeException e) {
+            LOG.info("Couldn't set password for key [" + SETTINGS_PASSWORD_KEY + "]", e);
+        }
     }
 
     @Override @NotNull
     public String getDisplayName() {
-        return "IntelliCollab";
+        return "IntelliCcollab";
     }
 
     @Override @Nullable
