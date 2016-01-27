@@ -41,6 +41,11 @@
             <implementation-class>nl.guno.collab.intellij.IntelliCollabApplicationComponent</implementation-class>
         </component>
     </application-components>
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable groupId="tools" instance="nl.guno.ccollab.intellij.IntelliCcollabApplicationComponent"
+                                 id="tools.intelliccollab" key="settings.intelliccollab.name"
+                                 bundle="nl.guno.ccollab.intellij.MessageResources"/>
+    </extensions>
     <actions>
         <group>
             <separator/>

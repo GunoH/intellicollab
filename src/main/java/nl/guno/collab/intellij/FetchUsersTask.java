@@ -13,7 +13,7 @@ import nl.guno.collab.intellij.ui.Notification;
 
 import java.util.List;
 
-class FetchUsersTask extends Task.Modal {
+class FetchUsersTask extends Task.Backgroundable {
 
     private static final Logger logger = Logger.getInstance(FetchUsersTask.class.getName());
 

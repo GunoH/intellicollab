@@ -24,7 +24,7 @@ import com.smartbear.ccollab.datamodel.Role;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.ui.Notification;
 
-public class CreateReviewTask extends Task.Modal {
+public class CreateReviewTask extends Task.Backgroundable {
 
     private static final Logger logger = Logger.getInstance(CreateReviewTask.class.getName());
 
@@ -87,7 +87,7 @@ public class CreateReviewTask extends Task.Modal {
         String template = user.getEngine().roleStandardTemplateName();
         List<Role> roles = user.getEngine().rolesFind(template, true);
         List<Review.AssignmentInfo> assignments = new ArrayList<>();
-        
+
         if (author != null) {
             assignments.add(new Review.AssignmentInfo(author, Role.findAuthor(roles)));
         }
@@ -97,7 +97,7 @@ public class CreateReviewTask extends Task.Modal {
         if (observer != null) {
             assignments.add(new Review.AssignmentInfo(observer, Role.findObserver(roles)));
         }
-        
+
         review.setAssignments(assignments);
 
         if (metadata != null) {
@@ -143,5 +143,10 @@ public class CreateReviewTask extends Task.Modal {
                     MessageResources.message("task.createReview.errorOccurred.text"),
                     MessageType.ERROR).showBalloon();
         }
+    }
+
+    @Override
+    public boolean shouldStartInBackground() {
+        return false;
     }
 }

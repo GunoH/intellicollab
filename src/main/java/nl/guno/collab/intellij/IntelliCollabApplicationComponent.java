@@ -22,10 +22,11 @@ public class IntelliCollabApplicationComponent implements ApplicationComponent, 
     
     /* The settings themselves; these need to be public for IntelliJ to save them. */
     
+    @SuppressWarnings("AccessCanBeTightened")
     public String serverURL;
-    public String serverProxyHost;
-    public String serverProxyPort;
+    @SuppressWarnings("AccessCanBeTightened")
     public String username;
+    @SuppressWarnings("AccessCanBeTightened")
     public String password;
 
     @Override
@@ -48,22 +49,6 @@ public class IntelliCollabApplicationComponent implements ApplicationComponent, 
 
     public void setServerURL(@Nullable String serverURL) {
         this.serverURL = serverURL;
-    }
-
-    public String getServerProxyHost() {
-        return serverProxyHost;
-    }
-
-    public void setServerProxyHost(String serverProxyHost) {
-        this.serverProxyHost = serverProxyHost;
-    }
-
-    public String getServerProxyPort() {
-        return serverProxyPort;
-    }
-
-    public void setServerProxyPort(String serverProxyPort) {
-        this.serverProxyPort = serverProxyPort;
     }
 
     public String getUsername() {

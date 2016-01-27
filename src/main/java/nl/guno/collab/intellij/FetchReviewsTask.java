@@ -14,7 +14,7 @@ import nl.guno.collab.intellij.ui.Notification;
 
 import java.util.List;
 
-class FetchReviewsTask extends Task.Modal {
+class FetchReviewsTask extends Task.Backgroundable {
 
     private static final Logger logger = Logger.getInstance(FetchReviewsTask.class.getName());
 

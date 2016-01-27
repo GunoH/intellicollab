@@ -12,7 +12,7 @@ import com.smartbear.ccollab.datamodel.MetaDataDescription;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.ui.Notification;
 
-public class FetchMetadataTask extends Task.Modal {
+public class FetchMetadataTask extends Task.Backgroundable {
 
     private static final Logger logger = Logger.getInstance(FetchMetadataTask.class.getName());
 

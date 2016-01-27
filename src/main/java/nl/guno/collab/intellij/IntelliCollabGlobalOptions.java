@@ -43,12 +43,12 @@ public class IntelliCollabGlobalOptions implements IGlobalOptions {
 
     @Override
     public String getServerProxyHost() {
-        return component.getServerProxyHost();
+        return wrappedOptions.getServerProxyHost();
     }
 
     @Override
     public String getServerProxyPort() {
-        return component.getServerProxyPort();
+        return wrappedOptions.getServerProxyPort();
     }
 
     @Override
