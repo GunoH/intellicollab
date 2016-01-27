@@ -6,6 +6,10 @@ import java.io.IOException;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import com.smartbear.ccollab.datamodel.*;
+import com.smartbear.scm.*;
+import nl.guno.collab.intellij.settings.IntelliCollabSettings;
+import nl.guno.collab.intellij.ui.Notification;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,11 +22,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.NullAskUser;
-import com.smartbear.ccollab.datamodel.*;
-import com.smartbear.scm.*;
 import com.smartbear.scm.impl.subversion.SubversionSystem;
-import nl.guno.ccollab.intellij.settings.IntelliCcollabSettings;
-import nl.guno.ccollab.intellij.ui.Notification;
 
 class AddToReviewTask extends Task.Backgroundable {
 
@@ -83,7 +83,7 @@ class AddToReviewTask extends Task.Backgroundable {
                 // Create the SCM object representing a local file under version control.
                 // We assume the local SCM is already configured properly.
                 logger.debug("Loading SCM File object...");
-                clientConfig = ScmUtils.requireScm(file, AddControlledFileAction.scmOptions, NullAskUser.INSTANCE, 
+                clientConfig = ScmUtils.requireScm(file, AddControlledFileAction.scmOptions, NullAskUser.INSTANCE,
                         new NullProgressMonitor(), SubversionSystem.INSTANCE);
                 scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
                 if (scmFile != null) {
@@ -148,7 +148,7 @@ class AddToReviewTask extends Task.Backgroundable {
     @NotNull
     private Notification showNotification() {
         return new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
-                files.length, review.getId().toString(), review.getTitle(), IntelliCcollabSettings.getInstance().getServerUrl()), MessageType.INFO)
+                files.length, review.getId().toString(), review.getTitle(), IntelliCollabSettings.getInstance().getServerUrl()), MessageType.INFO)
                 .showBalloon(new HyperlinkListener() {
                     @Override
                     public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {

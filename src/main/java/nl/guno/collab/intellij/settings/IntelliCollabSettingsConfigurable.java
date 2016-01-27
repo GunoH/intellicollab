@@ -2,7 +2,6 @@ package nl.guno.collab.intellij.settings;
 
 import javax.swing.*;
 
-import nl.guno.ccollab.intellij.settings.IntelliCcollabSettingsPanel;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,7 +11,7 @@ import com.intellij.openapi.options.SearchableConfigurable;
 
 public class IntelliCollabSettingsConfigurable implements SearchableConfigurable {
 
-    private IntelliCcollabSettingsPanel mySettingsPane;
+    private IntelliCollabSettingsPanel mySettingsPane;
 
     public IntelliCollabSettingsConfigurable() {
     }
@@ -20,7 +19,7 @@ public class IntelliCollabSettingsConfigurable implements SearchableConfigurable
     @Nls
     @Override
     public String getDisplayName() {
-        return "IntelliCcollab";
+        return "IntelliCollab";
     }
 
     @Nullable
@@ -32,7 +31,7 @@ public class IntelliCollabSettingsConfigurable implements SearchableConfigurable
     @NotNull
     @Override
     public String getId() {
-        return "intelliccollab";
+        return "intellicollab";
     }
 
     @Nullable
@@ -45,7 +44,7 @@ public class IntelliCollabSettingsConfigurable implements SearchableConfigurable
     @Override
     public JComponent createComponent() {
         if (mySettingsPane == null) {
-            mySettingsPane = new IntelliCcollabSettingsPanel();
+            mySettingsPane = new IntelliCollabSettingsPanel();
         }
         return mySettingsPane.getPanel();
     }

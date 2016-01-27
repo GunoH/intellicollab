@@ -3,17 +3,17 @@ package nl.guno.collab.intellij;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import nl.guno.collab.intellij.settings.IntelliCollabSettings;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.smartbear.beans.IGlobalOptions;
-import nl.guno.ccollab.intellij.settings.IntelliCcollabSettings;
 
-class IntelliCcollabGlobalOptions implements IGlobalOptions {
+class IntelliCollabGlobalOptions implements IGlobalOptions {
 
     private final IGlobalOptions wrappedOptions;
 
-    IntelliCcollabGlobalOptions(IGlobalOptions wrappedOptions) {
+    IntelliCollabGlobalOptions(IGlobalOptions wrappedOptions) {
         this.wrappedOptions = wrappedOptions;
 
     }
@@ -23,7 +23,7 @@ class IntelliCcollabGlobalOptions implements IGlobalOptions {
      * @return {@code true} if any of the mandatory settings are missing, {@code false} otherwise.
      */
     boolean settingsIncomplete() {
-        IntelliCcollabSettings settings = IntelliCcollabSettings.getInstance();
+        IntelliCollabSettings settings = IntelliCollabSettings.getInstance();
 
         return StringUtils.isEmpty(settings.getServerUrl())
                 || StringUtils.isEmpty(settings.getUsername())
@@ -32,7 +32,7 @@ class IntelliCcollabGlobalOptions implements IGlobalOptions {
 
     @Override @NotNull
     public URL getUrl() {
-        String serverUrl = IntelliCcollabSettings.getInstance().getServerUrl();
+        String serverUrl = IntelliCollabSettings.getInstance().getServerUrl();
         try {
             return new URL(serverUrl);
         } catch (MalformedURLException e) {
@@ -52,12 +52,12 @@ class IntelliCcollabGlobalOptions implements IGlobalOptions {
 
     @Override
     public String getUser() {
-        return IntelliCcollabSettings.getInstance().getUsername();
+        return IntelliCollabSettings.getInstance().getUsername();
     }
 
     @Override
     public String getPassword() {
-        return IntelliCcollabSettings.getInstance().getPassword();
+        return IntelliCollabSettings.getInstance().getPassword();
     }
 
     @Override

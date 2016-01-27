@@ -3,13 +3,12 @@ package nl.guno.collab.intellij;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import nl.guno.collab.intellij.settings.IntelliCollabSettings;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.jetbrains.annotations.NotNull;
-
-import nl.guno.ccollab.intellij.settings.IntelliCcollabSettings;
 
 class Environment {
 
@@ -19,7 +18,7 @@ class Environment {
     private String output;
 
     public boolean checkConnection() {
-        return exec("ping -n 1 " + PluginUtil.extractHostFromUrl(IntelliCcollabSettings.getInstance().getServerUrl()));
+        return exec("ping -n 1 " + PluginUtil.extractHostFromUrl(IntelliCollabSettings.getInstance().getServerUrl()));
 	}
 
     public void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException {
