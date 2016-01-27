@@ -49,7 +49,7 @@
     <actions>
         <group>
             <separator/>
-            <action id="nl.guno.ccollab.intellij.AddControlledFileFromChangesViewPopupMenu"
+            <action id="nl.guno.collab.intellij.AddControlledFileFromChangesViewPopupMenu"
                     class="nl.guno.collab.intellij.AddControlledFileAction"
                     text="Add file(s) to _review..."
                     description="Adds one or more version-controlled file(s) to an existing Collaborator review"
@@ -59,7 +59,7 @@
             <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
         </group>
         <group>
-            <action id="nl.guno.ccollab.intellij.AddControlledFileFromChangesView"
+            <action id="nl.guno.collab.intellij.AddControlledFileFromChangesView"
                     class="nl.guno.collab.intellij.AddControlledFileAction"
                     text="Add file(s) to review..."
                     description="Adds one or more version-controlled file(s) to an existing Collaborator review"
