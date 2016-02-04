@@ -38,7 +38,7 @@
         ]]>
     </change-notes>
     <!--See also http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html-->
-    <idea-version since-build="139" until-build="144"/>
+    <idea-version since-build="139"/>
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceInterface="nl.guno.ccollab.intellij.settings.IntelliCcollabSettings"
                             serviceImplementation="nl.guno.ccollab.intellij.settings.IntelliCcollabSettings"/>
