@@ -18,11 +18,11 @@ class Environment {
 
     private String output;
 
-    public boolean checkConnection() {
+    boolean checkConnection() {
         return exec("ping -n 1 " + PluginUtil.extractHostFromUrl(IntelliCcollabSettings.getInstance().getServerUrl()));
 	}
 
-    public void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException {
+    void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException {
         if (!exec("svn --version")) {
             throw new SVNNotAvailableException();
         }
@@ -63,6 +63,6 @@ class Environment {
         }
     }
 
-    public class SVNNotAvailableException extends Exception {}
-    public class SVNWrongVersionException extends Exception {}
+    class SVNNotAvailableException extends Exception {}
+    class SVNWrongVersionException extends Exception {}
 }
