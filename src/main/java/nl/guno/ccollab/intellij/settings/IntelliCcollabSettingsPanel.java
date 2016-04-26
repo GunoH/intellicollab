@@ -2,8 +2,6 @@ package nl.guno.ccollab.intellij.settings;
 
 import javax.swing.*;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.text.StringUtil;
 
