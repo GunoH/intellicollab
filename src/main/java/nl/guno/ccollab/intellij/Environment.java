@@ -18,11 +18,11 @@ class Environment {
 
     private String output;
 
-    boolean checkConnection() {
+    boolean checkConnection() throws IOException {
         return exec("ping -n 1 " + PluginUtil.extractHostFromUrl(IntelliCcollabSettings.getInstance().getServerUrl()));
 	}
 
-    void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException {
+    void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException, IOException {
         if (!exec("svn --version")) {
             throw new SVNNotAvailableException();
         }
@@ -32,27 +32,29 @@ class Environment {
         }
     }
 
-    private boolean exec(@NotNull String command) {
+    private boolean exec(@NotNull String command) throws IOException {
         output = null;
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		CommandLine cmdLine = CommandLine.parse(command);
-		DefaultExecutor executor = new DefaultExecutor();
+        CommandLine cmdLine = CommandLine.parse(command);
+        DefaultExecutor executor = new DefaultExecutor();
         PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
         executor.setStreamHandler(streamHandler);
-		ExecuteWatchdog watchdog = new ExecuteWatchdog(5000);
-		executor.setWatchdog(watchdog);
-		try {
-			int exitStatus = executor.execute(cmdLine);
+        ExecuteWatchdog watchdog = new ExecuteWatchdog(5000);
+        executor.setWatchdog(watchdog);
+        try {
+            int exitStatus = executor.execute(cmdLine);
             output = outputStream.toString();
             return EXIT_STATUS_SUCCESS == exitStatus;
 
 		} catch (IOException e) {
-			return false;
+            System.err.println("Error evaluating command '" + command + "': " + e);
+            System.err.println(outputStream.toString());
+            return false;
 		}
 	}
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         try {
             new Environment().checkSVNExecutable();
             System.out.println("Correct version installed.");
