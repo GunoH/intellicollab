@@ -19,11 +19,15 @@ class Environment {
     private String output;
 
     boolean checkConnection() throws IOException {
-        return exec("ping -n 1 " + PluginUtil.extractHostFromUrl(IntelliCcollabSettings.getInstance().getServerUrl()));
-	}
+        String host = PluginUtil.extractHostFromUrl(IntelliCcollabSettings.getInstance().getServerUrl());
+
+        return host != null 
+                && exec(Platform.determine().pingCommand(host));
+
+    }
 
     void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException, IOException {
-        if (!exec("svn --version")) {
+        if (!exec(Platform.determine().svnCommand())) {
             throw new SVNNotAvailableException();
         }
 
