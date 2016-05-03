@@ -7,11 +7,11 @@
     <p>Needs Subversion 1.6 client to be on the PATH</p>
     ]]>
     </description>
-    <version>0.24</version>
+    <version>1.0-rc</version>
     <vendor>Guno Heitman</vendor>
     <change-notes><![CDATA[
         <ul>
-            <li>v0.24: Now using Gradle for build process.</li>
+            <li>v1.0: Updated for Collaborator v9, dropped SVN 1.6 requirement.</li>
             <li>v0.23: Various improvements and bug fixes.</li>
             <li>v0.22: Improvements to Create Review process.</li>
             <li>v0.21: Reviews are now pre-selected on uploading changes, based on changeset name.</li>
