@@ -13,9 +13,6 @@ import org.jetbrains.annotations.NotNull;
 class Environment {
 
 	private static final int EXIT_STATUS_SUCCESS = 0;
-    static final String REQUIRED_SVN_VERSION = "1.6";
-
-    private String output;
 
     boolean checkConnection() throws IOException {
         String host = PluginUtil.extractHostFromUrl(IntelliCollabSettings.getInstance().getServerUrl());
@@ -25,18 +22,13 @@ class Environment {
 
     }
 
-    void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException, IOException {
+    void checkSVNExecutable() throws SVNNotAvailableException, IOException {
         if (!exec(Platform.determine().svnCommand())) {
             throw new SVNNotAvailableException();
-        }
-
-        if (!output.contains(REQUIRED_SVN_VERSION)) {
-            throw new SVNWrongVersionException();
         }
     }
 
     private boolean exec(@NotNull String command) throws IOException {
-        output = null;
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         CommandLine cmdLine = CommandLine.parse(command);
@@ -47,7 +39,6 @@ class Environment {
         executor.setWatchdog(watchdog);
         try {
             int exitStatus = executor.execute(cmdLine);
-            output = outputStream.toString();
             return EXIT_STATUS_SUCCESS == exitStatus;
 
 		} catch (IOException e) {
@@ -62,12 +53,9 @@ class Environment {
             new Environment().checkSVNExecutable();
             System.out.println("Correct version installed.");
         } catch (SVNNotAvailableException e) {
-            System.err.println(MessageResources.message("action.error.svnNotAvailable.text", REQUIRED_SVN_VERSION));
-        } catch (SVNWrongVersionException e) {
-            System.err.println(MessageResources.message("action.error.svnWrongVersion.text", REQUIRED_SVN_VERSION));
+            System.err.println(MessageResources.message("action.error.svnNotAvailable.text"));
         }
     }
 
     class SVNNotAvailableException extends Exception {}
-    class SVNWrongVersionException extends Exception {}
 }

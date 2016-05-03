@@ -29,7 +29,6 @@ import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.scm.ScmConfigurationException;
 import nl.guno.collab.intellij.Environment.SVNNotAvailableException;
-import nl.guno.collab.intellij.Environment.SVNWrongVersionException;
 import nl.guno.collab.intellij.ui.CreateReviewDialog;
 import nl.guno.collab.intellij.ui.FileAndReviewSelector;
 import nl.guno.collab.intellij.ui.Notification;
@@ -57,13 +56,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
             try {
                 new Environment().checkSVNExecutable();
             } catch (SVNNotAvailableException e) {
-                new Notification(project, MessageResources.message("action.error.svnNotAvailable.text",
-                        Environment.REQUIRED_SVN_VERSION),
-                        MessageType.ERROR).showBalloon().addToEventLog();
-                return;
-            } catch (SVNWrongVersionException e) {
-                new Notification(project, MessageResources.message("action.error.svnWrongVersion.text",
-                        Environment.REQUIRED_SVN_VERSION),
+                new Notification(project, MessageResources.message("action.error.svnNotAvailable.text"),
                         MessageType.ERROR).showBalloon().addToEventLog();
                 return;
             }
