@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intelliccollab.iml" filepath="$PROJECT_DIR$/.idea/modules/intelliccollab.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intelliccollab_main.iml" filepath="$PROJECT_DIR$/.idea/modules/intelliccollab_main.iml" group="intelliccollab" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intelliccollab_test.iml" filepath="$PROJECT_DIR$/.idea/modules/intelliccollab_test.iml" group="intelliccollab" />
+      <module fileurl="file://$PROJECT_DIR$/IntelliCcollab.iml" filepath="$PROJECT_DIR$/IntelliCcollab.iml" />
     </modules>
   </component>
 </project>
