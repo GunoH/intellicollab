@@ -134,8 +134,10 @@ class CreateReviewTask extends Task.Backgroundable {
                     MessageResources.message("task.createReview.reviewCreated.text", review.getId().toString(), review.getTitle(), IntelliCollabSettings.getInstance().getServerUrl()),
                     MessageType.INFO).showBalloon(new HyperlinkListener() {
                 @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    BrowserUtil.browse(e.getURL().toExternalForm());
+                public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
+                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                    }
                 }
             }).addToEventLog(new NotificationListener() {
                 @Override

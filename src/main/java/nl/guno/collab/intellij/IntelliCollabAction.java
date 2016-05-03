@@ -71,7 +71,22 @@ abstract class IntelliCollabAction extends AnAction {
 
         if (!new Environment().checkConnection()) {
             new Notification(project, MessageResources.message("action.error.serverNotAvailable.text"),
-                    MessageType.ERROR).showBalloon().addToEventLog();
+                    MessageType.ERROR).showBalloon(new HyperlinkListener() {
+                @Override
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        openSettings(project);
+                    }
+                }
+            }).addToEventLog(new NotificationListener() {
+                @Override
+                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
+                                            @NotNull HyperlinkEvent hyperlinkEvent) {
+                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        openSettings(project);
+                    }
+                }
+            });
             return false;
         }
 

@@ -17,12 +17,16 @@ class Environment {
 
     private String output;
 
-    public boolean checkConnection() {
-        return exec("ping -n 1 " + PluginUtil.extractHostFromUrl(IntelliCollabSettings.getInstance().getServerUrl()));
-	}
+    boolean checkConnection() throws IOException {
+        String host = PluginUtil.extractHostFromUrl(IntelliCollabSettings.getInstance().getServerUrl());
 
-    public void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException {
-        if (!exec("svn --version")) {
+        return host != null
+                && exec(Platform.determine().pingCommand(host));
+
+    }
+
+    void checkSVNExecutable() throws SVNWrongVersionException, SVNNotAvailableException, IOException {
+        if (!exec(Platform.determine().svnCommand())) {
             throw new SVNNotAvailableException();
         }
 
@@ -31,27 +35,29 @@ class Environment {
         }
     }
 
-    private boolean exec(@NotNull String command) {
+    private boolean exec(@NotNull String command) throws IOException {
         output = null;
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		CommandLine cmdLine = CommandLine.parse(command);
-		DefaultExecutor executor = new DefaultExecutor();
+        CommandLine cmdLine = CommandLine.parse(command);
+        DefaultExecutor executor = new DefaultExecutor();
         PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
         executor.setStreamHandler(streamHandler);
-		ExecuteWatchdog watchdog = new ExecuteWatchdog(5000);
-		executor.setWatchdog(watchdog);
-		try {
-			int exitStatus = executor.execute(cmdLine);
+        ExecuteWatchdog watchdog = new ExecuteWatchdog(5000);
+        executor.setWatchdog(watchdog);
+        try {
+            int exitStatus = executor.execute(cmdLine);
             output = outputStream.toString();
             return EXIT_STATUS_SUCCESS == exitStatus;
 
 		} catch (IOException e) {
-			return false;
+            System.err.println("Error evaluating command '" + command + "': " + e);
+            System.err.println(outputStream.toString());
+            return false;
 		}
 	}
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         try {
             new Environment().checkSVNExecutable();
             System.out.println("Correct version installed.");
@@ -62,6 +68,6 @@ class Environment {
         }
     }
 
-    public class SVNNotAvailableException extends Exception {}
-    public class SVNWrongVersionException extends Exception {}
+    class SVNNotAvailableException extends Exception {}
+    class SVNWrongVersionException extends Exception {}
 }
