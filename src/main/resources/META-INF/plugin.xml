@@ -7,7 +7,7 @@
     ]]>
     </description>
     <version>1.0-rc</version>
-    <vendor>Guno Heitman</vendor>
+    <vendor>Guno Heitman</vendor>`
     <change-notes><![CDATA[
         <ul>
             <li>v1.0: Updated for Collaborator v9, dropped SVN 1.6 requirement.</li>
