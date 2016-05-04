@@ -4,7 +4,6 @@
     <category>Tools Integration</category>
     <description><![CDATA[
     <h4>Collaborator integration</h4>
-    <p>Needs Subversion 1.6 client to be on the PATH</p>
     ]]>
     </description>
     <version>1.0-rc</version>
