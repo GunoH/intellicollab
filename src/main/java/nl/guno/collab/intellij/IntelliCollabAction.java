@@ -124,20 +124,7 @@ abstract class IntelliCollabAction extends AnAction {
                 });
             } else {
                 new Notification(project, MessageResources.message("task.login.unknowError.text"),
-                        MessageType.ERROR).showBalloon(new HyperlinkListener() {
-                    @Override
-                    public void hyperlinkUpdate(HyperlinkEvent e) {
-                        openSettings(project);
-                    }
-                }).addToEventLog(new NotificationListener() {
-                    @Override
-                    public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
-                                                @NotNull HyperlinkEvent hyperlinkEvent) {
-                        if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                            openSettings(project);
-                        }
-                    }
-                });
+                        MessageType.ERROR).showBalloon().addToEventLog();
             }
 
             return false;
