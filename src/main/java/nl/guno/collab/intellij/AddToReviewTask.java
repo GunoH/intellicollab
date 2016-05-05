@@ -124,9 +124,6 @@ class AddToReviewTask extends Task.Backgroundable {
             review.addChangelist(changelist, user);
 
             success = true;
-        } catch (ScmConfigurationException e) {
-            logger.warn(e);
-            errorMessage = MessageResources.message("task.addFilesToReview.cannotDetermineSCMSystem.text");
         } catch (CollabClientException e) {
             logger.warn(e);
             errorMessage = MessageResources.message("task.addFilesToReview.errorOccurred.text");
@@ -141,7 +138,24 @@ class AddToReviewTask extends Task.Backgroundable {
         if (success) {
             showNotification();
         } else if (errorMessage != null) {
-            new Notification(project, errorMessage, MessageType.WARNING).showBalloon().addToEventLog();
+            new Notification(project, errorMessage, MessageType.WARNING).showBalloon(
+                    new HyperlinkListener() {
+                        @Override
+                        public void hyperlinkUpdate(HyperlinkEvent e) {
+                            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                                IntelliCollabAction.showLog();
+                            }
+                        }
+                    }
+            ).addToEventLog(new NotificationListener() {
+                @Override
+                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
+                                            @NotNull HyperlinkEvent hyperlinkEvent) {
+                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        IntelliCollabAction.showLog();
+                    }
+                }
+            });
         }
     }
 
