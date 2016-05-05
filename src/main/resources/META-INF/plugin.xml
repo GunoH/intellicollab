@@ -11,6 +11,7 @@
     <change-notes><![CDATA[
         <ul>
             <li>v1.0: Updated for Collaborator v9, dropped SVN 1.6 requirement.</li>
+            <li>v0.24: Now using Gradle for build process.</li>
             <li>v0.23: Various improvements and bug fixes.</li>
             <li>v0.22: Improvements to Create Review process.</li>
             <li>v0.21: Reviews are now pre-selected on uploading changes, based on changeset name.</li>
