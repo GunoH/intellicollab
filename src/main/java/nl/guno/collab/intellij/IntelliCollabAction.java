@@ -5,6 +5,9 @@ import java.io.IOException;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.AnActionEvent;
 import nl.guno.collab.intellij.settings.IntelliCollabSettingsConfigurable;
 import nl.guno.collab.intellij.ui.Notification;
 import org.jetbrains.annotations.NotNull;
@@ -124,7 +127,22 @@ abstract class IntelliCollabAction extends AnAction {
                 });
             } else {
                 new Notification(project, MessageResources.message("task.login.unknowError.text"),
-                        MessageType.ERROR).showBalloon().addToEventLog();
+                        MessageType.ERROR).showBalloon(new HyperlinkListener() {
+                    @Override
+                    public void hyperlinkUpdate(HyperlinkEvent e) {
+                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            showLog();
+                        }
+                    }
+                }).addToEventLog(new NotificationListener() {
+                    @Override
+                    public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
+                                                @NotNull HyperlinkEvent hyperlinkEvent) {
+                        if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            showLog();
+                        }
+                    }
+                });
             }
 
             return false;
@@ -137,6 +155,11 @@ abstract class IntelliCollabAction extends AnAction {
         }
 
 	    return true;
+    }
+
+    static void showLog() {
+        AnAction action = ActionManager.getInstance().getAction("ShowLog");
+        action.actionPerformed(AnActionEvent.createFromAnAction(action, null, "", DataManager.getInstance().getDataContext()));
     }
 
     private static void openSettings(Project project) {

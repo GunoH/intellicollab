@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.smartbear.ccollab.datamodel.client.ReviewAccess;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -18,6 +20,7 @@ import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.MetaDataDescription;
 import com.smartbear.ccollab.datamodel.User;
+import com.smartbear.ccollab.datamodel.client.ReviewAccess;
 import com.smartbear.scm.ScmConfigurationException;
 import nl.guno.collab.intellij.ui.CreateReviewDialog;
 import nl.guno.collab.intellij.ui.Notification;
@@ -100,7 +103,14 @@ public class CreateReviewAction extends IntelliCollabAction {
 		} catch (CollabClientServerConnectivityException e) {
 			logger.warn(e);
 			new Notification(project, MessageResources.message("action.createReview.connectionException.text"),
-					MessageType.ERROR).showBalloon();
+					MessageType.ERROR).showBalloon(new HyperlinkListener() {
+				@Override
+				public void hyperlinkUpdate(HyperlinkEvent e) {
+					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+						showLog();
+					}
+				}
+			});
 		} catch (ScmConfigurationException e) {
 			logger.warn(e);
 			new Notification(project, MessageResources.message("action.createReview.scmException.text"),
@@ -108,14 +118,35 @@ public class CreateReviewAction extends IntelliCollabAction {
 		} catch (CollabClientException e) {
 			logger.warn(e);
 			new Notification(project, MessageResources.message("action.createReview.errorOccurred.text"),
-					MessageType.ERROR).showBalloon();
+					MessageType.ERROR).showBalloon(new HyperlinkListener() {
+				@Override
+				public void hyperlinkUpdate(HyperlinkEvent e) {
+					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+						showLog();
+					}
+				}
+			});
 		} catch (IOException e) {
 			logger.warn(e);
 			new Notification(project, MessageResources.message("action.createReview.ioErrorOccurred.text"),
-					MessageType.ERROR).showBalloon();
+					MessageType.ERROR).showBalloon(new HyperlinkListener() {
+				@Override
+				public void hyperlinkUpdate(HyperlinkEvent e) {
+					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+						showLog();
+					}
+				}
+			});
 		} catch (InterruptedException e) {
 			new Notification(project, MessageResources.message("action.createReview.errorOccurred.text"),
-					MessageType.ERROR).showBalloon();
+					MessageType.ERROR).showBalloon(new HyperlinkListener() {
+				@Override
+				public void hyperlinkUpdate(HyperlinkEvent e) {
+					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+						showLog();
+					}
+				}
+			});
 		} finally {
 			finished();
 		}

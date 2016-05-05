@@ -154,7 +154,14 @@ public class AddControlledFileAction extends IntelliCollabAction {
         } catch (CollabClientServerConnectivityException e) {
             logger.warn(e);
             new Notification(project, MessageResources.message("action.addControlledFile.connectionException.text"),
-                    MessageType.ERROR).showBalloon();
+                    MessageType.ERROR).showBalloon(new HyperlinkListener() {
+                @Override
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        showLog();
+                    }
+                }
+            });
 
         } catch (ScmConfigurationException e) {
             logger.warn(e);
@@ -163,14 +170,35 @@ public class AddControlledFileAction extends IntelliCollabAction {
         } catch (CollabClientException e) {
             logger.warn(e);
             new Notification(project, MessageResources.message("action.addControlledFile.errorOccurred.text"),
-                    MessageType.ERROR).showBalloon();
+                    MessageType.ERROR).showBalloon(new HyperlinkListener() {
+                @Override
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        showLog();
+                    }
+                }
+            });
         } catch (IOException e) {
             logger.warn(e);
             new Notification(project, MessageResources.message("action.addControlledFile.ioErrorOccurred.text"),
-                    MessageType.ERROR).showBalloon();
+                    MessageType.ERROR).showBalloon(new HyperlinkListener() {
+                @Override
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        showLog();
+                    }
+                }
+            });
         } catch (InterruptedException e) {
 	        new Notification(project, MessageResources.message("action.addControlledFile.errorOccurred.text"),
-			        MessageType.ERROR).showBalloon();
+			        MessageType.ERROR).showBalloon(new HyperlinkListener() {
+                @Override
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        showLog();
+                    }
+                }
+            });
         } finally {
             finished();
         }
