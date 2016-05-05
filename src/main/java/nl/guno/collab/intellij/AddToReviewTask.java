@@ -138,7 +138,7 @@ class AddToReviewTask extends Task.Backgroundable {
         if (success) {
             showNotification();
         } else if (errorMessage != null) {
-            new Notification(project, errorMessage, MessageType.WARNING).showBalloon(
+            new Notification(project, errorMessage, MessageType.ERROR).showBalloon(
                     new HyperlinkListener() {
                         @Override
                         public void hyperlinkUpdate(HyperlinkEvent e) {
