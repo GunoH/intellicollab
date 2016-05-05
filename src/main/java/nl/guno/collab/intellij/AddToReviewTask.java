@@ -124,9 +124,6 @@ class AddToReviewTask extends Task.Backgroundable {
             review.addChangelist(changelist, user);
 
             success = true;
-        } catch (ScmConfigurationException e) {
-            logger.warn(e);
-            errorMessage = MessageResources.message("task.addFilesToReview.cannotDetermineSCMSystem.text");
         } catch (CollabClientException e) {
             logger.warn(e);
             errorMessage = MessageResources.message("task.addFilesToReview.errorOccurred.text");
