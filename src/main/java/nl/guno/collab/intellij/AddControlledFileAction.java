@@ -12,11 +12,12 @@ import org.jetbrains.annotations.NotNull;
 
 import com.intellij.history.LocalHistory;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vcs.AbstractVcs;
@@ -29,7 +30,6 @@ import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.scm.ScmConfigurationException;
 import nl.guno.collab.intellij.Environment.SVNNotAvailableException;
-import nl.guno.collab.intellij.ui.CreateReviewDialog;
 import nl.guno.collab.intellij.ui.FileAndReviewSelector;
 import nl.guno.collab.intellij.ui.Notification;
 
@@ -42,7 +42,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
     public void actionPerformed(@NotNull AnActionEvent event) {
 
         try {
-			project = event.getData(LangDataKeys.PROJECT);
+			project = event.getData(CommonDataKeys.PROJECT);
 
             if (project == null) {
                 logger.error("project is null", new Throwable());
@@ -124,7 +124,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
             fileAndReviewSelector.pack();
             fileAndReviewSelector.show();
 
-            if (CreateReviewDialog.OK_EXIT_CODE != fileAndReviewSelector.getExitCode()) {
+            if (DialogWrapper.OK_EXIT_CODE != fileAndReviewSelector.getExitCode()) {
                 logger.debug("User pressed cancel.");
                 return;
             }
@@ -215,7 +215,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
      */
     private void attachControlledFiles(@NotNull AnActionEvent event, final Review review, final File... files) {
 
-		project = event.getData(LangDataKeys.PROJECT);
+		project = event.getData(CommonDataKeys.PROJECT);
 
         if (project == null) {
             logger.error("project is null", new Throwable());
@@ -228,7 +228,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
 
     @Override
     public void update(@NotNull AnActionEvent event) {
-		project = event.getData(LangDataKeys.PROJECT);
+		project = event.getData(CommonDataKeys.PROJECT);
         Change[] changes = event.getData(VcsDataKeys.CHANGES);
 
         boolean enabled = false;

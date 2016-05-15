@@ -83,7 +83,7 @@ class AddToReviewTask extends Task.Backgroundable {
                 // Create the SCM object representing a local file under version control.
                 // We assume the local SCM is already configured properly.
                 logger.debug("Loading SCM File object...");
-                clientConfig = ScmUtils.requireScm(file, AddControlledFileAction.scmOptions, NullAskUser.INSTANCE,
+                clientConfig = ScmUtils.requireScm(file, IntelliCollabAction.scmOptions, NullAskUser.INSTANCE,
                         new NullProgressMonitor(), SubversionSystem.INSTANCE);
                 scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
                 if (scmFile != null) {
@@ -105,7 +105,7 @@ class AddToReviewTask extends Task.Backgroundable {
             // uploader lets us specify even more information; this form extracts it
             // automatically from the files in the changeset.
             logger.debug("Uploading SCM Changeset...");
-            Engine engine = AddControlledFileAction.engine;
+            Engine engine = IntelliCollabAction.engine;
             Scm scm = engine.scmByLocalCheckout(scmFile);            // select the SCM system that matches the client configuration
 
             Scm.ChangesetParameters params = new Scm.ChangesetParameters(changeset, "Local changes uploaded from IntelliJ IDEA");

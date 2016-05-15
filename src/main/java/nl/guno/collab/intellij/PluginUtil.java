@@ -1,22 +1,23 @@
 package nl.guno.collab.intellij;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.actions.VcsContext;
 import com.intellij.openapi.vcs.actions.VcsContextFactory;
 import com.intellij.openapi.vcs.changes.*;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 final class PluginUtil {
 
@@ -27,7 +28,7 @@ final class PluginUtil {
 
 	@Nullable
     private static VirtualFile[] getCurrentVirtualFiles(@NotNull DataContext dataContext) {
-        return DataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
+        return CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
     }
 
     @NotNull

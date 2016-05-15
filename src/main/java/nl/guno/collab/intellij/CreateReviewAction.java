@@ -11,9 +11,10 @@ import javax.swing.event.HyperlinkListener;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.CollabClientException;
 import com.smartbear.ccollab.client.CollabClientServerConnectivityException;
@@ -32,7 +33,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 
 	@Override
 	public void actionPerformed(@NotNull AnActionEvent event) {
-		Project project = event.getData(LangDataKeys.PROJECT);
+		Project project = event.getData(CommonDataKeys.PROJECT);
 		if (project == null) {
 			logger.error("project is null", new Throwable());
 			return;
@@ -73,7 +74,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 			createReviewDialog.pack();
 			createReviewDialog.show();
 
-			if (CreateReviewDialog.OK_EXIT_CODE != createReviewDialog.getExitCode()) {
+			if (DialogWrapper.OK_EXIT_CODE != createReviewDialog.getExitCode()) {
 				logger.debug("User pressed cancel.");
 				return;
 			}
