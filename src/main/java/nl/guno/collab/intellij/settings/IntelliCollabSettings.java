@@ -9,7 +9,8 @@ import nl.guno.collab.intellij.MessageResources;
 
 @State(
         name = "IntelliCollabSettings",
-        storages = {@Storage(file = StoragePathMacros.WORKSPACE_FILE)})
+        storages = {@Storage(
+                file = StoragePathMacros.APP_CONFIG + "/intellicollab_settings.xml")})
 public class IntelliCollabSettings implements PersistentStateComponent<IntelliCollabSettings.State> {
 
     private static final String SETTINGS_PASSWORD_KEY = "IntelliCollab_server_password";
