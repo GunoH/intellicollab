@@ -116,7 +116,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
             }
             if (changesetName == null) {
                 // The selected file is not in a changeset. Use the active changeset.
-                changesetName = PluginUtil.getActiveChangesetName(event.getProject());
+                changesetName = PluginUtil.getActiveChangesetName(project);
             }
 
             FileAndReviewSelector fileAndReviewSelector = new FileAndReviewSelector(fileList, reviews, project,
