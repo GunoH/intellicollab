@@ -7,10 +7,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.text.StringUtil;
 import nl.guno.collab.intellij.MessageResources;
 
-@State(
-        name = "IntelliCollabSettings",
-        storages = {@Storage(
-                file = StoragePathMacros.WORKSPACE_FILE + "/intellicollab_settings.xml")})
+@State(name = "IntelliCollabSettings")
 public class IntelliCollabSettings implements PersistentStateComponent<IntelliCollabSettings.State> {
 
     private static final String SETTINGS_PASSWORD_KEY = "IntelliCollab_server_password";
