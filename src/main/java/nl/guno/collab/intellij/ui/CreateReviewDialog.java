@@ -160,12 +160,12 @@ public class CreateReviewDialog extends DialogWrapper {
         // Set tooltip texts
         setToolTipText(overviewTextArea, fetchMetadataTask.getOverview().getDescription());
         setToolTipText(bugzillaInstantieComboBox, fetchMetadataTask.getBugzillaInstantie().getDescription());
-        setToolTipText(bugzillaNummerTextField, fetchMetadataTask.getBugzillanummer().getDescription());
-        setToolTipText(foTextField, fetchMetadataTask.getFO().getDescription());
-        setToolTipText(toTextField, fetchMetadataTask.getTO().getDescription());
-        setToolTipText(rnFOTextArea, fetchMetadataTask.getRNFO().getDescription());
-        setToolTipText(rnTOTextArea, fetchMetadataTask.getRNTO().getDescription());
-        setToolTipText(rnMigratiePadTextArea, fetchMetadataTask.getRNMigratiePad().getDescription());
+        setToolTipText(bugzillaNummerTextField, fetchMetadataTask.getBugzillaNummer().getDescription());
+        setToolTipText(foTextField, fetchMetadataTask.getFo().getDescription());
+        setToolTipText(toTextField, fetchMetadataTask.getTo().getDescription());
+        setToolTipText(rnFOTextArea, fetchMetadataTask.getRnfo().getDescription());
+        setToolTipText(rnTOTextArea, fetchMetadataTask.getRnto().getDescription());
+        setToolTipText(rnMigratiePadTextArea, fetchMetadataTask.getRnMigratiePad().getDescription());
         
         // Set max length on JTextComponents.
         titleTextField.setDocument(new InputLimiterDocument(MAXLENGTH_TITLE));

@@ -23,11 +23,11 @@ public class FetchMetadataTask extends Task.Modal {
 
     private MetaDataDescription overview;
     private MetaDataDescription bugzillaInstantie;
-    private MetaDataDescription bugzillanummer;
+    private MetaDataDescription bugzillaNummer;
     private MetaDataDescription fo;
     private MetaDataDescription to;
-    private MetaDataDescription rnFO;
-    private MetaDataDescription rnTO;
+    private MetaDataDescription rnfO;
+    private MetaDataDescription rntO;
     private MetaDataDescription rnMigratiePad;
 
     public FetchMetadataTask(Project project, User user) {
@@ -46,11 +46,11 @@ public class FetchMetadataTask extends Task.Modal {
             // Retrieve all metadata from the collaborator server
             overview = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Overview").get(0);
             bugzillaInstantie = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzilla-instantie").get(0);
-            bugzillanummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer").get(0);
+            bugzillaNummer = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer").get(0);
             fo = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "FO").get(0);
             to = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "TO / Werkplan").get(0);
-            rnFO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Functionele omschrijving").get(0);
-            rnTO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Technische omschrijving").get(0);
+            rnfO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Functionele omschrijving").get(0);
+            rntO = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Technische omschrijving").get(0);
             rnMigratiePad = user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Migratiepad").get(0);
         } catch (DataModelException e) {
             logger.warn("Error when retrieving metadata.", e);
@@ -75,27 +75,27 @@ public class FetchMetadataTask extends Task.Modal {
         return bugzillaInstantie;
     }
 
-    public MetaDataDescription getBugzillanummer() {
-        return bugzillanummer;
+    public MetaDataDescription getBugzillaNummer() {
+        return bugzillaNummer;
     }
 
-    public MetaDataDescription getFO() {
+    public MetaDataDescription getFo() {
         return fo;
     }
 
-    public MetaDataDescription getTO() {
+    public MetaDataDescription getTo() {
         return to;
     }
 
-    public MetaDataDescription getRNFO() {
-        return rnFO;
+    public MetaDataDescription getRnfo() {
+        return rnfO;
     }
 
-    public MetaDataDescription getRNTO() {
-        return rnTO;
+    public MetaDataDescription getRnto() {
+        return rntO;
     }
 
-    public MetaDataDescription getRNMigratiePad() {
+    public MetaDataDescription getRnMigratiePad() {
         return rnMigratiePad;
     }
 }
