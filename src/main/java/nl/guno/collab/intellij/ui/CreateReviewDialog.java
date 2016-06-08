@@ -137,8 +137,8 @@ public class CreateReviewDialog extends DialogWrapper {
         Matcher matcher = Pattern.compile(PATTERN_BUGNUMBER).matcher(reviewTitle);
         if (matcher.matches()) {
             bugzillaNummerTextField.setText(matcher.group(1));
-            // By default, select the first entry: Bugzilla1
-            bugzillaInstantieComboBoxModel.setSelectedItem(bugzillaInstantieList.get(1));
+            // By default, select the first entry: Bugzilla
+            bugzillaInstantieComboBoxModel.setSelectedItem(bugzillaInstantieList.get(0));
         }
     }
 
