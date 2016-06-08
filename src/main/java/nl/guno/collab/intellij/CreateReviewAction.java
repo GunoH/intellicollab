@@ -35,7 +35,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 	public void actionPerformed(@NotNull AnActionEvent event) {
 		Project project = event.getData(CommonDataKeys.PROJECT);
 		if (project == null) {
-			logger.error("project is null", new Throwable());
+			// Can happen if no project was loaded.
 			return;
 		}
 
