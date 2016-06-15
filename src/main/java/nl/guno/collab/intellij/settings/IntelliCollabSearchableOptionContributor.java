@@ -9,7 +9,7 @@ import nl.guno.collab.intellij.MessageResources;
 public class IntelliCollabSearchableOptionContributor extends SearchableOptionContributor {
     @Override
     public void processOptions(@NotNull SearchableOptionProcessor processor) {
-        final String configurableId = "nl.guno.collab.intellij.settings.IntelliCollabSettingsConfigurable";
+        final String configurableId = IntelliCollabSettingsConfigurable.class.getName();
         final String displayName = MessageResources.message("configuration.key");
         processor.addOptions(MessageResources.message("configuration.serverURL.label"), null, "IntelliCollab options",
                 configurableId, displayName, true);
