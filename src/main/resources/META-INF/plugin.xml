@@ -6,10 +6,11 @@
     <h4>Collaborator integration</h4>
     ]]>
     </description>
-    <version>1.0</version>
+    <version>1.1</version>
     <vendor>Guno Heitman</vendor>
     <change-notes><![CDATA[
         <ul>
+            <li>v1.1: Bugfixes.</li>
             <li>v1.0: Updated for Collaborator v9, dropped SVN 1.6 requirement.</li>
             <li>v0.24: Now using Gradle for build process.</li>
             <li>v0.23: Various improvements and bug fixes.</li>
