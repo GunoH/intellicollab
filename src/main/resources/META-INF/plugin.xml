@@ -44,7 +44,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceInterface="nl.guno.collab.intellij.settings.IntelliCollabSettings"
                             serviceImplementation="nl.guno.collab.intellij.settings.IntelliCollabSettings"/>
-        <projectConfigurable groupId="tools" key="configuration.key" bundle="nl.guno.collab.intellij.MessageResources"
+        <applicationConfigurable groupId="tools" key="configuration.key" bundle="nl.guno.collab.intellij.MessageResources"
                              instance="nl.guno.collab.intellij.settings.IntelliCollabSettingsConfigurable"
                              id="nl.guno.collab.intellij.settings.IntelliCollabSettingsConfigurable"/>
         <search.optionContributor
