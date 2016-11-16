@@ -2,12 +2,14 @@ package nl.guno.collab.intellij;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import com.smartbear.ccollab.datamodel.*;
 import com.smartbear.scm.*;
+import com.smartbear.scm.impl.git.GitSystem;
 import nl.guno.collab.intellij.settings.IntelliCollabSettings;
 import nl.guno.collab.intellij.ui.Notification;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -84,7 +86,7 @@ class AddToReviewTask extends Task.Backgroundable {
                 // We assume the local SCM is already configured properly.
                 logger.debug("Loading SCM File object...");
                 clientConfig = ScmUtils.requireScm(file, IntelliCollabAction.scmOptions, NullAskUser.INSTANCE,
-                        new NullProgressMonitor(), SubversionSystem.INSTANCE);
+                        new NullProgressMonitor(), Arrays.asList(SubversionSystem.INSTANCE, GitSystem.INSTANCE));
                 scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
                 if (scmFile != null) {
                     changeset.addLocalCheckout(scmFile, true, new NullProgressMonitor());
