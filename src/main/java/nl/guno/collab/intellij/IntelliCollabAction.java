@@ -5,26 +5,23 @@ import java.io.IOException;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import nl.guno.collab.intellij.settings.IntelliCollabSettingsConfigurable;
-import nl.guno.collab.intellij.ui.Notification;
 import org.jetbrains.annotations.NotNull;
 
+import com.intellij.ide.DataManager;
 import com.intellij.notification.NotificationListener;
+import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.CollabClientException;
-import com.smartbear.beans.ConfigUtils;
-import com.smartbear.beans.IGlobalOptions;
 import com.smartbear.beans.IScmOptions;
 import com.smartbear.ccollab.client.ICollabClientInterface;
 import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.User;
-import com.smartbear.collections.Pair;
+import nl.guno.collab.intellij.settings.IntelliCollabSettingsConfigurable;
+import nl.guno.collab.intellij.ui.Notification;
 
 abstract class IntelliCollabAction extends AnAction {
 
@@ -48,8 +45,7 @@ abstract class IntelliCollabAction extends AnAction {
     static boolean init(final Project project) throws CollabClientException, IOException, InterruptedException {
 
         //load options from config files
-        Pair<IGlobalOptions, IScmOptions> configOptions = ConfigUtils.loadConfigFiles();
-        IntelliCollabGlobalOptions globalOptions = new IntelliCollabGlobalOptions(configOptions.getA());
+        IntelliCollabGlobalOptions globalOptions = new IntelliCollabGlobalOptions(ConfigOptions.getInstance().getA());
 
         if (globalOptions.settingsIncomplete()) {
             new Notification(project, MessageResources.message("configuration.error.mandatorySettingsMissing.text"),
@@ -98,7 +94,7 @@ abstract class IntelliCollabAction extends AnAction {
             return true;
         }
 
-        scmOptions = configOptions.getB();
+        scmOptions = ConfigOptions.getInstance().getB();
 
         //initialize client interface
         ICollabClientInterface clientInterface = new IntelliCollabClient(globalOptions);
