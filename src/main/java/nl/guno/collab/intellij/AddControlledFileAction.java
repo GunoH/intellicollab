@@ -61,7 +61,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
                 return;
             }
 
-	        if (engine == null) {
+	        if (Context.engine == null) {
                 return;
             }
 
@@ -84,7 +84,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
 
 
             // Retrieve the reviews the user can upload to
-            FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, user);
+            FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, Context.user);
             fetchReviewsTask.queue();
 
             List<Review> reviews = fetchReviewsTask.getReviews();
@@ -222,7 +222,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
             return;
         }
 
-        AddToReviewTask addToReviewTask = new AddToReviewTask(project, review, user, files);
+        AddToReviewTask addToReviewTask = new AddToReviewTask(project, review, Context.user, files);
         addToReviewTask.queue();
     }
 

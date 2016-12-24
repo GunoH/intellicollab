@@ -49,12 +49,13 @@ public class CreateReviewAction extends IntelliCollabAction {
 				return;
 			}
 
-			if (engine == null) {
+			if (Context.engine == null) {
 				return;
 			}
 
 			// Retrieve the available users
-			FetchUsersTask fetchUsersTask = new FetchUsersTask(project, user);
+            User user = Context.user;
+            FetchUsersTask fetchUsersTask = new FetchUsersTask(project, user);
 			fetchUsersTask.queue();
 
 			List<User> users = fetchUsersTask.getUsers();
