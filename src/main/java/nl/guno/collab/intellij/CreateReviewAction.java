@@ -108,7 +108,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 				@Override
 				public void hyperlinkUpdate(HyperlinkEvent e) {
 					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						showLog();
+                        PluginUtil.openLogDirectory();
 					}
 				}
 			});
@@ -123,7 +123,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 				@Override
 				public void hyperlinkUpdate(HyperlinkEvent e) {
 					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						showLog();
+                        PluginUtil.openLogDirectory();
 					}
 				}
 			});
@@ -134,7 +134,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 				@Override
 				public void hyperlinkUpdate(HyperlinkEvent e) {
 					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						showLog();
+                        PluginUtil.openLogDirectory();
 					}
 				}
 			});
@@ -144,7 +144,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 				@Override
 				public void hyperlinkUpdate(HyperlinkEvent e) {
 					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						showLog();
+                        PluginUtil.openLogDirectory();
 					}
 				}
 			});

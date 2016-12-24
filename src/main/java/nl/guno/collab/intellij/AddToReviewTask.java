@@ -145,7 +145,7 @@ class AddToReviewTask extends Task.Backgroundable {
                         @Override
                         public void hyperlinkUpdate(HyperlinkEvent e) {
                             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                                IntelliCollabAction.showLog();
+                                PluginUtil.openLogDirectory();
                             }
                         }
                     }
@@ -154,7 +154,7 @@ class AddToReviewTask extends Task.Backgroundable {
                 public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
                                             @NotNull HyperlinkEvent hyperlinkEvent) {
                     if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        IntelliCollabAction.showLog();
+                        PluginUtil.openLogDirectory();
                     }
                 }
             });

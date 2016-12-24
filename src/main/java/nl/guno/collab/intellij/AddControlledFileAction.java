@@ -158,7 +158,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
                 @Override
                 public void hyperlinkUpdate(HyperlinkEvent e) {
                     if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        showLog();
+                        PluginUtil.openLogDirectory();
                     }
                 }
             });
@@ -174,7 +174,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
                 @Override
                 public void hyperlinkUpdate(HyperlinkEvent e) {
                     if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        showLog();
+                        PluginUtil.openLogDirectory();
                     }
                 }
             });
@@ -185,7 +185,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
                 @Override
                 public void hyperlinkUpdate(HyperlinkEvent e) {
                     if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        showLog();
+                        PluginUtil.openLogDirectory();
                     }
                 }
             });
@@ -195,7 +195,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
                 @Override
                 public void hyperlinkUpdate(HyperlinkEvent e) {
                     if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        showLog();
+                        PluginUtil.openLogDirectory();
                     }
                 }
             });
