@@ -24,6 +24,7 @@ import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.FetchMetadataTask;
 import nl.guno.collab.intellij.MessageResources;
+import nl.guno.collab.intellij.Metadata;
 
 public class CreateReviewDialog extends DialogWrapper {
 
@@ -115,12 +116,12 @@ public class CreateReviewDialog extends DialogWrapper {
 
         init();
 
-        List<? extends IDropDownItem> bugzillaInstantieList = fetchMetadataTask.getBugzillaInstantie().getDropDownItems(true);
+        List<? extends IDropDownItem> bugzillaInstantieList = fetchMetadataTask.getMetadata().getBugzillaInstantie().getDropDownItems(true);
 
-        this.userList = new ArrayList<User>();
+        this.userList = new ArrayList<>();
         this.userList.addAll(userList);
 
-        this.bugzillaInstantieList = new ArrayList<IDropDownItem>();
+        this.bugzillaInstantieList = new ArrayList<>();
         this.bugzillaInstantieList.addAll(bugzillaInstantieList);
 
         this.groupList = groupList;
@@ -158,14 +159,15 @@ public class CreateReviewDialog extends DialogWrapper {
         setTitle(MessageResources.message("dialog.createReview.title"));
 
         // Set tooltip texts
-        setToolTipText(overviewTextArea, fetchMetadataTask.getOverview().getDescription());
-        setToolTipText(bugzillaInstantieComboBox, fetchMetadataTask.getBugzillaInstantie().getDescription());
-        setToolTipText(bugzillaNummerTextField, fetchMetadataTask.getBugzillaNummer().getDescription());
-        setToolTipText(foTextField, fetchMetadataTask.getFo().getDescription());
-        setToolTipText(toTextField, fetchMetadataTask.getTo().getDescription());
-        setToolTipText(rnFOTextArea, fetchMetadataTask.getRnfo().getDescription());
-        setToolTipText(rnTOTextArea, fetchMetadataTask.getRnto().getDescription());
-        setToolTipText(rnMigratiePadTextArea, fetchMetadataTask.getRnMigratiePad().getDescription());
+        Metadata metadata = fetchMetadataTask.getMetadata();
+        setToolTipText(overviewTextArea, metadata.getOverview().getDescription());
+        setToolTipText(bugzillaInstantieComboBox, metadata.getBugzillaInstantie().getDescription());
+        setToolTipText(bugzillaNummerTextField, metadata.getBugzillaNummer().getDescription());
+        setToolTipText(foTextField, metadata.getFo().getDescription());
+        setToolTipText(toTextField, metadata.getTo().getDescription());
+        setToolTipText(rnFOTextArea, metadata.getRnfo().getDescription());
+        setToolTipText(rnTOTextArea, metadata.getRnto().getDescription());
+        setToolTipText(rnMigratiePadTextArea, metadata.getRnMigratiePad().getDescription());
         
         // Set max length on JTextComponents.
         titleTextField.setDocument(new InputLimiterDocument(MAXLENGTH_TITLE));
@@ -183,21 +185,21 @@ public class CreateReviewDialog extends DialogWrapper {
     /** Makes sure tab and shift-tab move the focus instead of inserting tab characters. */
     private void setTabBehaviorOnTextAreas() {
         overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
         overviewTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnFOTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnFOTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnTOTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnTOTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
         rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
+                new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke("pressed TAB"))));
         rnMigratiePadTextArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                new HashSet<KeyStroke>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
+                new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke("shift pressed TAB"))));
     }
 
     private void setToolTipText(JComponent component, String text) {
@@ -230,7 +232,7 @@ public class CreateReviewDialog extends DialogWrapper {
 
         bugzillaInstantieComboBoxModel = new DefaultComboBoxModel();
         bugzillaInstantieComboBox = new ComboBox(bugzillaInstantieComboBoxModel);
-        bugzillaInstantieComboBox.setRenderer(new MyListCellRenderer<IDropDownItem>());
+        bugzillaInstantieComboBox.setRenderer(new MyListCellRenderer<>());
         bugzillaInstantieComboBox.setKeySelectionManager(new MyKeySelManager());
 
         reviewAccessComboBoxModel = new DefaultComboBoxModel();

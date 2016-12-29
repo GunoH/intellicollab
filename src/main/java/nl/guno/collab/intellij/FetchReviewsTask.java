@@ -1,22 +1,18 @@
 package nl.guno.collab.intellij;
 
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
-import com.smartbear.ccollab.datamodel.DataModelException;
 import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.ui.Notification;
 
-import java.util.List;
-
 class FetchReviewsTask extends Task.Modal {
-
-    private static final Logger logger = Logger.getInstance(FetchReviewsTask.class.getName());
 
     private boolean success;
 
@@ -25,7 +21,7 @@ class FetchReviewsTask extends Task.Modal {
 
     private List<Review> reviews;
 
-    public FetchReviewsTask(Project project, User user) {
+    FetchReviewsTask(Project project, User user) {
         super(project, MessageResources.message("task.selectReview.title"), false);
 
         this.project = project;
@@ -37,13 +33,7 @@ class FetchReviewsTask extends Task.Modal {
 
         progressIndicator.setText(MessageResources.message("progressIndicator.addToReview.retrievingReviews"));
 
-        try {
-            // Retrieve all reviews the user can upload to.
-            reviews = user.getReviewsCanUploadChangelists(null);
-        } catch (DataModelException e) {
-            logger.warn("Error when retrieving reviews.", e);
-            return;
-        }
+        reviews = ReviewsFetcher.fetch(user);
         success = true;
     }
 
@@ -55,7 +45,7 @@ class FetchReviewsTask extends Task.Modal {
         }
     }
 
-    public List<Review> getReviews() {
+    List<Review> getReviews() {
         return reviews;
     }
 }
