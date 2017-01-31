@@ -4,6 +4,8 @@ import com.intellij.ide.passwordSafe.PasswordSafe;
 import com.intellij.ide.passwordSafe.PasswordSafeException;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.options.ShowSettingsUtil;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import nl.guno.collab.intellij.MessageResources;
 
@@ -79,4 +81,9 @@ public class IntelliCollabSettings implements PersistentStateComponent<IntelliCo
             LOG.info("Couldn't set password for key [" + SETTINGS_PASSWORD_KEY + "]", e);
         }
     }
+
+    public static void openSettings(Project project) {
+        ShowSettingsUtil.getInstance().editConfigurable(project, new IntelliCollabSettingsConfigurable());
+    }
+
 }

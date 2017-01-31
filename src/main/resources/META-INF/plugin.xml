@@ -6,10 +6,11 @@
     <h4>Collaborator integration</h4>
     ]]>
     </description>
-    <version>1.1</version>
+    <version>1.2pre</version>
     <vendor>Guno Heitman</vendor>
     <change-notes><![CDATA[
         <ul>
+            <li>v1.2: Added support for GIT VCS.</li>
             <li>v1.1: Bugfixes.</li>
             <li>v1.0: Updated for Collaborator v9, dropped SVN 1.6 requirement.</li>
             <li>v0.24: Now using Gradle for build process.</li>
@@ -42,6 +43,7 @@
     <!--See also http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
     <idea-version since-build="141"/>
     <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="nl.guno.collab.intellij.BootstrapActivity"/>
         <applicationService serviceInterface="nl.guno.collab.intellij.settings.IntelliCollabSettings"
                             serviceImplementation="nl.guno.collab.intellij.settings.IntelliCollabSettings"/>
         <applicationConfigurable groupId="tools" key="configuration.key" bundle="nl.guno.collab.intellij.MessageResources"

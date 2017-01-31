@@ -2,12 +2,14 @@ package nl.guno.collab.intellij;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import com.smartbear.ccollab.datamodel.*;
 import com.smartbear.scm.*;
+import com.smartbear.scm.impl.git.GitSystem;
 import nl.guno.collab.intellij.settings.IntelliCollabSettings;
 import nl.guno.collab.intellij.ui.Notification;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -83,8 +85,8 @@ class AddToReviewTask extends Task.Backgroundable {
                 // Create the SCM object representing a local file under version control.
                 // We assume the local SCM is already configured properly.
                 logger.debug("Loading SCM File object...");
-                clientConfig = ScmUtils.requireScm(file, IntelliCollabAction.scmOptions, NullAskUser.INSTANCE,
-                        new NullProgressMonitor(), SubversionSystem.INSTANCE);
+                clientConfig = ScmUtils.requireScm(file, Context.scmOptions, NullAskUser.INSTANCE,
+                        new NullProgressMonitor(), Arrays.asList(SubversionSystem.INSTANCE, GitSystem.INSTANCE));
                 scmFile = clientConfig.getLocalCheckout(file, new NullProgressMonitor());
                 if (scmFile != null) {
                     changeset.addLocalCheckout(scmFile, true, new NullProgressMonitor());
@@ -105,7 +107,7 @@ class AddToReviewTask extends Task.Backgroundable {
             // uploader lets us specify even more information; this form extracts it
             // automatically from the files in the changeset.
             logger.debug("Uploading SCM Changeset...");
-            Engine engine = IntelliCollabAction.engine;
+            Engine engine = Context.engine;
             Scm scm = engine.scmByLocalCheckout(scmFile);            // select the SCM system that matches the client configuration
 
             Scm.ChangesetParameters params = new Scm.ChangesetParameters(changeset, "Local changes uploaded from IntelliJ IDEA");
@@ -143,7 +145,7 @@ class AddToReviewTask extends Task.Backgroundable {
                         @Override
                         public void hyperlinkUpdate(HyperlinkEvent e) {
                             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                                IntelliCollabAction.showLog();
+                                PluginUtil.openLogDirectory();
                             }
                         }
                     }
@@ -152,7 +154,7 @@ class AddToReviewTask extends Task.Backgroundable {
                 public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
                                             @NotNull HyperlinkEvent hyperlinkEvent) {
                     if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        IntelliCollabAction.showLog();
+                        PluginUtil.openLogDirectory();
                     }
                 }
             });

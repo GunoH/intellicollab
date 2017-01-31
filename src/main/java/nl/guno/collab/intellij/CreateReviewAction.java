@@ -49,12 +49,13 @@ public class CreateReviewAction extends IntelliCollabAction {
 				return;
 			}
 
-			if (engine == null) {
+			if (Context.engine == null) {
 				return;
 			}
 
 			// Retrieve the available users
-			FetchUsersTask fetchUsersTask = new FetchUsersTask(project, user);
+            User user = Context.user;
+            FetchUsersTask fetchUsersTask = new FetchUsersTask(project, user);
 			fetchUsersTask.queue();
 
 			List<User> users = fetchUsersTask.getUsers();
@@ -87,18 +88,19 @@ public class CreateReviewAction extends IntelliCollabAction {
 			User selectedReviewer = createReviewDialog.getSelectedReviewer();
 			User selectedObserver = createReviewDialog.getSelectedObserver();
 
-			Map<MetaDataDescription, Object> metadata = new HashMap<MetaDataDescription, Object>();
-			metadata.put(fetchMetadataTask.getOverview(), createReviewDialog.getEnteredOverview());
-			metadata.put(fetchMetadataTask.getBugzillaInstantie(), createReviewDialog.getSelectedBugzillaInstantie());
-			metadata.put(fetchMetadataTask.getBugzillaNummer(), createReviewDialog.getEnteredBugzillanummer());
-			metadata.put(fetchMetadataTask.getFo(), createReviewDialog.getEnteredFO());
-			metadata.put(fetchMetadataTask.getTo(), createReviewDialog.getEnteredTO());
-			metadata.put(fetchMetadataTask.getRnfo(), createReviewDialog.getEnteredRNFO());
-			metadata.put(fetchMetadataTask.getRnto(), createReviewDialog.getEnteredRNTO());
-			metadata.put(fetchMetadataTask.getRnMigratiePad(), createReviewDialog.getEnteredRNMigratiePad());
+			Map<MetaDataDescription, Object> metadataMap = new HashMap<>();
+            Metadata metadata = fetchMetadataTask.getMetadata();
+            metadataMap.put(metadata.getOverview(), createReviewDialog.getEnteredOverview());
+			metadataMap.put(metadata.getBugzillaInstantie(), createReviewDialog.getSelectedBugzillaInstantie());
+			metadataMap.put(metadata.getBugzillaNummer(), createReviewDialog.getEnteredBugzillanummer());
+			metadataMap.put(metadata.getFo(), createReviewDialog.getEnteredFO());
+			metadataMap.put(metadata.getTo(), createReviewDialog.getEnteredTO());
+			metadataMap.put(metadata.getRnfo(), createReviewDialog.getEnteredRNFO());
+			metadataMap.put(metadata.getRnto(), createReviewDialog.getEnteredRNTO());
+			metadataMap.put(metadata.getRnMigratiePad(), createReviewDialog.getEnteredRNMigratiePad());
 
 			CreateReviewTask createReviewTask = new CreateReviewTask(project, user, selectedGroup, enteredTitle,
-					uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadata);
+					uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadataMap);
 			createReviewTask.queue();
 
 		} catch (CollabClientServerConnectivityException e) {
@@ -108,7 +110,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 				@Override
 				public void hyperlinkUpdate(HyperlinkEvent e) {
 					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						showLog();
+                        PluginUtil.openLogDirectory();
 					}
 				}
 			});
@@ -123,7 +125,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 				@Override
 				public void hyperlinkUpdate(HyperlinkEvent e) {
 					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						showLog();
+                        PluginUtil.openLogDirectory();
 					}
 				}
 			});
@@ -134,7 +136,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 				@Override
 				public void hyperlinkUpdate(HyperlinkEvent e) {
 					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						showLog();
+                        PluginUtil.openLogDirectory();
 					}
 				}
 			});
@@ -144,7 +146,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 				@Override
 				public void hyperlinkUpdate(HyperlinkEvent e) {
 					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						showLog();
+                        PluginUtil.openLogDirectory();
 					}
 				}
 			});
