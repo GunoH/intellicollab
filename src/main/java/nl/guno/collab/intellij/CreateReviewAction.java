@@ -42,7 +42,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 		invoke(project);
 	}
 
-	void invoke(Project project) {
+	void invoke(final Project project) {
 		try {
 
 			if (!init(project)) {
@@ -54,54 +54,13 @@ public class CreateReviewAction extends IntelliCollabAction {
 			}
 
 			// Retrieve the available users
-            User user = Context.user;
-            FetchUsersTask fetchUsersTask = new FetchUsersTask(project, user);
+            FetchUsersTask fetchUsersTask = new FetchUsersTask(project, Context.user, new FetchUsersTask.Callback() {
+                @Override
+                public void onSuccess(List<User> users) {
+                    usersFetched(users, project);
+                }
+            });
 			fetchUsersTask.queue();
-
-			List<User> users = fetchUsersTask.getUsers();
-
-			// Retrieve the available groups
-			FetchGroupsTask fetchGroupsTask = new FetchGroupsTask(project, user);
-			fetchGroupsTask.queue();
-
-			List<GroupDescription> groups = fetchGroupsTask.getGroups();
-
-			// Retrieve the available metadata
-			FetchMetadataTask fetchMetadataTask = new FetchMetadataTask(project, user);
-			fetchMetadataTask.queue();
-
-			CreateReviewDialog createReviewDialog = new CreateReviewDialog(fetchMetadataTask.getMetadata(), users, groups, user,
-					project, PluginUtil.getActiveChangesetName(project));
-			createReviewDialog.pack();
-			createReviewDialog.show();
-
-			if (DialogWrapper.OK_EXIT_CODE != createReviewDialog.getExitCode()) {
-				logger.debug("User pressed cancel.");
-				return;
-			}
-
-			GroupDescription selectedGroup = createReviewDialog.getSelectedGroup();
-			String enteredTitle = createReviewDialog.getEnteredTitle();
-			boolean uploadRestricted = createReviewDialog.isUploadRestricted();
-			ReviewAccess reviewAccess = createReviewDialog.getReviewAccess();
-			User selectedAuthor = createReviewDialog.getSelectedAuthor();
-			User selectedReviewer = createReviewDialog.getSelectedReviewer();
-			User selectedObserver = createReviewDialog.getSelectedObserver();
-
-			Map<MetaDataDescription, Object> metadataMap = new HashMap<>();
-            Metadata metadata = fetchMetadataTask.getMetadata();
-            metadataMap.put(metadata.getOverview(), createReviewDialog.getEnteredOverview());
-			metadataMap.put(metadata.getBugzillaInstantie(), createReviewDialog.getSelectedBugzillaInstantie());
-			metadataMap.put(metadata.getBugzillaNummer(), createReviewDialog.getEnteredBugzillanummer());
-			metadataMap.put(metadata.getFo(), createReviewDialog.getEnteredFO());
-			metadataMap.put(metadata.getTo(), createReviewDialog.getEnteredTO());
-			metadataMap.put(metadata.getRnfo(), createReviewDialog.getEnteredRNFO());
-			metadataMap.put(metadata.getRnto(), createReviewDialog.getEnteredRNTO());
-			metadataMap.put(metadata.getRnMigratiePad(), createReviewDialog.getEnteredRNMigratiePad());
-
-			CreateReviewTask createReviewTask = new CreateReviewTask(project, user, selectedGroup, enteredTitle,
-					uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadataMap);
-			createReviewTask.queue();
 
 		} catch (CollabClientServerConnectivityException e) {
 			logger.warn(e);
@@ -154,4 +113,63 @@ public class CreateReviewAction extends IntelliCollabAction {
 			finished();
 		}
 	}
+
+    private void usersFetched(final List<User> users, final Project project) {
+
+        // Retrieve the available groups
+        FetchGroupsTask fetchGroupsTask = new FetchGroupsTask(project, Context.user, new FetchGroupsTask.Callback() {
+            @Override
+            public void onSuccess(List<GroupDescription> groups) {
+                groupsFetched(users, groups, project);
+            }
+        });
+        fetchGroupsTask.queue();
+    }
+
+    private void groupsFetched(final List<User> users, final List<GroupDescription> groups, final Project project) {
+
+        // Retrieve the available metadata
+        FetchMetadataTask fetchMetadataTask = new FetchMetadataTask(project, Context.user, new FetchMetadataTask.Callback() {
+            @Override
+            public void onSuccess(Metadata metadata) {
+                metadataFetched(metadata, users, groups, project);
+            }
+        });
+        fetchMetadataTask.queue();
+    }
+
+    private void metadataFetched(Metadata metadata, List<User> users, List<GroupDescription> groups, Project project) {
+        CreateReviewDialog createReviewDialog = new CreateReviewDialog(metadata, users, groups, Context.user,
+                project, PluginUtil.getActiveChangesetName(project));
+        createReviewDialog.pack();
+        createReviewDialog.show();
+
+        if (DialogWrapper.OK_EXIT_CODE != createReviewDialog.getExitCode()) {
+            logger.debug("User pressed cancel.");
+            return;
+        }
+
+        GroupDescription selectedGroup = createReviewDialog.getSelectedGroup();
+        String enteredTitle = createReviewDialog.getEnteredTitle();
+        boolean uploadRestricted = createReviewDialog.isUploadRestricted();
+        ReviewAccess reviewAccess = createReviewDialog.getReviewAccess();
+        User selectedAuthor = createReviewDialog.getSelectedAuthor();
+        User selectedReviewer = createReviewDialog.getSelectedReviewer();
+        User selectedObserver = createReviewDialog.getSelectedObserver();
+
+        Map<MetaDataDescription, Object> metadataMap = new HashMap<>();
+        metadataMap.put(metadata.getOverview(), createReviewDialog.getEnteredOverview());
+        metadataMap.put(metadata.getBugzillaInstantie(), createReviewDialog.getSelectedBugzillaInstantie());
+        metadataMap.put(metadata.getBugzillaNummer(), createReviewDialog.getEnteredBugzillanummer());
+        metadataMap.put(metadata.getFo(), createReviewDialog.getEnteredFO());
+        metadataMap.put(metadata.getTo(), createReviewDialog.getEnteredTO());
+        metadataMap.put(metadata.getRnfo(), createReviewDialog.getEnteredRNFO());
+        metadataMap.put(metadata.getRnto(), createReviewDialog.getEnteredRNTO());
+        metadataMap.put(metadata.getRnMigratiePad(), createReviewDialog.getEnteredRNMigratiePad());
+
+        CreateReviewTask createReviewTask = new CreateReviewTask(project, Context.user, selectedGroup, enteredTitle,
+                uploadRestricted, reviewAccess, selectedAuthor, selectedReviewer, selectedObserver, metadataMap);
+        createReviewTask.queue();
+
+    }
 }

@@ -12,20 +12,26 @@ import com.smartbear.ccollab.datamodel.Review;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.ui.Notification;
 
-class FetchReviewsTask extends Task.Modal {
+class FetchReviewsTask extends Task.Backgroundable {
 
+    interface Callback {
+        void onSuccess(List<Review> reviews);
+    }
+    
     private boolean success;
+    private Callback callback;
 
     private final Project project;
     private final User user;
 
     private List<Review> reviews;
 
-    FetchReviewsTask(Project project, User user) {
+    FetchReviewsTask(Project project, User user, Callback callback) {
         super(project, MessageResources.message("task.selectReview.title"), false);
 
         this.project = project;
         this.user = user;
+        this.callback = callback;
     }
 
     @Override
@@ -42,10 +48,16 @@ class FetchReviewsTask extends Task.Modal {
         if (!success) {
             new Notification(project, MessageResources.message("task.fetchReviews.errorOccurred.text"),
                     MessageType.ERROR).showBalloon();
+            return;
+        }
+        
+        if (callback != null) {
+            callback.onSuccess(reviews);
         }
     }
 
-    List<Review> getReviews() {
-        return reviews;
+    @Override
+    public boolean shouldStartInBackground() {
+        return false;
     }
 }

@@ -11,20 +11,26 @@ import com.intellij.openapi.ui.MessageType;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.ui.Notification;
 
-class FetchUsersTask extends Task.Modal {
+class FetchUsersTask extends Task.Backgroundable {
+
+    interface Callback {
+        void onSuccess(List<User> users);
+    }
 
     private boolean success;
+    private Callback callback;
 
     private final Project project;
     private final User user;
 
     private List<User> users;
 
-    FetchUsersTask(Project project, User user) {
+    FetchUsersTask(Project project, User user, Callback callback) {
         super(project, MessageResources.message("task.createReview.title"), false);
 
         this.project = project;
         this.user = user;
+        this.callback = callback;
     }
 
     @Override
@@ -42,10 +48,16 @@ class FetchUsersTask extends Task.Modal {
         if (!success) {
             new Notification(project, MessageResources.message("task.fetchUsers.errorOccurred.text"),
                     MessageType.ERROR).showBalloon();
+            return;
+        }
+
+        if (callback != null) {
+            callback.onSuccess(users);
         }
     }
 
-    List<User> getUsers() {
-        return users;
+    @Override
+    public boolean shouldStartInBackground() {
+        return false;
     }
 }

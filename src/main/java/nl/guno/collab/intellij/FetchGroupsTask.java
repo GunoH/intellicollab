@@ -12,20 +12,26 @@ import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.User;
 import nl.guno.collab.intellij.ui.Notification;
 
-class FetchGroupsTask extends Task.Modal {
+class FetchGroupsTask extends Task.Backgroundable {
+
+    interface Callback {
+        void onSuccess(List<GroupDescription> groups);
+    }
 
     private boolean success;
+    private Callback callback;
 
     private final Project project;
     private final User user;
 
     private List<GroupDescription> groups;
 
-    FetchGroupsTask(Project project, User user) {
+    FetchGroupsTask(Project project, User user, Callback callback) {
         super(project, MessageResources.message("task.createReview.title"), false);
 
         this.project = project;
         this.user = user;
+        this.callback = callback;
     }
 
     @Override
@@ -43,10 +49,16 @@ class FetchGroupsTask extends Task.Modal {
         if (!success) {
             new Notification(project, MessageResources.message("task.fetchGroups.errorOccurred.text"),
                     MessageType.ERROR).showBalloon();
+            return;
+        }
+
+        if (callback != null) {
+            callback.onSuccess(groups);
         }
     }
 
-    List<GroupDescription> getGroups() {
-        return groups;
+    @Override
+    public boolean shouldStartInBackground() {
+        return false;
     }
 }

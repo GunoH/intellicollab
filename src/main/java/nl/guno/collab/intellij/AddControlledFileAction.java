@@ -39,7 +39,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
     private Project project;
 
     @Override
-    public void actionPerformed(@NotNull AnActionEvent event) {
+    public void actionPerformed(@NotNull final AnActionEvent event) {
 
         try {
 			project = event.getData(CommonDataKeys.PROJECT);
@@ -76,81 +76,21 @@ public class AddControlledFileAction extends IntelliCollabAction {
             // Retrieve the current file(s)
             File[] files = getCurrentlySelectedFiles(event);
 
-
-            List<Pair<File, Boolean>> fileList = new ArrayList<Pair<File, Boolean>>();
+            final List<Pair<File, Boolean>> fileList = new ArrayList<>();
             for (File file : files) {
                 fileList.add(Pair.create(file, Boolean.TRUE));
             }
 
 
             // Retrieve the reviews the user can upload to
-            FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, Context.user);
+            FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, Context.user, new FetchReviewsTask.Callback() {
+                @Override
+                public void onSuccess(List<Review> reviews) {
+                    processReviews(reviews, event, fileList);
+                }
+            });
             fetchReviewsTask.queue();
 
-            List<Review> reviews = fetchReviewsTask.getReviews();
-
-            if (reviews == null || reviews.isEmpty()) {
-                logger.debug("No reviews found");
-	            new Notification(
-			            project,
-			            MessageResources.message("task.addFilesToReview.noReviews.text"),
-			            MessageType.WARNING)
-			            .showBalloon(new HyperlinkListener() {
-                            @Override
-                            public void hyperlinkUpdate(HyperlinkEvent e) {
-                                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                                    // Open create review dialog
-                                    new CreateReviewAction().invoke(project);
-                                }
-                            }
-                        });
-
-
-                return;
-            }
-
-            String changesetName = PluginUtil.getSelectedChangesetName(event);
-            if (changesetName == null) {
-                // No changeset selected. Use changeset the first selected file is part of.
-                changesetName = PluginUtil.getChangesetNameOfFirstSelectedFile(event);
-            }
-            if (changesetName == null) {
-                // The selected file is not in a changeset. Use the active changeset.
-                changesetName = PluginUtil.getActiveChangesetName(project);
-            }
-
-            FileAndReviewSelector fileAndReviewSelector = new FileAndReviewSelector(fileList, reviews, project,
-                    changesetName);
-            fileAndReviewSelector.pack();
-            fileAndReviewSelector.show();
-
-            if (DialogWrapper.OK_EXIT_CODE != fileAndReviewSelector.getExitCode()) {
-                logger.debug("User pressed cancel.");
-                return;
-            }
-
-            files = fileAndReviewSelector.retrieveSelectedFiles();
-
-            if (files.length == 0) {
-                logger.debug("No files selected.");
-                new Notification(
-                        project,
-                        MessageResources.message("task.addFilesToReview.noFilesSelected.text"),
-                        MessageType.ERROR).showBalloon();
-                return;
-            }
-
-            Review selectedReview = fileAndReviewSelector.getSelectedReview();
-            if (selectedReview != null) {
-                // Add the current file to the selected review.
-                attachControlledFiles(event, selectedReview, files);
-
-	            // Add a label to the local history.
-                LocalHistory.getInstance().putSystemLabel(project,
-                        MessageResources.message("localhistory.label.filesuploaded",
-                                selectedReview.getId().toString(),
-                                selectedReview.getTitle()));
-            }
         } catch (CollabClientServerConnectivityException e) {
             logger.warn(e);
             new Notification(project, MessageResources.message("action.addControlledFile.connectionException.text"),
@@ -203,6 +143,70 @@ public class AddControlledFileAction extends IntelliCollabAction {
             finished();
         }
 
+    }
+
+    private void processReviews(List<Review> reviews, @NotNull AnActionEvent event, List<Pair<File, Boolean>> fileList) {
+        if (reviews == null || reviews.isEmpty()) {
+            logger.debug("No reviews found");
+            new Notification(
+                    project,
+                    MessageResources.message("task.addFilesToReview.noReviews.text"),
+                    MessageType.WARNING)
+                    .showBalloon(new HyperlinkListener() {
+                        @Override
+                        public void hyperlinkUpdate(HyperlinkEvent e) {
+                            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                                // Open create review dialog
+                                new CreateReviewAction().invoke(project);
+                            }
+                        }
+                    });
+
+            return;
+        }
+
+        String changesetName = PluginUtil.getSelectedChangesetName(event);
+        if (changesetName == null) {
+            // No changeset selected. Use changeset the first selected file is part of.
+            changesetName = PluginUtil.getChangesetNameOfFirstSelectedFile(event);
+        }
+        if (changesetName == null) {
+            // The selected file is not in a changeset. Use the active changeset.
+            changesetName = PluginUtil.getActiveChangesetName(project);
+        }
+
+        FileAndReviewSelector fileAndReviewSelector = new FileAndReviewSelector(fileList, reviews, project,
+                changesetName);
+        fileAndReviewSelector.pack();
+        fileAndReviewSelector.show();
+
+        if (DialogWrapper.OK_EXIT_CODE != fileAndReviewSelector.getExitCode()) {
+            logger.debug("User pressed cancel.");
+            return;
+        }
+
+        File[] files = fileAndReviewSelector.retrieveSelectedFiles();
+
+        if (files.length == 0) {
+            logger.debug("No files selected.");
+            new Notification(
+                    project,
+                    MessageResources.message("task.addFilesToReview.noFilesSelected.text"),
+                    MessageType.ERROR).showBalloon();
+            return;
+        }
+
+        Review selectedReview = fileAndReviewSelector.getSelectedReview();
+        if (selectedReview != null) {
+            // Add the current file to the selected review.
+            attachControlledFiles(event, selectedReview, files);
+
+            // Add a label to the local history.
+            LocalHistory.getInstance().putSystemLabel(project,
+                    MessageResources.message("localhistory.label.filesuploaded",
+                            selectedReview.getId().toString(),
+                            selectedReview.getTitle()));
+        }
     }
 
     @NotNull
