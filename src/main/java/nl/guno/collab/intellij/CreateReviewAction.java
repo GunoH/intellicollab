@@ -70,7 +70,7 @@ public class CreateReviewAction extends IntelliCollabAction {
 			FetchMetadataTask fetchMetadataTask = new FetchMetadataTask(project, user);
 			fetchMetadataTask.queue();
 
-			CreateReviewDialog createReviewDialog = new CreateReviewDialog(fetchMetadataTask, users, groups, user,
+			CreateReviewDialog createReviewDialog = new CreateReviewDialog(fetchMetadataTask.getMetadata(), users, groups, user,
 					project, PluginUtil.getActiveChangesetName(project));
 			createReviewDialog.pack();
 			createReviewDialog.show();

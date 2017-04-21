@@ -22,7 +22,6 @@ import com.intellij.openapi.ui.ValidationInfo;
 import com.intellij.ui.ListCellRendererWrapper;
 import com.smartbear.ccollab.datamodel.GroupDescription;
 import com.smartbear.ccollab.datamodel.User;
-import nl.guno.collab.intellij.FetchMetadataTask;
 import nl.guno.collab.intellij.MessageResources;
 import nl.guno.collab.intellij.Metadata;
 
@@ -109,14 +108,14 @@ public class CreateReviewDialog extends DialogWrapper {
     /** Max length of 'Release notes: Migratiepad' field. */
     private static final int MAXLENGTH_RNMIGRATIEPAD = 4000;
 
-    public CreateReviewDialog(FetchMetadataTask fetchMetadataTask, List<User> userList, List<GroupDescription> groupList,
+    public CreateReviewDialog(Metadata metadata, List<User> userList, List<GroupDescription> groupList,
                               User currentUser, Project project, String reviewTitle) {
 
         super(project);
 
         init();
 
-        List<? extends IDropDownItem> bugzillaInstantieList = fetchMetadataTask.getMetadata().getBugzillaInstantie().getDropDownItems(true);
+        List<? extends IDropDownItem> bugzillaInstantieList = metadata.getBugzillaInstantie().getDropDownItems(true);
 
         this.userList = new ArrayList<>();
         this.userList.addAll(userList);
@@ -130,7 +129,7 @@ public class CreateReviewDialog extends DialogWrapper {
 
         authorComboBoxModel.setSelectedItem(currentUser);
 
-        prepareUI(fetchMetadataTask);
+        prepareUI(metadata);
 
         titleTextField.setText(reviewTitle);
 
@@ -155,11 +154,10 @@ public class CreateReviewDialog extends DialogWrapper {
         return groupComboBox;
     }
 
-    private void prepareUI(FetchMetadataTask fetchMetadataTask) {
+    private void prepareUI(Metadata metadata) {
         setTitle(MessageResources.message("dialog.createReview.title"));
 
         // Set tooltip texts
-        Metadata metadata = fetchMetadataTask.getMetadata();
         setToolTipText(overviewTextArea, metadata.getOverview().getDescription());
         setToolTipText(bugzillaInstantieComboBox, metadata.getBugzillaInstantie().getDescription());
         setToolTipText(bugzillaNummerTextField, metadata.getBugzillaNummer().getDescription());
