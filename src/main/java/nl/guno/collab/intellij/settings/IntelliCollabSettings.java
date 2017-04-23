@@ -30,6 +30,7 @@ public class IntelliCollabSettings implements PersistentStateComponent<IntelliCo
         myState = state;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static class State {
         public String serverUrl = MessageResources.message("configuration.serverURL.default");
         public String username = null;
@@ -43,7 +44,7 @@ public class IntelliCollabSettings implements PersistentStateComponent<IntelliCo
         return myState.username;
     }
 
-    public void setUsername(String username) {
+    void setUsername(String username) {
         myState.username = username;
     }
 
@@ -51,7 +52,7 @@ public class IntelliCollabSettings implements PersistentStateComponent<IntelliCo
         return myState.serverUrl;
     }
 
-    public void setServerUrl(String serverUrl) {
+    void setServerUrl(String serverUrl) {
         myState.serverUrl = serverUrl;
     }
 
@@ -72,7 +73,7 @@ public class IntelliCollabSettings implements PersistentStateComponent<IntelliCo
         return StringUtil.notNullize(password);
     }
 
-    public void setPassword(String password) {
+    void setPassword(String password) {
         try {
             PasswordSafe.getInstance().storePassword(null, IntelliCollabSettings.class, SETTINGS_PASSWORD_KEY, password);
         }
