@@ -43,7 +43,6 @@
     <!--See also http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
     <idea-version since-build="141"/>
     <extensions defaultExtensionNs="com.intellij">
-        <postStartupActivity implementation="nl.guno.collab.intellij.BootstrapActivity"/>
         <applicationService serviceInterface="nl.guno.collab.intellij.settings.IntelliCollabSettings"
                             serviceImplementation="nl.guno.collab.intellij.settings.IntelliCollabSettings"/>
         <applicationConfigurable groupId="tools" key="configuration.key" bundle="nl.guno.collab.intellij.MessageResources"
