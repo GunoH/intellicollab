@@ -38,9 +38,16 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'lib', include: ['*.jar'])
-}
-dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'org.ow2.asm:asm:5.0.4'
+    compile 'commons-beanutils:commons-beanutils:1.9.2'
+    compile 'org.apache.commons:commons-exec:1.2'
+    compile 'commons-io:commons-io:1.4'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.5.0'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.5.5'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.5'
+    compile 'com.fasterxml.jackson.module:jackson-module-mrbean:2.5.5'
+    compile 'com.google.gwt:gwt-user:2.7.0'
 }
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
