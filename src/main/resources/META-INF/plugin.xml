@@ -9,7 +9,7 @@
     <vendor>Guno Heitman</vendor>
     <change-notes><![CDATA[
         <ul>
-            <li>v1.2: Added support for GIT VCS.</li>
+            <li>v1.2: Support for GIT VCS and IntelliJ 2017.2.</li>
             <li>v1.1: Bugfixes.</li>
             <li>v1.0: Updated for Collaborator v9, dropped SVN 1.6 requirement.</li>
             <li>v0.24: Now using Gradle for build process.</li>
