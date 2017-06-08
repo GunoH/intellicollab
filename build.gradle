@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.1.1'
+    ext.kotlin_version = '1.1.2-2'
     repositories {
         mavenCentral()
         maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
@@ -10,7 +10,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.1.9"
+    id "org.jetbrains.intellij" version "0.2.12"
 }
 
 apply plugin: 'idea'
