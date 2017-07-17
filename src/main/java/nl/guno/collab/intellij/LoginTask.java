@@ -68,6 +68,7 @@ class LoginTask extends Task.Modal {
                 return;
             } catch (CollabClientServerConnectivityException e) {
                 logger.info("Error when logging on to collaborator server.", e);
+                //noinspection ConstantConditions
                 if (i == MAX_ATTEMPTS) {
                     return;
                 }
