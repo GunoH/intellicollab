@@ -19,8 +19,8 @@ class MetadataFetcher {
             // Retrieve all metadata from the collaborator server
             return new Metadata(
                     user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Overview").get(0),
-                    user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzilla-instantie").get(0),
-                    user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Bugzillanummer").get(0),
+                    user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Issuetracker").get(0),
+                    user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Issue#").get(0),
                     user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "FO").get(0),
                     user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "TO / Werkplan").get(0),
                     user.getEngine().metaDataDescriptionsFind(1, "AdminReviewFields", "Release notes - Functionele omschrijving").get(0),

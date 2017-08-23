@@ -159,8 +159,8 @@ public class CreateReviewAction extends IntelliCollabAction {
 
         Map<MetaDataDescription, Object> metadataMap = new HashMap<>();
         metadataMap.put(metadata.getOverview(), createReviewDialog.getEnteredOverview());
-        metadataMap.put(metadata.getBugzillaInstantie(), createReviewDialog.getSelectedBugzillaInstantie());
-        metadataMap.put(metadata.getBugzillaNummer(), createReviewDialog.getEnteredBugzillanummer());
+        metadataMap.put(metadata.getIssueTracker(), createReviewDialog.getSelectedIssueTracker());
+        metadataMap.put(metadata.getIssueKey(), createReviewDialog.getEnteredIssueKey());
         metadataMap.put(metadata.getFo(), createReviewDialog.getEnteredFO());
         metadataMap.put(metadata.getTo(), createReviewDialog.getEnteredTO());
         metadataMap.put(metadata.getRnfo(), createReviewDialog.getEnteredRNFO());

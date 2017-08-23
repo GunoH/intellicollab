@@ -9,6 +9,7 @@
     <vendor>Guno Heitman</vendor>
     <change-notes><![CDATA[
         <ul>
+            <li>v1.3: Added Jira issue tracker to review creation dialog.</li>
             <li>v1.2: Support for GIT VCS and IntelliJ 2017.2.</li>
             <li>v1.1: Bugfixes.</li>
             <li>v1.0: Updated for Collaborator v9, dropped SVN 1.6 requirement.</li>

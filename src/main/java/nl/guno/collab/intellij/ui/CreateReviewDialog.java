@@ -27,18 +27,19 @@ import nl.guno.collab.intellij.Metadata;
 
 public class CreateReviewDialog extends DialogWrapper {
 
-    private static final String PATTERN_BUGNUMBER = ".*[bB]ug[zZ]?i?l?l?a? #?([0-9]*).*";
+    private static final Pattern PATTERN_BUGZILLA_KEY = Pattern.compile(".*[bB]ug[zZ]?i?l?l?a? #?([0-9]*).*");
+    private static final Pattern PATTERN_JIRA_KEY = Pattern.compile(".*\\[([A-Z]+-\\d+)].*");
 
     private JComboBox authorComboBox;
     private JComboBox reviewerComboBox;
     private JComboBox observerComboBox;
     private JComboBox groupComboBox;
-    private JComboBox bugzillaInstantieComboBox;
+    private JComboBox issueTrackerComboBox;
     private JComboBox reviewAccessComboBox;
     private JComboBox restrictUploadsToReviewComboBox;
     private JTextField titleTextField;
     private JTextArea overviewTextArea;
-    private JTextField bugzillaNummerTextField;
+    private JTextField issueKeyTextField;
     private JTextField foTextField;
     private JTextField toTextField;
     private JPanel contentPane;
@@ -49,7 +50,7 @@ public class CreateReviewDialog extends DialogWrapper {
     private JPanel projectPane;
     private JPanel overviewPane;
     private JPanel basicInfoPane;
-    private JPanel bugzillaPane;
+    private JPanel issueTrackerPane;
     private JPanel participantsPane;
     private JPanel observerPane;
     private JPanel restrictionPane;
@@ -66,7 +67,7 @@ public class CreateReviewDialog extends DialogWrapper {
     private DefaultComboBoxModel authorComboBoxModel;
     private DefaultComboBoxModel observerComboBoxModel;
     private DefaultComboBoxModel groupComboBoxModel;
-    private DefaultComboBoxModel bugzillaInstantieComboBoxModel;
+    private DefaultComboBoxModel issueTrackerComboBoxModel;
     private DefaultComboBoxModel reviewAccessComboBoxModel;
 
     /**
@@ -75,9 +76,9 @@ public class CreateReviewDialog extends DialogWrapper {
     private final List<User> userList;
 
     /**
-     * Bugzilla instances available in user interface.
+     * Issue trackers available in user interface.
      */
-    private final List<IDropDownItem> bugzillaInstantieList;
+    private final List<IDropDownItem> issueTrackerList;
 
     /**
      * Groups available in user interface.
@@ -90,8 +91,8 @@ public class CreateReviewDialog extends DialogWrapper {
     /** Max length of 'Title' field. */
     private static final int MAXLENGTH_TITLE = 255;
 
-    /** Max length of 'Bugzillanummer' field. */
-    private static final int MAXLENGTH_BUGZILLANUMMER = 255;
+    /** Max length of 'Issue key' field. */
+    private static final int MAXLENGTH_ISSUEKEY = 255;
 
     /** Max length of 'FO' field. */
     private static final int MAXLENGTH_FO = 255;
@@ -115,13 +116,13 @@ public class CreateReviewDialog extends DialogWrapper {
 
         init();
 
-        List<? extends IDropDownItem> bugzillaInstantieList = metadata.getBugzillaInstantie().getDropDownItems(true);
+        List<? extends IDropDownItem> issueTrackerList = metadata.getIssueTracker().getDropDownItems(true);
 
         this.userList = new ArrayList<>();
         this.userList.addAll(userList);
 
-        this.bugzillaInstantieList = new ArrayList<>();
-        this.bugzillaInstantieList.addAll(bugzillaInstantieList);
+        this.issueTrackerList = new ArrayList<>();
+        this.issueTrackerList.addAll(issueTrackerList);
 
         this.groupList = groupList;
 
@@ -134,11 +135,16 @@ public class CreateReviewDialog extends DialogWrapper {
         titleTextField.setText(reviewTitle);
 
 
-        Matcher matcher = Pattern.compile(PATTERN_BUGNUMBER).matcher(reviewTitle);
-        if (matcher.matches()) {
-            bugzillaNummerTextField.setText(matcher.group(1));
-            // By default, select the first entry: Bugzilla
-            bugzillaInstantieComboBoxModel.setSelectedItem(bugzillaInstantieList.get(0));
+        Matcher jiraMatcher = PATTERN_JIRA_KEY.matcher(reviewTitle);
+        Matcher bugzillaMatcher = PATTERN_BUGZILLA_KEY.matcher(reviewTitle);
+        if (jiraMatcher.matches()) {
+            issueKeyTextField.setText(jiraMatcher.group(1));
+            // 1st entry: Jira
+            issueTrackerComboBoxModel.setSelectedItem(issueTrackerList.get(0));
+        } else if (bugzillaMatcher.matches()) {
+            issueKeyTextField.setText(bugzillaMatcher.group(1));
+            // 2nd entry: Bugzilla
+            issueTrackerComboBoxModel.setSelectedItem(issueTrackerList.get(1));
         }
     }
 
@@ -159,8 +165,8 @@ public class CreateReviewDialog extends DialogWrapper {
 
         // Set tooltip texts
         setToolTipText(overviewTextArea, metadata.getOverview().getDescription());
-        setToolTipText(bugzillaInstantieComboBox, metadata.getBugzillaInstantie().getDescription());
-        setToolTipText(bugzillaNummerTextField, metadata.getBugzillaNummer().getDescription());
+        setToolTipText(issueTrackerComboBox, metadata.getIssueTracker().getDescription());
+        setToolTipText(issueKeyTextField, metadata.getIssueKey().getDescription());
         setToolTipText(foTextField, metadata.getFo().getDescription());
         setToolTipText(toTextField, metadata.getTo().getDescription());
         setToolTipText(rnFOTextArea, metadata.getRnfo().getDescription());
@@ -170,7 +176,7 @@ public class CreateReviewDialog extends DialogWrapper {
         // Set max length on JTextComponents.
         titleTextField.setDocument(new InputLimiterDocument(MAXLENGTH_TITLE));
         overviewTextArea.setDocument(new InputLimiterDocument(MAXLENGTH_OVERVIEW));
-        bugzillaNummerTextField.setDocument(new InputLimiterDocument(MAXLENGTH_BUGZILLANUMMER));
+        issueKeyTextField.setDocument(new InputLimiterDocument(MAXLENGTH_ISSUEKEY));
         foTextField.setDocument(new InputLimiterDocument(MAXLENGTH_FO));
         toTextField.setDocument(new InputLimiterDocument(MAXLENGTH_TO));
         rnFOTextArea.setDocument(new InputLimiterDocument(MAXLENGTH_RNFO));
@@ -228,10 +234,10 @@ public class CreateReviewDialog extends DialogWrapper {
         groupComboBox.setRenderer(new MyListCellRenderer<GroupDescription>());
         groupComboBox.setKeySelectionManager(new MyKeySelManager());
 
-        bugzillaInstantieComboBoxModel = new DefaultComboBoxModel();
-        bugzillaInstantieComboBox = new ComboBox(bugzillaInstantieComboBoxModel);
-        bugzillaInstantieComboBox.setRenderer(new MyListCellRenderer<>());
-        bugzillaInstantieComboBox.setKeySelectionManager(new MyKeySelManager());
+        issueTrackerComboBoxModel = new DefaultComboBoxModel();
+        issueTrackerComboBox = new ComboBox(issueTrackerComboBoxModel);
+        issueTrackerComboBox.setRenderer(new MyListCellRenderer<>());
+        issueTrackerComboBox.setKeySelectionManager(new MyKeySelManager());
 
         reviewAccessComboBoxModel = new DefaultComboBoxModel();
         reviewAccessComboBox = new ComboBox(reviewAccessComboBoxModel);
@@ -252,8 +258,8 @@ public class CreateReviewDialog extends DialogWrapper {
             observerComboBoxModel.addElement(user);
         }
 
-        for (IDropDownItem item : bugzillaInstantieList) {
-            bugzillaInstantieComboBoxModel.addElement(item);
+        for (IDropDownItem item : issueTrackerList) {
+            issueTrackerComboBoxModel.addElement(item);
         }
 
         for (GroupDescription group : groupList) {
@@ -303,8 +309,8 @@ public class CreateReviewDialog extends DialogWrapper {
         return (User) observerComboBoxModel.getSelectedItem();
     }
 
-    public IDropDownItem getSelectedBugzillaInstantie() {
-        return (IDropDownItem) bugzillaInstantieComboBoxModel.getSelectedItem();
+    public IDropDownItem getSelectedIssueTracker() {
+        return (IDropDownItem) issueTrackerComboBoxModel.getSelectedItem();
     }
 
     public String getEnteredTitle() {
@@ -315,8 +321,8 @@ public class CreateReviewDialog extends DialogWrapper {
         return overviewTextArea.getText();
     }
 
-    public String getEnteredBugzillanummer() {
-        return bugzillaNummerTextField.getText();
+    public String getEnteredIssueKey() {
+        return issueKeyTextField.getText();
     }
 
     public String getEnteredFO() {

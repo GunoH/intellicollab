@@ -4,8 +4,8 @@ import com.smartbear.ccollab.datamodel.MetaDataDescription
 
 data class Metadata (
         val overview: MetaDataDescription,
-        val bugzillaInstantie: MetaDataDescription,
-        val bugzillaNummer: MetaDataDescription,
+        val issueTracker: MetaDataDescription,
+        val issueKey: MetaDataDescription,
         val fo: MetaDataDescription,
         val to: MetaDataDescription,
         val rnfo: MetaDataDescription,
