@@ -50,7 +50,6 @@
                              id="nl.guno.collab.intellij.settings.IntelliCollabSettingsConfigurable"/>
         <search.optionContributor
                 implementation="nl.guno.collab.intellij.settings.IntelliCollabSearchableOptionContributor"/>
-        <postStartupActivity implementation="nl.guno.collab.intellij.BootstrapActivity"/>
     </extensions>
 
     <actions>
