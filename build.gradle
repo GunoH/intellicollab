@@ -54,3 +54,6 @@ sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
 }
 
+patchPluginXml {
+    untilBuild = "173"
+}
