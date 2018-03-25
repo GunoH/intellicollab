@@ -1,25 +1,25 @@
 buildscript {
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.30")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${BuildConfig.kotlinVersion}")
     }
 }
 
 plugins {
-    kotlin("jvm") version "1.2.30"
-    id("org.jetbrains.intellij") version "0.3.1"
+    kotlin("jvm") version BuildConfig.kotlinVersion
+    id("org.jetbrains.intellij") version BuildConfig.gradleIntellijPluginVersion
 }
 
 intellij {
     pluginName = "IntelliCollab"
-    version = "IU-LATEST-EAP-SNAPSHOT"
+    version = BuildConfig.intellijVersion
     updateSinceUntilBuild = false
 }
 
 group = "nl.guno"
-version = "2.0"
+version = BuildConfig.pluginVersion
 
 repositories {
-    mavenCentral ()
+    mavenCentral()
 }
 
 dependencies {
