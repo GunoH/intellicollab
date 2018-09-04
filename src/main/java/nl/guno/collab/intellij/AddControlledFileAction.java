@@ -236,9 +236,9 @@ public class AddControlledFileAction extends IntelliCollabAction {
         Change[] changes = event.getData(VcsDataKeys.CHANGES);
 
         boolean enabled = false;
-        if (project != null) {
+        if (project != null && changes != null) {
             ChangeList changelist = ChangesUtil.getChangeListIfOnlyOne(project, changes);
-            if (changes != null && changelist != null) {
+            if (changelist != null) {
                 for (Change change : changes) {
                     AbstractVcs abstractvcs = ChangesUtil.getVcsForChange(change, project);
                     if (abstractvcs != null && abstractvcs.getCheckinEnvironment() != null) {

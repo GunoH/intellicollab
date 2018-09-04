@@ -8,6 +8,10 @@
     </description>
     <vendor>Guno Heitman</vendor>
     <change-notes><![CDATA[
+      <h3>2.1</h3>
+      <ul>
+          <li>Fixed NPE when using 'Find action'.</li>
+      </ul>
       <h3>2.0</h3>
       <ul>
           <li>Updated for IntelliJ 2018.1.</li>
