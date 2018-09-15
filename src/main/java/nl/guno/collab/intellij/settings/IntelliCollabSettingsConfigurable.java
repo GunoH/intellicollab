@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 
 public class IntelliCollabSettingsConfigurable implements SearchableConfigurable {
@@ -55,7 +54,7 @@ public class IntelliCollabSettingsConfigurable implements SearchableConfigurable
     }
 
     @Override
-    public void apply() throws ConfigurationException {
+    public void apply() {
         if (mySettingsPane != null) {
             mySettingsPane.apply();
         }

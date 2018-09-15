@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 public class PluginUtilTest {
 
     @Test
-    public void testExtractHostFromUrl() throws Exception {
+    public void testExtractHostFromUrl() {
         assertEquals("abc.com", PluginUtil.extractHostFromUrl("http://abc.com"));
         assertEquals("abc.com", PluginUtil.extractHostFromUrl("https://abc.com"));
         assertEquals("abc.com", PluginUtil.extractHostFromUrl("http://abc.com/"));

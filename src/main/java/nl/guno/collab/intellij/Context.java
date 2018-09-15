@@ -3,7 +3,6 @@ package nl.guno.collab.intellij;
 import java.io.IOException;
 
 import com.intellij.openapi.project.Project;
-import com.smartbear.CollabClientException;
 import com.smartbear.beans.IScmOptions;
 import com.smartbear.ccollab.datamodel.Engine;
 import com.smartbear.ccollab.datamodel.User;
@@ -27,7 +26,7 @@ class Context {
      */
     static User user;
 
-    static boolean initialize(final Project project) throws CollabClientException, IOException, InterruptedException {
+    static boolean initialize(final Project project) throws IOException {
         // If we've already initialized, don't do it again.
         if ( engine != null ) {
             return true;

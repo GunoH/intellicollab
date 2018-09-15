@@ -28,7 +28,7 @@ class Environment {
         }
     }
 
-    private boolean exec(@NotNull String command) throws IOException {
+    private boolean exec(@NotNull String command) {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         CommandLine cmdLine = CommandLine.parse(command);
@@ -48,7 +48,7 @@ class Environment {
 		}
 	}
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws IOException {
         try {
             new Environment().checkSVNExecutable();
             System.out.println("Correct version installed.");
