@@ -14,7 +14,7 @@ class Environment {
 
 	private static final int EXIT_STATUS_SUCCESS = 0;
 
-    boolean checkConnection() throws IOException {
+    boolean checkConnection() {
         String host = PluginUtil.extractHostFromUrl(IntelliCollabSettings.getInstance().getServerUrl());
 
         return host != null
@@ -22,7 +22,7 @@ class Environment {
 
     }
 
-    void checkSVNExecutable() throws SVNNotAvailableException, IOException {
+    void checkSVNExecutable() throws SVNNotAvailableException {
         if (!exec(Platform.determine().svnCommand())) {
             throw new SVNNotAvailableException();
         }
@@ -48,7 +48,7 @@ class Environment {
 		}
 	}
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         try {
             new Environment().checkSVNExecutable();
             System.out.println("Correct version installed.");

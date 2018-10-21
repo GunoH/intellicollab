@@ -5,18 +5,11 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
-import com.smartbear.ccollab.datamodel.*;
-import com.smartbear.scm.*;
-import com.smartbear.scm.impl.git.GitSystem;
-import nl.guno.collab.intellij.settings.IntelliCollabSettings;
-import nl.guno.collab.intellij.ui.Notification;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.ide.BrowserUtil;
-import com.intellij.notification.NotificationListener;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
@@ -24,7 +17,19 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.CollabClientException;
 import com.smartbear.beans.NullAskUser;
+import com.smartbear.ccollab.datamodel.Changelist;
+import com.smartbear.ccollab.datamodel.Engine;
+import com.smartbear.ccollab.datamodel.Review;
+import com.smartbear.ccollab.datamodel.Scm;
+import com.smartbear.ccollab.datamodel.User;
+import com.smartbear.scm.IScmClientConfiguration;
+import com.smartbear.scm.IScmLocalCheckout;
+import com.smartbear.scm.ScmChangeset;
+import com.smartbear.scm.ScmUtils;
+import com.smartbear.scm.impl.git.GitSystem;
 import com.smartbear.scm.impl.subversion.SubversionSystem;
+import nl.guno.collab.intellij.settings.IntelliCollabSettings;
+import nl.guno.collab.intellij.ui.Notification;
 
 class AddToReviewTask extends Task.Backgroundable {
 
@@ -141,21 +146,14 @@ class AddToReviewTask extends Task.Backgroundable {
             showNotification();
         } else if (errorMessage != null) {
             new Notification(project, errorMessage, MessageType.ERROR).showBalloon(
-                    new HyperlinkListener() {
-                        @Override
-                        public void hyperlinkUpdate(HyperlinkEvent e) {
-                            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                                PluginUtil.openLogDirectory();
-                            }
+                    e -> {
+                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            PluginUtil.openLogDirectory();
                         }
                     }
-            ).addToEventLog(new NotificationListener() {
-                @Override
-                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
-                                            @NotNull HyperlinkEvent hyperlinkEvent) {
-                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        PluginUtil.openLogDirectory();
-                    }
+            ).addToEventLog((notification, hyperlinkEvent) -> {
+                if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                    PluginUtil.openLogDirectory();
                 }
             });
         }
@@ -165,22 +163,15 @@ class AddToReviewTask extends Task.Backgroundable {
     private Notification showNotification() {
         return new Notification(project, MessageResources.message("task.addFilesToReview.filesHaveBeenUploaded.text",
                 files.length, review.getId().toString(), review.getTitle(), IntelliCollabSettings.getInstance().getServerUrl()), MessageType.INFO)
-                .showBalloon(new HyperlinkListener() {
-                    @Override
-                    public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
-                        if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                            BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
-                        }
+                .showBalloon(hyperlinkEvent -> {
+                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
                     }
-                }).addToEventLog(new NotificationListener() {
-            @Override
-            public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
-                                        @NotNull HyperlinkEvent hyperlinkEvent) {
-                if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
-                }
-            }
-        });
+                }).addToEventLog((notification, hyperlinkEvent) -> {
+                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                    }
+                });
     }
 
     @Override

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -54,25 +53,17 @@ public class CreateReviewAction extends IntelliCollabAction {
 			}
 
 			// Retrieve the available users
-            FetchUsersTask fetchUsersTask = new FetchUsersTask(project, Context.user, new FetchUsersTask.Callback() {
-                @Override
-                public void onSuccess(List<User> users) {
-                    usersFetched(users, project);
-                }
-            });
+            FetchUsersTask fetchUsersTask = new FetchUsersTask(project, Context.user, users -> usersFetched(users, project));
 			fetchUsersTask.queue();
 
 		} catch (CollabClientServerConnectivityException e) {
 			logger.warn(e);
 			new Notification(project, MessageResources.message("action.createReview.connectionException.text"),
-					MessageType.ERROR).showBalloon(new HyperlinkListener() {
-				@Override
-				public void hyperlinkUpdate(HyperlinkEvent e) {
-					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        PluginUtil.openLogDirectory();
-					}
-				}
-			});
+					MessageType.ERROR).showBalloon(e14 -> {
+                        if (e14.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            PluginUtil.openLogDirectory();
+                        }
+                    });
 		} catch (ScmConfigurationException e) {
 			logger.warn(e);
 			new Notification(project, MessageResources.message("action.createReview.scmException.text"),
@@ -80,35 +71,26 @@ public class CreateReviewAction extends IntelliCollabAction {
 		} catch (CollabClientException e) {
 			logger.warn(e);
 			new Notification(project, MessageResources.message("action.createReview.errorOccurred.text"),
-					MessageType.ERROR).showBalloon(new HyperlinkListener() {
-				@Override
-				public void hyperlinkUpdate(HyperlinkEvent e) {
-					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        PluginUtil.openLogDirectory();
-					}
-				}
-			});
+					MessageType.ERROR).showBalloon(e13 -> {
+                        if (e13.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            PluginUtil.openLogDirectory();
+                        }
+                    });
 		} catch (IOException e) {
 			logger.warn(e);
 			new Notification(project, MessageResources.message("action.createReview.ioErrorOccurred.text"),
-					MessageType.ERROR).showBalloon(new HyperlinkListener() {
-				@Override
-				public void hyperlinkUpdate(HyperlinkEvent e) {
-					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        PluginUtil.openLogDirectory();
-					}
-				}
-			});
+					MessageType.ERROR).showBalloon(e12 -> {
+                        if (e12.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            PluginUtil.openLogDirectory();
+                        }
+                    });
 		} catch (InterruptedException e) {
 			new Notification(project, MessageResources.message("action.createReview.errorOccurred.text"),
-					MessageType.ERROR).showBalloon(new HyperlinkListener() {
-				@Override
-				public void hyperlinkUpdate(HyperlinkEvent e) {
-					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        PluginUtil.openLogDirectory();
-					}
-				}
-			});
+					MessageType.ERROR).showBalloon(e1 -> {
+                        if (e1.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            PluginUtil.openLogDirectory();
+                        }
+                    });
 		} finally {
 			finished();
 		}
@@ -117,24 +99,14 @@ public class CreateReviewAction extends IntelliCollabAction {
     private void usersFetched(final List<User> users, final Project project) {
 
         // Retrieve the available groups
-        FetchGroupsTask fetchGroupsTask = new FetchGroupsTask(project, Context.user, new FetchGroupsTask.Callback() {
-            @Override
-            public void onSuccess(List<GroupDescription> groups) {
-                groupsFetched(users, groups, project);
-            }
-        });
+        FetchGroupsTask fetchGroupsTask = new FetchGroupsTask(project, Context.user, groups -> groupsFetched(users, groups, project));
         fetchGroupsTask.queue();
     }
 
     private void groupsFetched(final List<User> users, final List<GroupDescription> groups, final Project project) {
 
         // Retrieve the available metadata
-        FetchMetadataTask fetchMetadataTask = new FetchMetadataTask(project, Context.user, new FetchMetadataTask.Callback() {
-            @Override
-            public void onSuccess(Metadata metadata) {
-                metadataFetched(metadata, users, groups, project);
-            }
-        });
+        FetchMetadataTask fetchMetadataTask = new FetchMetadataTask(project, Context.user, metadata -> metadataFetched(metadata, users, groups, project));
         fetchMetadataTask.queue();
     }
 

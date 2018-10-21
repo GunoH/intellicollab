@@ -7,22 +7,25 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
-import com.smartbear.ccollab.datamodel.*;
-import com.smartbear.ccollab.datamodel.client.IDropDownItem;
-import com.smartbear.ccollab.datamodel.client.ReviewAccess;
-import nl.guno.collab.intellij.settings.IntelliCollabSettings;
-import nl.guno.collab.intellij.ui.Notification;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.ide.BrowserUtil;
-import com.intellij.notification.NotificationListener;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
+import com.smartbear.ccollab.datamodel.GroupDescription;
+import com.smartbear.ccollab.datamodel.MetaDataDescription;
+import com.smartbear.ccollab.datamodel.MetaDataSelectItem;
+import com.smartbear.ccollab.datamodel.Review;
+import com.smartbear.ccollab.datamodel.Role;
+import com.smartbear.ccollab.datamodel.User;
+import com.smartbear.ccollab.datamodel.client.IDropDownItem;
+import com.smartbear.ccollab.datamodel.client.ReviewAccess;
+import nl.guno.collab.intellij.settings.IntelliCollabSettings;
+import nl.guno.collab.intellij.ui.Notification;
 
 class CreateReviewTask extends Task.Backgroundable {
 
@@ -83,7 +86,7 @@ class CreateReviewTask extends Task.Backgroundable {
 
         String template = user.getEngine().roleStandardTemplateName();
         List<Role> roles = user.getEngine().rolesFind(template, true);
-        List<Review.AssignmentInfo> assignments = new ArrayList<Review.AssignmentInfo>();
+        List<Review.AssignmentInfo> assignments = new ArrayList<>();
 
         if (author != null) {
             assignments.add(new Review.AssignmentInfo(author, Role.findAuthor(roles)));
@@ -132,22 +135,15 @@ class CreateReviewTask extends Task.Backgroundable {
             new Notification(
                     project,
                     MessageResources.message("task.createReview.reviewCreated.text", review.getId().toString(), review.getTitle(), IntelliCollabSettings.getInstance().getServerUrl()),
-                    MessageType.INFO).showBalloon(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
-                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
-                    }
-                }
-            }).addToEventLog(new NotificationListener() {
-                @Override
-                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
-                                            @NotNull HyperlinkEvent hyperlinkEvent) {
-                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
-                    }
-                }
-            });
+                    MessageType.INFO).showBalloon(hyperlinkEvent -> {
+                        if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                        }
+                    }).addToEventLog((notification, hyperlinkEvent) -> {
+                        if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            BrowserUtil.browse(hyperlinkEvent.getURL().toExternalForm());
+                        }
+                    });
             
         } else {
             new Notification(

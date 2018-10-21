@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -66,12 +65,7 @@ public class AddControlledFileAction extends IntelliCollabAction {
             }
 
             // Save all changes to disk.
-            ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                @Override
-                public void run() {
-                    FileDocumentManager.getInstance().saveAllDocuments();
-                }
-            });
+            ApplicationManager.getApplication().runWriteAction(() -> FileDocumentManager.getInstance().saveAllDocuments());
 
             // Retrieve the current file(s)
             File[] files = getCurrentlySelectedFiles(event);
@@ -83,25 +77,17 @@ public class AddControlledFileAction extends IntelliCollabAction {
 
 
             // Retrieve the reviews the user can upload to
-            FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, Context.user, new FetchReviewsTask.Callback() {
-                @Override
-                public void onSuccess(List<Review> reviews) {
-                    processReviews(reviews, event, fileList);
-                }
-            });
+            FetchReviewsTask fetchReviewsTask = new FetchReviewsTask(project, Context.user, reviews -> processReviews(reviews, event, fileList));
             fetchReviewsTask.queue();
 
         } catch (CollabClientServerConnectivityException e) {
             logger.warn(e);
             new Notification(project, MessageResources.message("action.addControlledFile.connectionException.text"),
-                    MessageType.ERROR).showBalloon(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        PluginUtil.openLogDirectory();
-                    }
-                }
-            });
+                    MessageType.ERROR).showBalloon(e14 -> {
+                        if (e14.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            PluginUtil.openLogDirectory();
+                        }
+                    });
 
         } catch (ScmConfigurationException e) {
             logger.warn(e);
@@ -110,35 +96,26 @@ public class AddControlledFileAction extends IntelliCollabAction {
         } catch (CollabClientException e) {
             logger.warn(e);
             new Notification(project, MessageResources.message("action.addControlledFile.errorOccurred.text"),
-                    MessageType.ERROR).showBalloon(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        PluginUtil.openLogDirectory();
-                    }
-                }
-            });
+                    MessageType.ERROR).showBalloon(e13 -> {
+                        if (e13.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            PluginUtil.openLogDirectory();
+                        }
+                    });
         } catch (IOException e) {
             logger.warn(e);
             new Notification(project, MessageResources.message("action.addControlledFile.ioErrorOccurred.text"),
-                    MessageType.ERROR).showBalloon(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        PluginUtil.openLogDirectory();
-                    }
-                }
-            });
+                    MessageType.ERROR).showBalloon(e12 -> {
+                        if (e12.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            PluginUtil.openLogDirectory();
+                        }
+                    });
         } catch (InterruptedException e) {
 	        new Notification(project, MessageResources.message("action.addControlledFile.errorOccurred.text"),
-			        MessageType.ERROR).showBalloon(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        PluginUtil.openLogDirectory();
-                    }
-                }
-            });
+			        MessageType.ERROR).showBalloon(e1 -> {
+                        if (e1.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            PluginUtil.openLogDirectory();
+                        }
+                    });
         } finally {
             finished();
         }
@@ -152,13 +129,10 @@ public class AddControlledFileAction extends IntelliCollabAction {
                     project,
                     MessageResources.message("task.addFilesToReview.noReviews.text"),
                     MessageType.WARNING)
-                    .showBalloon(new HyperlinkListener() {
-                        @Override
-                        public void hyperlinkUpdate(HyperlinkEvent e) {
-                            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                                // Open create review dialog
-                                new CreateReviewAction().invoke(project);
-                            }
+                    .showBalloon(e -> {
+                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            // Open create review dialog
+                            new CreateReviewAction().invoke(project);
                         }
                     });
 

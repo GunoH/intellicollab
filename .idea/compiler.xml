@@ -2,12 +2,10 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="buildSrc_main" target="1.8" />
-      <module name="buildSrc_test" target="1.8" />
-      <module name="intelliccollab_main" target="1.7" />
-      <module name="intelliccollab_test" target="1.8" />
       <module name="intellicollab_main" target="1.8" />
       <module name="intellicollab_test" target="1.8" />
+      <module name="nl.guno_buildSrc_main" target="1.8" />
+      <module name="nl.guno_buildSrc_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

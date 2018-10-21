@@ -3,11 +3,7 @@ package nl.guno.collab.intellij;
 import java.io.IOException;
 
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
-import org.jetbrains.annotations.NotNull;
-
-import com.intellij.notification.NotificationListener;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.smartbear.ccollab.client.ICollabClientInterface;
@@ -31,43 +27,29 @@ class LoginHelper {
 
         if (globalOptions.settingsIncomplete()) {
             new Notification(project, MessageResources.message("configuration.error.mandatorySettingsMissing.text"),
-                    MessageType.ERROR).showBalloon(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        IntelliCollabSettings.openSettings(project);
-                    }
-                }
-            }).addToEventLog(new NotificationListener() {
-                @Override
-                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
-                                            @NotNull HyperlinkEvent hyperlinkEvent) {
-                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        IntelliCollabSettings.openSettings(project);
-                    }
-                }
-            });
+                    MessageType.ERROR).showBalloon(e -> {
+                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            IntelliCollabSettings.openSettings(project);
+                        }
+                    }).addToEventLog((notification, hyperlinkEvent) -> {
+                        if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            IntelliCollabSettings.openSettings(project);
+                        }
+                    });
             return false;
         }
 
         if (!new Environment().checkConnection()) {
             new Notification(project, MessageResources.message("action.error.serverNotAvailable.text"),
-                    MessageType.ERROR).showBalloon(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        IntelliCollabSettings.openSettings(project);
-                    }
-                }
-            }).addToEventLog(new NotificationListener() {
-                @Override
-                public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
-                                            @NotNull HyperlinkEvent hyperlinkEvent) {
-                    if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        IntelliCollabSettings.openSettings(project);
-                    }
-                }
-            });
+                    MessageType.ERROR).showBalloon(e -> {
+                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            IntelliCollabSettings.openSettings(project);
+                        }
+                    }).addToEventLog((notification, hyperlinkEvent) -> {
+                        if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            IntelliCollabSettings.openSettings(project);
+                        }
+                    });
             return false;
         }
 
@@ -83,38 +65,22 @@ class LoginHelper {
 
             if (loginTask.authenticationErrorOccured()) {
                 new Notification(project, MessageResources.message("task.login.authenticationError.text"),
-                        MessageType.ERROR).showBalloon(new HyperlinkListener() {
-                    @Override
-                    public void hyperlinkUpdate(HyperlinkEvent e) {
-                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                            IntelliCollabSettings.openSettings(project);
-                        }
-                    }
-                }).addToEventLog(new NotificationListener() {
-                    @Override
-                    public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
-                                                @NotNull HyperlinkEvent hyperlinkEvent) {
-                        IntelliCollabSettings.openSettings(project);
-                    }
-                });
+                        MessageType.ERROR).showBalloon(e -> {
+                            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                                IntelliCollabSettings.openSettings(project);
+                            }
+                        }).addToEventLog((notification, hyperlinkEvent) -> IntelliCollabSettings.openSettings(project));
             } else {
                 new Notification(project, MessageResources.message("task.login.unknowError.text"),
-                        MessageType.ERROR).showBalloon(new HyperlinkListener() {
-                    @Override
-                    public void hyperlinkUpdate(HyperlinkEvent e) {
-                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                            PluginUtil.openLogDirectory();
-                        }
-                    }
-                }).addToEventLog(new NotificationListener() {
-                    @Override
-                    public void hyperlinkUpdate(@NotNull com.intellij.notification.Notification notification,
-                                                @NotNull HyperlinkEvent hyperlinkEvent) {
-                        if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                            PluginUtil.openLogDirectory();
-                        }
-                    }
-                });
+                        MessageType.ERROR).showBalloon(e -> {
+                            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                                PluginUtil.openLogDirectory();
+                            }
+                        }).addToEventLog((notification, hyperlinkEvent) -> {
+                            if (hyperlinkEvent.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                                PluginUtil.openLogDirectory();
+                            }
+                        });
             }
 
             return false;

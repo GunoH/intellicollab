@@ -27,14 +27,14 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
     private JPanel checkboxListPane;
     private CheckBoxList fileCheckBoxList;
     private JPanel reviewPane;
-    private JComboBox reviewComboBox;
+    private JComboBox<Review> reviewComboBox;
 
     private final List<Pair<File, Boolean>> initialFileList;
     private List<Pair<File, Boolean>> workingFileList;
-    private DefaultListModel fileListModel;
+    private DefaultListModel<JCheckBox> fileListModel;
 
     private final List<Review> reviewList;
-    private DefaultComboBoxModel reviewComboBoxModel;
+    private DefaultComboBoxModel<Review> reviewComboBoxModel;
     private String preselectedReviewName;
 
     public FileAndReviewSelector(List<Pair<File, Boolean>> fileList, @NotNull List<Review> reviewList, Project project,
@@ -47,17 +47,12 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
 
         initialFileList = fileList;
 
-        this.reviewList = new ArrayList<Review>();
+        this.reviewList = new ArrayList<>();
         this.reviewList.addAll(reviewList);
         this.preselectedReviewName = preselectedReviewName;
 
         // Sort the list of reviews in descending order of last activity date.
-        Collections.sort(this.reviewList, new Comparator<Review>() {
-            @Override
-            public int compare(Review r1, Review r2) {
-                return r2.getCreationDate().compareTo(r1.getCreationDate());
-            }
-        });
+        reviewList.sort(Comparator.comparing(Review::getCreationDate, Date::compareTo));
 
         reset();
 
@@ -77,11 +72,11 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
     }
 
     private void createUIComponents() {
-        fileListModel = new DefaultListModel();
+        fileListModel = new DefaultListModel<>();
         fileCheckBoxList = new CheckBoxList(fileListModel, this);
 
-        reviewComboBoxModel = new DefaultComboBoxModel();
-        reviewComboBox = new ComboBox(reviewComboBoxModel);
+        reviewComboBoxModel = new DefaultComboBoxModel<>();
+        reviewComboBox = new ComboBox<>(reviewComboBoxModel);
         reviewComboBox.setRenderer(new ListCellRendererWrapper<Review>() {
             @Override
             public void customize(JList list, Review review, int index, boolean isSelected, boolean hasFocus) {
@@ -99,7 +94,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
     }
 
     private void reset() {
-        workingFileList = new ArrayList<Pair<File, Boolean>>(initialFileList);
+        workingFileList = new ArrayList<>(initialFileList);
         update();
     }
 
@@ -113,7 +108,7 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
         for (Review review : reviewList) {
             reviewComboBoxModel.addElement(review);
 
-            if (preselectedReviewName != null && review.getTitle().equals(preselectedReviewName)) {
+            if (review.getTitle().equals(preselectedReviewName)) {
                 reviewComboBoxModel.setSelectedItem(review);
             }
          }
@@ -130,14 +125,14 @@ public class FileAndReviewSelector extends DialogWrapper implements CheckBoxList
     }
 
     public File[] retrieveSelectedFiles() {
-        List<File> result = new ArrayList<File>();
+        List<File> result = new ArrayList<>();
         for (Pair<File, Boolean> pair : workingFileList) {
             if (pair.second) {
                 result.add(pair.first);
             }
         }
         
-        return result.toArray(new File[result.size()]);
+        return result.toArray(new File[0]);
     }
 
     public Review getSelectedReview() {

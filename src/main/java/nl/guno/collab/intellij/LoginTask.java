@@ -3,7 +3,6 @@ package nl.guno.collab.intellij;
 import java.util.Random;
 
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -97,15 +96,12 @@ class LoginTask extends Task.Modal {
             new Notification(
                     project,
                     MessageResources.message("task.login.connectionException.text"),
-                    MessageType.ERROR).showBalloon(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                        AnAction action = ActionManager.getInstance().getAction("ShowLog");
-                        action.actionPerformed(AnActionEvent.createFromAnAction(action, null, "", DataManager.getInstance().getDataContext()));
-                    }
-                }
-            });
+                    MessageType.ERROR).showBalloon(e -> {
+                        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                            AnAction action = ActionManager.getInstance().getAction("ShowLog");
+                            action.actionPerformed(AnActionEvent.createFromAnAction(action, null, "", DataManager.getInstance().getDataContext()));
+                        }
+                    });
         }
     }
 

@@ -57,7 +57,7 @@ final class PluginUtil {
             return new File[0];
         }
 
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
 
         for (Change change : changes) {
             Change.Type changeType = change.getType();

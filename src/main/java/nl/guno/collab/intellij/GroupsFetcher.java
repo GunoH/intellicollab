@@ -1,7 +1,6 @@
 package nl.guno.collab.intellij;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -32,12 +31,7 @@ class GroupsFetcher {
             }
 
             // Sort groups.
-            Collections.sort(groups, new Comparator<GroupDescription>() {
-                @Override
-                public int compare(GroupDescription o1, GroupDescription o2) {
-                    return o1.getDisplayName().compareTo(o2.getDisplayName());
-                }
-            });
+            groups.sort(Comparator.comparing(GroupDescription::getDisplayName));
 
         } catch (DataModelException e) {
             logger.warn("Error when retrieving groups.", e);
