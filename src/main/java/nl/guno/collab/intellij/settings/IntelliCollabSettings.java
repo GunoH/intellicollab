@@ -1,5 +1,7 @@
 package nl.guno.collab.intellij.settings;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.ide.passwordSafe.PasswordSafe;
 import com.intellij.ide.passwordSafe.PasswordSafeException;
 import com.intellij.openapi.components.*;
@@ -11,8 +13,7 @@ import nl.guno.collab.intellij.MessageResources;
 
 @State(
         name = "IntelliCollabSettings",
-        storages = {@Storage(
-                file = StoragePathMacros.APP_CONFIG + "/intellicollab_settings.xml")})
+        storages = {@Storage("intellicollab_settings.xml")})
 public class IntelliCollabSettings implements PersistentStateComponent<IntelliCollabSettings.State> {
 
     private static final String SETTINGS_PASSWORD_KEY = "IntelliCollab_server_password";
@@ -26,7 +27,7 @@ public class IntelliCollabSettings implements PersistentStateComponent<IntelliCo
     }
 
     @Override
-    public void loadState(State state) {
+    public void loadState(@NotNull State state) {
         myState = state;
     }
 
