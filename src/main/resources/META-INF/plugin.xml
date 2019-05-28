@@ -147,8 +147,7 @@
     <!--See also http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
     <idea-version since-build="181.4096.5"/>
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceInterface="nl.guno.collab.intellij.settings.IntelliCollabSettings"
-                            serviceImplementation="nl.guno.collab.intellij.settings.IntelliCollabSettings"/>
+        <applicationService serviceImplementation="nl.guno.collab.intellij.settings.IntelliCollabSettings"/>
         <applicationConfigurable groupId="tools" key="configuration.key" bundle="nl.guno.collab.intellij.MessageResources"
                              instance="nl.guno.collab.intellij.settings.IntelliCollabSettingsConfigurable"
                              id="nl.guno.collab.intellij.settings.IntelliCollabSettingsConfigurable"/>
@@ -161,7 +160,7 @@
             <separator/>
             <action id="nl.guno.collab.intellij.AddControlledFileFromChangesViewPopupMenu"
                     class="nl.guno.collab.intellij.AddControlledFileAction"
-                    text="Add file(s) to _review..."
+                    text="Add Files to _Review..."
                     description="Adds one or more version-controlled file(s) to an existing Collaborator review"
                     icon="/icons/addToReview.png">
             </action>
@@ -171,7 +170,7 @@
         <group>
             <action id="nl.guno.collab.intellij.AddControlledFileFromChangesView"
                     class="nl.guno.collab.intellij.AddControlledFileAction"
-                    text="Add file(s) to review..."
+                    text="Add Files to Review..."
                     description="Adds one or more version-controlled file(s) to an existing Collaborator review"
                     icon="/icons/addToReview.png">
             </action>
@@ -181,7 +180,7 @@
             <separator/>
             <action id="nl.guno.collab.intellij.AddControlledFileFromEditorTab"
                     class="nl.guno.collab.intellij.AddControlledFileFromEditorTab"
-                    text="Add file to _review..."
+                    text="Add File to _Review..."
                     description="Adds the selected file to an existing Collaborator review"
                     icon="/icons/addToReview.png">
             </action>
@@ -192,7 +191,7 @@
             <separator/>
             <action id="nl.guno.collab.intellij.CreateReviewAction"
                     class="nl.guno.collab.intellij.CreateReviewAction"
-                    text="Create _new review..."
+                    text="Create _New Review..."
                     description="Creates a new Collaborator review"
                     icon="/icons/newReview.png">
                 <keyboard-shortcut first-keystroke="control alt R" keymap="$default"/>
