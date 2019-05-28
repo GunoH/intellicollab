@@ -35,4 +35,5 @@ dependencies {
     compile("com.fasterxml.jackson.module:jackson-module-mrbean:2.5.5")
     compile("com.google.guava:guava:18.0")
     compile("com.google.gwt:gwt-user:2.7.0")
+    runtime("javax.xml.ws:jaxws-api:2.3.1")
 }
